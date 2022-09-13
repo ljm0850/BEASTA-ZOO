@@ -30,7 +30,7 @@ public class ServiceCollectionController {
 
     @GetMapping("/{jav_id}")
     public ResponseEntity<serviceCollectionResDto> detailJav(@PathVariable long jav_id){
-        logger.info("serviceCollectionList - 호출");
+        logger.info("detailJav - 호출");
         return new ResponseEntity<>(serviceCollectionService.detailJav(jav_id), HttpStatus.OK);
     }
 }
