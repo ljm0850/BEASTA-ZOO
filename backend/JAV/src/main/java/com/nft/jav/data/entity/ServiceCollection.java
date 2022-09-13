@@ -15,7 +15,6 @@ public class ServiceCollection extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long jav_id;
 
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
