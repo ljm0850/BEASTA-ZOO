@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface LikedRepository extends JpaRepository<Liked, Long> {
-    @Query("select L from Liked L where L.user =: user")
-    List<Liked> findAllByUserId(@Param("user") User user);
+    List<Liked> findAllByUser(User user);
+
 }
