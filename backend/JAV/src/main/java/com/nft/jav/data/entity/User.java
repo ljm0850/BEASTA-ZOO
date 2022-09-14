@@ -41,6 +41,9 @@ public class User extends BaseTimeEntity {
     private double token;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Community> community_list;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Sales> sales_list;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

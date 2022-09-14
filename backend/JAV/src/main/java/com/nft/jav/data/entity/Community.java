@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -15,7 +16,7 @@ public class Community extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long community_id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -31,6 +32,9 @@ public class Community extends BaseTimeEntity {
     @Column
     private int type;
 
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
+    private List<Comment> comment_list;
+
     @Builder
     public Community(long community_id, User user, String title, String content, int hit, int type) {
         this.community_id = community_id;
@@ -39,5 +43,17 @@ public class Community extends BaseTimeEntity {
         this.content = content;
         this.hit = hit;
         this.type = type;
+    }
+
+    public void updateHit(int hit){
+        this.hit = hit+1;
+    }
+
+    public void updateTitle(String title){
+        this.title = title;
+    }
+
+    public void updateContent(String content){
+        this.content = content;
     }
 }
