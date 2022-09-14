@@ -16,10 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
     private final Logger logger = LoggerFactory.getLogger(CommunityServiceImpl.class);
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserResDto login(String wallet_address) {
+
         User targetUser = userRepository.findByWalletAddress(wallet_address);
 
         if(targetUser != null) {

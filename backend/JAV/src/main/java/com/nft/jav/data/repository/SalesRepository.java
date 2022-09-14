@@ -15,6 +15,6 @@ public interface SalesRepository extends JpaRepository<Sales, Long> {
     @Query("select S from Sales S where S.user=:user")
     List<Sales> findAllByUserId(@Param("user") User user);
 
-    @Query("select S from Sales S where S.user=:user and S.buyer_wallet=:wallet_address")
-    List<Sales> findAllByUserAndBuyerWallet(@Param("user") User user, @Param("wallet_address") String wallet_address);
+    @Query("select S from Sales S where S.buyer_wallet=:user_wallet_address and S.state=1")
+    List<Sales> findAllByUser_Wallet_address(@Param("user_wallet_address") String user_wallet_address);
 }
