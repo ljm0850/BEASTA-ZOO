@@ -27,20 +27,25 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     string private _symbol;
 
     // Mapping from token ID to owner address
+    // 토큰 ID와 토큰 주인을 mapping
     mapping(uint256 => address) private _owners;
 
     // Mapping owner address to token count
+    // 지갑 주소와 가진 nft 개수를 mapping
     mapping(address => uint256) private _balances;
 
     // Mapping from token ID to approved address
+    // 토큰 id와 토큰 권한(전송...)가진 주소 mapping
     mapping(uint256 => address) private _tokenApprovals;
 
     // Mapping from owner to operator approvals
+    // 운영자에게 승인된 address ?? {nft owner 주소:{받을사람 주소??:True}, ...} 느낌
     mapping(address => mapping(address => bool)) private _operatorApprovals;
 
     /**
      * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
      */
+    // 계약 배포시 단 한번 호출됨
     constructor(string memory name_, string memory symbol_) {
         _name = name_;
         _symbol = symbol_;
@@ -49,6 +54,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC165-supportsInterface}.
      */
+    // IERC721, IERC721Metadata의 interfaceId와 동일하거나 부모(ERC165,IERC165)값이 True ?
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
         return
             interfaceId == type(IERC721).interfaceId ||
@@ -59,6 +65,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-balanceOf}.
      */
+    // 해당 계좌의 nft 숫자 반환
     function balanceOf(address owner) public view virtual override returns (uint256) {
         require(owner != address(0), "ERC721: address zero is not a valid owner");
         return _balances[owner];
@@ -67,6 +74,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-ownerOf}.
      */
+    // 해당 NFT의 소유자(지갑) return
     function ownerOf(uint256 tokenId) public view virtual override returns (address) {
         address owner = _ownerOf(tokenId);
         require(owner != address(0), "ERC721: invalid token ID");
@@ -90,6 +98,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721Metadata-tokenURI}.
      */
+    // 토큰에 들어있는 URI값을 리턴하는데, _baseURI()가 현재는 ""라 _baseURI를 고치거나 override 하거나
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         _requireMinted(tokenId);
 
@@ -109,12 +118,13 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-approve}.
      */
+    // NFT 전송 신청
     function approve(address to, uint256 tokenId) public virtual override {
-        address owner = ERC721.ownerOf(tokenId);
-        require(to != owner, "ERC721: approval to current owner");
+        address owner = ERC721.ownerOf(tokenId); // NFT 오너
+        require(to != owner, "ERC721: approval to current owner");  // 보내는 사람이 NFT 오너인지 확인
 
         require(
-            _msgSender() == owner || isApprovedForAll(owner, _msgSender()),
+            _msgSender() == owner || isApprovedForAll(owner, _msgSender()), //주문 넣은 사람이 NFT 오너 or 운영자에 의해 허락됬었는지??? 좀더 찾아봐야 할듯
             "ERC721: approve caller is not token owner or approved for all"
         );
 
@@ -124,6 +134,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-getApproved}.
      */
+    // 해당 nft의 승인된 주소(전송 권한 가진 주소)를 반환
     function getApproved(uint256 tokenId) public view virtual override returns (address) {
         _requireMinted(tokenId);
 
@@ -133,6 +144,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-setApprovalForAll}.
      */
+    // msg 보낸사람 != operator면 _operatorApprovals 값을 approved로 변경
     function setApprovalForAll(address operator, bool approved) public virtual override {
         _setApprovalForAll(_msgSender(), operator, approved);
     }
@@ -140,6 +152,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-isApprovedForAll}.
      */
+    // operator가 owner에게 권한을 받았는지 확인하는 함수
     function isApprovedForAll(address owner, address operator) public view virtual override returns (bool) {
         return _operatorApprovals[owner][operator];
     }
@@ -147,6 +160,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-transferFrom}.
      */
+    
+    // 토큰의 소유권을 from에서 to로 옮기기, 밑에있는 safe를 애용하자
     function transferFrom(
         address from,
         address to,
@@ -166,7 +181,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         address to,
         uint256 tokenId
     ) public virtual override {
-        safeTransferFrom(from, to, tokenId, "");
+        safeTransferFrom(from, to, tokenId, "");    // ""는 calldata로 사용됨
     }
 
     /**
@@ -213,6 +228,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev Returns the owner of the `tokenId`. Does NOT revert if token doesn't exist
      */
+     // 토큰 주인(address) 리턴
     function _ownerOf(uint256 tokenId) internal view virtual returns (address) {
         return _owners[tokenId];
     }
@@ -225,6 +241,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      * Tokens start existing when they are minted (`_mint`),
      * and stop existing when they are burned (`_burn`).
      */
+    // 해당 토큰이 주인이 있는지 확인
     function _exists(uint256 tokenId) internal view virtual returns (bool) {
         return _ownerOf(tokenId) != address(0);
     }
@@ -236,6 +253,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * - `tokenId` must exist.
      */
+    // NFT 소유주 or 운영자에게 권한을 받았거나 or 전송권한이 있거나
     function _isApprovedOrOwner(address spender, uint256 tokenId) internal view virtual returns (bool) {
         address owner = ERC721.ownerOf(tokenId);
         return (spender == owner || isApprovedForAll(owner, spender) || getApproved(tokenId) == spender);
@@ -251,6 +269,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * Emits a {Transfer} event.
      */
+    // tokenId를 이용하여 NFT 민팅해서 to에게 보냄
     function _safeMint(address to, uint256 tokenId) internal virtual {
         _safeMint(to, tokenId, "");
     }
@@ -284,8 +303,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      * Emits a {Transfer} event.
      */
     function _mint(address to, uint256 tokenId) internal virtual {
-        require(to != address(0), "ERC721: mint to the zero address");
-        require(!_exists(tokenId), "ERC721: token already minted");
+        require(to != address(0), "ERC721: mint to the zero address");  // 주소가 빈값이 아닌지 확인
+        require(!_exists(tokenId), "ERC721: token already minted"); // 이미 발급된 토큰인지 확인
 
         _beforeTokenTransfer(address(0), to, tokenId);
 
@@ -301,7 +320,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         }
 
         _owners[tokenId] = to;
-
+        // 전송
         emit Transfer(address(0), to, tokenId);
 
         _afterTokenTransfer(address(0), to, tokenId);
@@ -318,6 +337,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * Emits a {Transfer} event.
      */
+     // NFT 소각 = 현재 소유주를 빈 지갑으로 바꿈
     function _burn(uint256 tokenId) internal virtual {
         address owner = ERC721.ownerOf(tokenId);
 
@@ -352,13 +372,14 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * Emits a {Transfer} event.
      */
+    // NFT 전송
     function _transfer(
         address from,
         address to,
         uint256 tokenId
     ) internal virtual {
         require(ERC721.ownerOf(tokenId) == from, "ERC721: transfer from incorrect owner");
-        require(to != address(0), "ERC721: transfer to the zero address");
+        require(to != address(0), "ERC721: transfer to the zero address"); // to 값이 있으면(공백이 아니라면) 
 
         _beforeTokenTransfer(from, to, tokenId);
 
@@ -389,6 +410,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * Emits an {Approval} event.
      */
+    // 해당 토큰 권한 부여
     function _approve(address to, uint256 tokenId) internal virtual {
         _tokenApprovals[tokenId] = to;
         emit Approval(ERC721.ownerOf(tokenId), to, tokenId);
@@ -399,6 +421,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * Emits an {ApprovalForAll} event.
      */
+    // virtual = 덮어쓰기 가능
     function _setApprovalForAll(
         address owner,
         address operator,
@@ -412,6 +435,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev Reverts if the `tokenId` has not been minted yet.
      */
+    // 토큰 주인이 있는지 확인 (덮어 쓰기 용인가? 왜 존재하는거지)
     function _requireMinted(uint256 tokenId) internal view virtual {
         require(_exists(tokenId), "ERC721: invalid token ID");
     }
@@ -426,13 +450,14 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      * @param data bytes optional data to send along with the call
      * @return bool whether the call correctly returned the expected magic value
      */
+    // 토큰 받기전 체크
     function _checkOnERC721Received(
         address from,
         address to,
         uint256 tokenId,
         bytes memory data
     ) private returns (bool) {
-        if (to.isContract()) {
+        if (to.isContract()) {  //생성중인 contract일 경우 false를 반환 됨
             try IERC721Receiver(to).onERC721Received(_msgSender(), from, tokenId, data) returns (bytes4 retval) {
                 return retval == IERC721Receiver.onERC721Received.selector;
             } catch (bytes memory reason) {
