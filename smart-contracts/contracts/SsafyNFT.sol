@@ -23,6 +23,7 @@ contract SsafyNFT is ERC721 {
     event createNFT (uint256 indexed _tokenId, address indexed _owner);
 
     // 각종 조회 함수들
+    
     // 지워버린 토큰까지 포함됨
     function current() public view returns (uint256) {
         return _tokenIds;
@@ -37,6 +38,7 @@ contract SsafyNFT is ERC721 {
     }
 
     // 뽑기,조합 관련 함수들
+    
     // NFT 생성
     function create(address to, string memory _tokenURI, uint256[3] memory _gene, uint8[5] memory _accessory) internal returns (uint256) {
         uint256 tokenId = current() + 1;
@@ -51,6 +53,7 @@ contract SsafyNFT is ERC721 {
         return tokenId;
     }
     // 알고리즘
+
     function randomGene() pure internal returns (uint256){
         // 랜덤
         return 1;
@@ -65,21 +68,27 @@ contract SsafyNFT is ERC721 {
         return 1;
     }
     // 뽑기
-    function pickup(address to, string memory _tokenURI) public returns (uint256) {
+    function pickup(string memory _tokenURI) public returns (uint256) {
+        // 돈 관련 체크 필요
         uint256[3] memory _gene = [randomGene(),randomGene(),randomGene()];
         uint8[5] memory _accessory = [randomAccessory(),randomAccessory(),randomAccessory(),randomAccessory(),randomAccessory()];
-        uint256 value = create(to,_tokenURI,_gene,_accessory);
+        uint256 value = create(msg.sender,_tokenURI,_gene,_accessory);
         return value;
     }
+
     // 조합
-    function fusionJavs(address to, string memory _tokenURI, uint256 NFTid1, uint256 NFTid2) public returns (uint256){
+    function fusionJavs(string memory _tokenURI, uint256 NFTid1, uint256 NFTid2) public returns (uint256){
+        // 돈 관련 체크 필요
+        // burn된 token의 경우 ERC721에서 ownerOf 하면서 처리해줌
+        require(msg.sender == ownerOf(NFTid1), "you are not NFT owner");
+        require(msg.sender == ownerOf(NFTid2), "you are not NFT owner");
         uint256[3] memory NFT1_gene = getJavsData(NFTid1).gene;
         uint256[3] memory NFT2_gene = getJavsData(NFTid2).gene;
         uint256[3] memory new_gene = [makeGene(NFT1_gene[0],NFT2_gene[0]),makeGene(NFT1_gene[1],NFT2_gene[1]),makeGene(NFT1_gene[2],NFT2_gene[2])];
         uint8[5] memory _accessory = [randomAccessory(),randomAccessory(),randomAccessory(),randomAccessory(),randomAccessory()];
         _burn(NFTid1);
         _burn(NFTid2);
-        uint256 value = create(to,_tokenURI,new_gene,_accessory);
+        uint256 value = create(msg.sender,_tokenURI,new_gene,_accessory);
         return value;
     }
     
