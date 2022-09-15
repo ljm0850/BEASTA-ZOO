@@ -1,6 +1,9 @@
 package com.nft.jav.service;
 
-import com.nft.jav.data.dto.CommunityDto;
+import com.nft.jav.data.dto.CommunityModiReqDto;
+import com.nft.jav.data.dto.CommunityReqDto;
+import com.nft.jav.data.dto.CommunityResDto;
+import com.nft.jav.data.dto.UserResDto;
 import com.nft.jav.data.entity.Community;
 import com.nft.jav.data.entity.User;
 import com.nft.jav.data.repository.CommunityRepository;
@@ -8,12 +11,12 @@ import com.nft.jav.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,13 +29,14 @@ public class CommunityServiceImpl implements CommunityService{
     private final UserRepository userRepository;
 
     @Override
-    public List<CommunityDto> communityList() {
+    public List<CommunityResDto> communityList() {
+        logger.info("communityList service - 호출");
         List<Community> findAll = communityRepository.findByType(0);
 
-        List<CommunityDto> findAllDto = new ArrayList<>();
+        List<CommunityResDto> findAllDto = new ArrayList<>();
         for(int i=0;i<findAll.size();i++) {
             Community community = findAll.get(i);
-            CommunityDto communityDto = CommunityDto.builder()
+            CommunityResDto communityDto = CommunityResDto.builder()
                     .community_id(community.getCommunity_id())
                     .content(community.getContent())
                     .hit(community.getHit())
@@ -48,13 +52,14 @@ public class CommunityServiceImpl implements CommunityService{
     }
 
     @Override
-    public List<CommunityDto> noticeList() {
+    public List<CommunityResDto> noticeList() {
+        logger.info("noticeList service - 호출");
         List<Community> noticeList = communityRepository.findByType(1);
 
-        List<CommunityDto> findNoticeDto = new ArrayList<>();
+        List<CommunityResDto> findNoticeDto = new ArrayList<>();
         for(int i=0;i<noticeList.size();i++) {
             Community community = noticeList.get(i);
-            CommunityDto communityDto = CommunityDto.builder()
+            CommunityResDto communityDto = CommunityResDto.builder()
                     .community_id(community.getCommunity_id())
                     .content(community.getContent())
                     .hit(community.getHit())
@@ -70,11 +75,14 @@ public class CommunityServiceImpl implements CommunityService{
     }
 
     @Override
-    public CommunityDto detailCommunity(long communityId) {
+    public CommunityResDto detailCommunity(long communityId) {
+        logger.info("detailCommunity service - 호출");
         Community community = communityRepository.findById(communityId)
                 .orElseThrow(IllegalArgumentException::new);
 
-        CommunityDto communityDto = CommunityDto.builder()
+        community.updateHit(community.getHit());
+
+        CommunityResDto communityDto = CommunityResDto.builder()
                 .community_id(community.getCommunity_id())
                 .content(community.getContent())
                 .hit(community.getHit())
@@ -88,15 +96,15 @@ public class CommunityServiceImpl implements CommunityService{
     }
 
     @Override
-    public boolean saveCommunity(CommunityDto communityDto) {
-
-        User targetUser = userRepository.findById(communityDto.getUser_id())
+    public boolean saveCommunity(CommunityReqDto communityReqDto) {
+        logger.info("saveCommunity service - 호출");
+        User targetUser = userRepository.findById(communityReqDto.getUser_id())
                 .orElseThrow(IllegalArgumentException::new);
 
         Community savedCommunity = communityRepository.save(Community.builder()
-                .content(communityDto.getContent())
-                .title(communityDto.getTitle())
-                .type(communityDto.getType())
+                .content(communityReqDto.getContent())
+                .title(communityReqDto.getTitle())
+                .type(communityReqDto.getType())
                 .hit(0)
                 .user(targetUser)
                 .build());
@@ -105,4 +113,58 @@ public class CommunityServiceImpl implements CommunityService{
             return true;
         return false;
     }
+
+    @Override
+    public boolean updateCommunity(CommunityModiReqDto communityModiReqDto) {
+        logger.info("updateCommunity service - 호출");
+        Community target = communityRepository.findById(communityModiReqDto.getCommunity_id())
+                .orElseThrow(IllegalArgumentException::new);
+
+        target.updateContent(communityModiReqDto.getContent());
+        target.updateTitle(communityModiReqDto.getTitle());
+
+        return target.getContent().equals(communityModiReqDto.getContent()) && target.getTitle().equals(communityModiReqDto.getTitle());
+    }
+
+    @Override
+    public boolean deleteCommunity(long communityId) {
+        logger.info("deleteCommunity service - 호출");
+        Community target = communityRepository.findById(communityId)
+                .orElseThrow(IllegalArgumentException::new);
+
+        communityRepository.delete(target);
+
+        return !communityRepository.existsById(communityId);
+    }
+
+    @Override
+    public List<UserResDto> rankUser() {
+        logger.info("rankUser service - 호출");
+
+        List<User> target = userRepository.findAll(Sort.by(Sort.Direction.DESC, "first_discover_count"));
+
+        List<UserResDto> userResDtoList = new ArrayList<>();
+
+        for(int i=0; i<target.size(); i++){
+            User targetUser = target.get(i);
+
+            UserResDto userResDto = UserResDto.builder()
+                    .user_id(targetUser.getUser_id())
+                    .wallet_address(targetUser.getWallet_address())
+                    .nickname(targetUser.getNickname())
+                    .profile_img_path(targetUser.getProfile_img_path())
+                    .banner_img_path(targetUser.getBanner_img_path())
+                    .profile_description(targetUser.getProfile_description())
+                    .create_date(targetUser.getCreate_date())
+                    .first_discover_count(targetUser.getFirst_discover_count())
+                    .tier(targetUser.getTier())
+                    .token(targetUser.getToken())
+                    .build();
+
+            userResDtoList.add(userResDto);
+        }
+
+        return userResDtoList;
+    }
+
 }
