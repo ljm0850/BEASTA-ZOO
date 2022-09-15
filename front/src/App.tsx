@@ -1,5 +1,5 @@
 // import React from "react";
-import "./App.css";
+import "./App.scss";
 
 function App() {
   return (
@@ -12,10 +12,11 @@ function App() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-          }}>
+          }}
+        >
           <div>하이</div>
         </div>
-      </header> 
+      </header>
     </div>
   );
 }
