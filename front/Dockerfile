@@ -1,4 +1,4 @@
-FROM node:16.11.58 as build-stage
+FROM node:16-alpine as build-stage
 WORKDIR /var/lib/jenkins/workspace/deploytest_front
 COPY package*.json ./
 RUN npm install
