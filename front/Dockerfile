@@ -1,5 +1,5 @@
 FROM node:16-alpine as build-stage
-WORKDIR /var/lib/jenkins/workspace/deploytest_front
+WORKDIR /var/lib/jenkins/workspace/deploytest_front/front
 COPY package*.json ./
 RUN npm install
 COPY . .
