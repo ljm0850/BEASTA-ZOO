@@ -1,9 +1,9 @@
 spring :
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/JAV
-    username: root
-    password: 1234
+    url: jdbc:mysql://j7c108.p.ssafy.io:3306/JAV
+    username: nft
+    password: qltmxkwb!
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
