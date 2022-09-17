@@ -7,7 +7,7 @@ RUN npm run build
 RUN ls
 FROM nginx:stable-alpine as production-stage
 
-COPY /home/ubuntu/keys/. /etc/letsencrypt/live/j7c108.p.ssafy.io/.
+COPY --from=build-stage /var/lib/jenkins/workspace/deploytest_front/keys /etc/letsencrypt/live/j7c108.p.ssafy.io
 
 COPY --from=build-stage /var/lib/jenkins/workspace/deploytest_front/front/build /usr/share/nginx/html
 COPY --from=build-stage /var/lib/jenkins/workspace/deploytest_front/front/nginx.conf /etc/nginx/conf.d/default.conf
