@@ -5,7 +5,7 @@ RUN npm install
 COPY . .
 COPY /home/ubuntu/app/env/. .
 RUN npm run build
-
+RUN ls
 FROM nginx:stable-alpine as production-stage
 
 COPY --from=build-stage /var/lib/jenkins/workspace/deploytest_front/front/build /usr/share/nginx/html
