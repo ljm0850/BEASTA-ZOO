@@ -3,7 +3,7 @@ WORKDIR /var/lib/jenkins/workspace/deploytest_front/front
 COPY package*.json ./
 RUN npm install
 COPY . .
-COPY /home/ubuntu/app/env/. .
+RUN sudo cp -a /home/ubuntu/app/env/. /var/lib/jenkins/workspace/deploytest_front/front/
 RUN npm run build
 RUN ls
 FROM nginx:stable-alpine as production-stage
