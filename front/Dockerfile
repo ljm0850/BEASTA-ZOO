@@ -4,6 +4,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
+ENTRYPOINT ["ls"]
 FROM nginx:stable-alpine as production-stage
 
 COPY --from=build-stage /var/lib/jenkins/workspace/deploytest_front/front/build /usr/share/nginx/html
