@@ -1,7 +1,7 @@
 FROM node:16-alpine as build-stage
-# WORKDIR /var/lib/jenkins/workspace/deploytest_front/front
+WORKDIR /var/lib/jenkins/workspace/deploytest_front
 COPY package*.json /var/lib/jenkins/workspace/deploytest_front/front/
-RUN cd /var/lib/jenkins/workspace/deploytest_front/front 
+# RUN cd /var/lib/jenkins/workspace/deploytest_front/front 
 RUN pwd
 RUN ls
 RUN npm install
