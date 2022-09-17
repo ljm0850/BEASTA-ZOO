@@ -1,8 +1,8 @@
 FROM node:16-alpine as build-stage
-WORKDIR /var/lib/jenkins/workspace/deploytest_front/front
-COPY package*.json ./
+# WORKDIR /var/lib/jenkins/workspace/deploytest_front/front
+COPY package*.json /var/lib/jenkins/workspace/deploytest_front/front/
 RUN npm install
-COPY . .
+COPY . /var/lib/jenkins/workspace/deploytest_front/front
 RUN npm run build
 RUN ls
 FROM nginx:stable-alpine as production-stage
