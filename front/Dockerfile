@@ -8,7 +8,7 @@
 # RUN ls
 FROM nginx:stable-alpine as production-stage
 
-COPY /var/lib/jenkins/workspace/deploytest_front/front/build /usr/share/nginx/html
+COPY /var/lib/jenkins/workspace/deploytest_front/front/build/. /usr/share/nginx/html
 COPY /var/lib/jenkins/workspace/deploytest_front/front/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g","daemon off;"]
