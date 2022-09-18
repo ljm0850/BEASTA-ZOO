@@ -20,9 +20,6 @@ public class UserCollectionServiceImpl implements UserCollectionService {
         UserCollection userCollection = userCollectionRepository.findById(user_collection_id)
                 .orElseThrow(IllegalArgumentException::new);
 
-        NFT targetNFT = nftRepository.findById(userCollection.getNft_id())
-                .orElseThrow(IllegalArgumentException::new);
-
-        return targetNFT.getNft_address();
+        return userCollection.getNft_address();
     }
 }
