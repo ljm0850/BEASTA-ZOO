@@ -13,6 +13,7 @@ function App() {
   const connectWallet = async () => {
     try {
       if (!ethereum) {
+        console.log("123")
         sethaveMetamask(false);
       }
       const accounts = await ethereum.request({
@@ -29,7 +30,6 @@ function App() {
   };
 
   useEffect(() => {
-    connectWallet()
     const { ethereum } = window;
     const checkMetamaskAvailability = async () => {
       if (!ethereum) {
