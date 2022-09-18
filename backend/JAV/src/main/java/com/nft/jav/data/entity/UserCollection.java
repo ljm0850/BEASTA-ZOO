@@ -16,7 +16,7 @@ public class UserCollection extends BaseTimeEntity {
     private long user_collection_id;
 
     @Column
-    private long nft_id;
+    private String nft_address;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -27,9 +27,9 @@ public class UserCollection extends BaseTimeEntity {
     private ServiceCollection jav;
 
     @Builder
-    public UserCollection(long user_collection_id, long nft_id, User user, ServiceCollection jav) {
+    public UserCollection(long user_collection_id, String nft_address, User user, ServiceCollection jav) {
         this.user_collection_id = user_collection_id;
-        this.nft_id = nft_id;
+        this.nft_address = nft_address;
         this.user = user;
         this.jav = jav;
     }

@@ -40,4 +40,13 @@ public class ServiceCollection extends BaseTimeEntity{
         this.jav_img_path = jav_img_path;
         this.discover_user_count = discover_user_count;
     }
+
+    public void updateDiscoverUserCount(int discover_user_count) {
+        this.discover_user_count = discover_user_count;
+    }
+
+    public void updateUser(User user) {
+        this.user = user;
+    }
+
 }

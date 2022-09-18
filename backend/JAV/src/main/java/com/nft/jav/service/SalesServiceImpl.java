@@ -92,14 +92,14 @@ public class SalesServiceImpl implements SalesService {
 
         UserCollection userCollection = UserCollection.builder()
                         .user(targetUser)
-                        .nft_id(targetNFT.getNft_id())
+                        .nft_address(targetNFT.getNft_address())
                         .jav(targetServiceCollection)
                         .build();
 
         UserCollection savedUserCollection = userCollectionRepository.save(userCollection);
 
         PurchaseResDto purchaseResDto = PurchaseResDto.builder()
-                .nft_id(savedUserCollection.getNft_id())
+                .nft_id(targetNFT.getNft_id())
                 .nft_address(targetNFT.getNft_address())
                 .jav_id(savedUserCollection.getJav().getJav_id())
                 .user_collection_id(savedUserCollection.getUser_collection_id())
