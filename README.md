@@ -85,15 +85,13 @@
 
 <br/>
 
-#### 1) 아키텍처
-
-![image-20220919094156129](C:\Users\multicampus\Desktop\README.assets\image-20220919094156129.png)
+#### 1) 아키텍처![image-20220919094156129](C:\Users\multicampus\Desktop\새 폴더 (3)\S07P22C108\README.assets\image-20220919094156129.png)
 
 <br/>
 
 #### 2) 프로젝트 소스 구조 (추후 변경 예정)
 
-![image-20220919100755056](C:\Users\multicampus\Desktop\README.assets\image-20220919100755056.png)
+![image-20220919100755056](C:\Users\multicampus\Desktop\새 폴더 (3)\S07P22C108\README.assets\image-20220919100755056.png)
 
 <br/>
 
@@ -156,7 +154,7 @@
 
 ## 4. ERD 다이어그램
 
-![image-20220919095028445](C:\Users\multicampus\Desktop\README.assets\image-20220919095028445.png)
+![image-20220919095028445](C:\Users\multicampus\Desktop\새 폴더 (3)\S07P22C108\README.assets\image-20220919095028445.png)
 
 ---
 
