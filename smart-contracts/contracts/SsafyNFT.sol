@@ -12,8 +12,8 @@ contract SsafyNFT is ERC721 {
     }
     // 저장된 데이터들
     struct javsDetail {
-        uint80 gene;
-        uint24 accessory; 
+        uint80[3] gene;     // [머리,귀,하관]
+        uint8[4] accessory; // [악세1,악세2,악세3,악세4]
         uint256 create_at;
     }
 
@@ -32,22 +32,23 @@ contract SsafyNFT is ERC721 {
         return tokenURIs[tokenId];
     }
     // 유전정보 조회
-    function getJavsGene(uint256 tokenId) public view returns (uint80) {
+    function getJavsGene(uint256 tokenId) public view returns (uint80[3] memory) {
         // 여기서 암호화 하면되긴 하는데, 단순 수학 계산을 이용하여 암호화 해야 할듯?
         return javsData[tokenId].gene;
     }
 
-    function getJavsAccessory(uint256 tokenId) public view returns (uint24) {
+    function getJavsAccessory(uint256 tokenId) public view returns (uint8[4] memory) {
         return javsData[tokenId].accessory;
     }
 
     function getJavsCreate_at(uint256 tokenId) public view returns (uint256) {
         return javsData[tokenId].create_at;
     }
+
     // 뽑기,조합 관련 함수들
     
     // NFT 생성
-    function create(address to, string memory _tokenURI, uint80 _gene, uint24 _accessory) internal returns (uint256) {
+    function create(address to, string memory _tokenURI, uint80[3] memory _gene, uint8[4] memory _accessory) internal returns (uint256) {
         uint256 tokenId = current() + 1;
         tokenURIs[tokenId] = _tokenURI;
         _tokenIds = tokenId;
@@ -57,28 +58,33 @@ contract SsafyNFT is ERC721 {
         javsData[tokenId].accessory = _accessory;
         javsData[tokenId].create_at = block.timestamp;
         emit createNFT(tokenId, to);
+
         return tokenId;
     }
-    // 알고리즘
 
+    // 알고리즘
+    // 파츠 한개씩 만 반환
     function randomGene() pure internal returns (uint80){
         // 랜덤
         return 1111111111111111111111;
     }
+    // 파츠 한개씩 만 반환
     function makeGene(uint80 _gene1, uint80 _gene2) pure internal returns (uint80){
         // 특별한 알고리즘 필요
-        uint80 new_gene = _gene1 + _gene2;
-        return new_gene;
+        uint80 temp = _gene1 + _gene2;
+        return temp;
     }
-    function randomAccessory() pure internal returns (uint24){
+    // 부위마다 랜덤 범위가 달라서 gene과 다르게 한번에 값이 나오게 했음
+    function randomAccessory() pure internal returns (uint8[4] memory){
         // 랜덤
-        return 11111;
+        uint8[4] memory temp; 
+        return temp;
     }
     // 뽑기
     function pickup(string memory _tokenURI) public returns (uint256) {
         // 돈 관련 체크 필요 혹은 public을 external로 변경하여 다른 계약에서 호출, 호출시 this.pickup()형태
-        uint80 _gene = randomGene();
-        uint24 _accessory = randomAccessory();
+        uint80[3] memory _gene = [randomGene(),randomGene(),randomGene()];
+        uint8[4] memory _accessory = randomAccessory();
         uint256 value = create(msg.sender,_tokenURI,_gene,_accessory);
         return value;
     }
@@ -89,10 +95,14 @@ contract SsafyNFT is ERC721 {
         // burn된 token의 경우 ERC721에서 ownerOf 하면서 처리해줌
         require(msg.sender == ownerOf(NFTid1), "you are not NFT owner");
         require(msg.sender == ownerOf(NFTid2), "you are not NFT owner");
-        uint80 NFT1_gene = javsData[NFTid1].gene;
-        uint80 NFT2_gene = javsData[NFTid2].gene;
-        uint80 new_gene = makeGene(NFT1_gene,NFT2_gene);
-        uint24 _accessory = randomAccessory();
+        uint80[3] memory NFT1_gene = javsData[NFTid1].gene;
+        uint80[3] memory NFT2_gene = javsData[NFTid2].gene;
+        uint80[3] memory new_gene;
+        for (uint i = 0; i < 3; i++) {
+            new_gene[i] = makeGene(NFT1_gene[i],NFT2_gene[i]);
+        }
+
+        uint8[4] memory _accessory = randomAccessory();
         _burn(NFTid1);
         _burn(NFTid2);
         uint256 value = create(msg.sender,_tokenURI,new_gene,_accessory);
