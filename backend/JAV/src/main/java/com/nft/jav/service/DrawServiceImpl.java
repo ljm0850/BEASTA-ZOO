@@ -38,6 +38,8 @@ public class DrawServiceImpl implements DrawService{
         NFT savedNFT = nftRepository.save(NFT.builder()
                 .user(targetUser)
                 .nft_address(drawReqDto.getNft_address())
+                .jav_code(drawReqDto.getJav_code())
+                .img_address(drawReqDto.getImg_address())
                 .build());
 
         // 서비스 전체 도감에서 최초 발견자인지 확인

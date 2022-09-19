@@ -22,10 +22,18 @@ public class NFT extends BaseTimeEntity {
     @Column
     private String nft_address;
 
+    @Column
+    private String img_address;
+
+    @Column
+    private String jav_code;
+
     @Builder
-    public NFT(long nft_id, User user, String nft_address) {
+    public NFT(long nft_id, User user, String nft_address, String img_address, String jav_code) {
         this.nft_id = nft_id;
         this.user = user;
         this.nft_address = nft_address;
+        this.img_address = img_address;
+        this.jav_code = jav_code;
     }
 }
