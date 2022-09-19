@@ -28,6 +28,4 @@ public class DrawController {
             return new ResponseEntity<>("Success", HttpStatus.OK);
         return new ResponseEntity<>("Fail",HttpStatus.BAD_REQUEST);
     }
-
-
 }
