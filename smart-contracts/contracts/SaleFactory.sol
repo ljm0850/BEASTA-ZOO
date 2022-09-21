@@ -38,7 +38,7 @@ contract SaleFactory is Ownable {
      */
     function createSale(
         uint256 itemId,
-        uint256 minPrice,
+        // uint256 minPrice,
         uint256 purchasePrice,
         uint256 startTime,
         uint256 endTime,
@@ -47,7 +47,8 @@ contract SaleFactory is Ownable {
     ) public returns (address) {
         // TODO
         address seller = msg.sender; //해당 컨트랙트 호출자가 판매자
-        Sale instance = new Sale(admin, seller, itemId, minPrice, purchasePrice, startTime, endTime, currencyAddress, nftAddress);
+        Sale instance = new Sale(admin, seller, itemId, //minPrice,
+         purchasePrice, startTime, endTime, currencyAddress, nftAddress);
         //생성한 인스턴스에게 tokenid에 해당하는 토큰의 소유권 넘겨주기
         SsafyNFTcreateorContract.transferFrom(seller, address(instance), itemId);
 
@@ -73,7 +74,7 @@ contract SaleFactory is Ownable {
  */
  /**
 각 거래를 위한 스마트 컨트랙트
-생성자(constructor), 제안하기(bid), 즉시구매(purchase), 구매완료(confirmItem), 판매취소(cancle)을 포함
+생성자(constructor), 제안하기(bid), 즉시구매(purchase), 구매완료(confirmItem), 판매취소(cancel)을 포함
 구매하고자 하는경우 구매희망자는 bid(), purchase()를 호출
 판매기한이 끝나면 최고가를 제안한 주소는 confirmItem()을 호출하여 판매자에게 ERC-20을 전송하고 NFT소유권을 자신의 것으로 변경한다.
  */
@@ -84,7 +85,7 @@ contract Sale {
     address admin; // 수퍼권한자 주소
     uint256 public saleStartTime; // 판매시작 시간
     uint256 public saleEndTime; // 판매종료 시간
-    uint256 public minPrice; // 최소 제안가
+    //uint256 public minPrice; // 최소 제안가
     uint256 public purchasePrice;  // 즉시 구매가
     uint256 public tokenId; // 거래할 NFT tokenId
     address public currencyAddress; // 거래시 사용할 ERC-20(JavToken)의 주소
@@ -92,29 +93,29 @@ contract Sale {
     bool public ended; // 판매상태(종료여부)
 
     // 현재 최고 입찰 상태
-    address public highestBidder; // 현재 최고 제안자 정보
-    uint256 public highestBid;  // 현재 최고 제안가
+    //address public highestBidder; // 현재 최고 제안자 정보
+    //uint256 public highestBid;  // 현재 최고 제안가
 
     SsafyNFT public SsafyNFTContract;
     JavToken public JavTokenContract;
 
-    event HighestBidIncereased(address bidder, uint256 amount); // 현재 최고 제안자, 최고 제안가
+    //event HighestBidIncereased(address bidder, uint256 amount); // 현재 최고 제안자, 최고 제안가
     event SaleEnded(address winner, uint256 amount);  // 최종 구매자 정보
 
     constructor(
         address _admin,
         address _seller,
         uint256 _tokenId,
-        uint256 _minPrice,
+        //uint256 _minPrice,
         uint256 _purchasePrice,
         uint256 startTime,
         uint256 endTime,
         address _currencyAddress,
         address _nftAddress
     ) {
-        require(_minPrice > 0);
+        //require(_minPrice > 0);
         tokenId = _tokenId;
-        minPrice = _minPrice;
+        //minPrice = _minPrice;
         purchasePrice = _purchasePrice;
         seller = _seller;
         admin = _admin;
@@ -139,24 +140,24 @@ contract Sale {
     1. 최고 제안가와 제안자 정보를 갱신한다.
     2. Sale 컨트랙트로 제안금액만큼의 ERC-20 토큰을 송금한다.
      */
-    function bid(uint256 bid_amount) public {
-        // TODO
-        require(msg.sender != seller, "seller can't call this function");
-        require(block.timestamp < saleEndTime, "Sale time has expired");
-        require(JavTokenContract.balanceOf(msg.sender) >= bid_amount, "buyer do not have enough ERC20 token");
-        require(JavTokenContract.allowance(msg.sender, address(this)) != 0, "buyer did not approve this contract");
-        require(JavTokenContract.allowance(msg.sender, address(this)) >= bid_amount, "caller approve less amount of token");
-        require(bid_amount >= minPrice, "bid_amount is less than minPrice");
-        require(bid_amount > getHighestBid(), "bid_amount is less than highestBid");
-        if (highestBidder != address(0)) { // 기존 제안자가 있으면 환불
-            JavTokenContract.approve(address(this), getHighestBid());
-            JavTokenContract.transferFrom(address(this), highestBidder, highestBid);
-        }
-        highestBidder = msg.sender;
-        highestBid = bid_amount;
-        JavTokenContract.transferFrom(highestBidder, address(this), bid_amount);
-        emit HighestBidIncereased(highestBidder, highestBid);
-    }
+    // function bid(uint256 bid_amount) public {
+    //     // TODO
+    //     require(msg.sender != seller, "seller can't call this function");
+    //     require(block.timestamp < saleEndTime, "Sale time has expired");
+    //     require(JavTokenContract.balanceOf(msg.sender) >= bid_amount, "buyer do not have enough ERC20 token");
+    //     require(JavTokenContract.allowance(msg.sender, address(this)) != 0, "buyer did not approve this contract");
+    //     require(JavTokenContract.allowance(msg.sender, address(this)) >= bid_amount, "caller approve less amount of token");
+    //     require(bid_amount >= minPrice, "bid_amount is less than minPrice");
+    //     require(bid_amount > getHighestBid(), "bid_amount is less than highestBid");
+    //     if (highestBidder != address(0)) { // 기존 제안자가 있으면 환불
+    //         JavTokenContract.approve(address(this), getHighestBid());
+    //         JavTokenContract.transferFrom(address(this), highestBidder, highestBid);
+    //     }
+    //     highestBidder = msg.sender;
+    //     highestBid = bid_amount;
+    //     JavTokenContract.transferFrom(highestBidder, address(this), bid_amount);
+    //     emit HighestBidIncereased(highestBidder, highestBid);
+    // }
 
     /**
     구매 희망자가 판매자가 제시한 즉시 구매가에 작품을 구매하는 함수
@@ -169,13 +170,13 @@ contract Sale {
     3. NFT 소유권을 구매자에게 이전한다.
     4. 컨트랙트의 거래상태와 구매자 정보를 업데이트 한다.
      */
-    function purchase() public {
+    function purchase(address buyer) public {
         // TODO
-        require(msg.sender == highestBidder || msg.sender == seller, "caller is not highestBidder or seller");
-        SsafyNFTContract.transferFrom(address(this), highestBidder, tokenId);
-        JavTokenContract.approve(address(this), getHighestBid());
-        JavTokenContract.transferFrom(address(this), seller, getHighestBid());
-        emit SaleEnded(highestBidder, getHighestBid());
+        require(msg.sender == seller, "caller is not seller");
+        SsafyNFTContract.transferFrom(address(this), buyer, tokenId);
+        JavTokenContract.approve(address(this), purchasePrice);
+        JavTokenContract.transferFrom(address(this), seller, purchasePrice);
+        emit SaleEnded(buyer, purchasePrice);
         _end(); 
     }
 
@@ -188,15 +189,15 @@ contract Sale {
     2. NFT 소유권을 구매자에게 이전한다.
     3. 컨트랙트의 거래 상태와 구매자 정보를 업데이트한다.
     */
-    function confirmItem() public {
-        // TODO
-        require(msg.sender == highestBidder || msg.sender == seller, "caller is not highestBidder or seller");
-        SsafyNFTContract.transferFrom(address(this), highestBidder, tokenId);
-        JavTokenContract.approve(address(this), getHighestBid());
-        JavTokenContract.transferFrom(address(this), seller, getHighestBid());
-        emit SaleEnded(highestBidder, getHighestBid());
-        _end(); 
-    }
+    // function confirmItem() public {
+    //     // TODO
+    //     require(msg.sender == highestBidder || msg.sender == seller, "caller is not highestBidder or seller");
+    //     SsafyNFTContract.transferFrom(address(this), highestBidder, tokenId);
+    //     JavTokenContract.approve(address(this), getHighestBid());
+    //     JavTokenContract.transferFrom(address(this), seller, getHighestBid());
+    //     emit SaleEnded(highestBidder, getHighestBid());
+    //     _end(); 
+    // }
     
     /**
     판매 종료 시간 이전에 판매자나 관리자가 판매를 철회하는 함수
@@ -226,11 +227,11 @@ contract Sale {
         returns (
             uint256,
             uint256,
+            //uint256,
             uint256,
             uint256,
-            uint256,
-            address,
-            uint256,
+            //address,
+            //uint256,
             address,
             address
         )
@@ -238,19 +239,19 @@ contract Sale {
         return (
             saleStartTime,
             saleEndTime,
-            minPrice,
+            //minPrice,
             purchasePrice,
             tokenId,
-            highestBidder,
-            highestBid,
+            //highestBidder,
+            //highestBid,
             currencyAddress,
             nftAddress
         );
     }
 
-    function getHighestBid() public view returns(uint256){
-        return highestBid;
-    }
+    // function getHighestBid() public view returns(uint256){
+    //     return highestBid;
+    // }
 
     // internal 혹은 private 함수 선언시 아래와 같이 _로 시작하도록 네이밍합니다.
     function _end() internal {
