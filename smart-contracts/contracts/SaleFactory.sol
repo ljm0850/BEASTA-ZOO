@@ -4,18 +4,19 @@ pragma solidity ^0.8.4;
 import "./access/Ownable.sol";
 import "./token/ERC20/ERC20.sol";
 import "./token/ERC721/ERC721.sol";
-import "./SsafyNFT.sol";
 import "./JavToken.sol";
+import "./JAV_NFT.sol";
 
 /**
  * PJT Ⅲ - Req.1-SC1 SaleFactory 구현
  * 상태 변수나 함수의 시그니처, 이벤트는 구현에 따라 변경할 수 있습니다.
  */
 contract SaleFactory is Ownable {
-    address public admin;
-    address[] public sales;
-    mapping(uint256 => address) saleContractAddress; // 토큰id -> Salecontract address 맵핑
-    SsafyNFT public SsafyNFTcreateorContract;
+
+    address public admin; // 관리자, 계약 배포자
+    address[] public sales; // 판매자
+    mapping(uint256=>address) saleContractAddress;  // 토큰id -> Salecontract address 맵핑
+    JAV_NFT public NFTcreatorContract;
 
     event NewSale(
         address indexed _saleContract,
@@ -23,35 +24,31 @@ contract SaleFactory is Ownable {
         uint256 _workId
     );
 
-    constructor(address _SsafyNFTcreatorAddress) {
+    constructor(address _NFTcreatorAddress) {
         admin = msg.sender;
-        SsafyNFTcreateorContract = SsafyNFT(_SsafyNFTcreatorAddress);
+        NFTcreatorContract = JAV_NFT(_NFTcreatorAddress);
     }
 
     /**
      * @dev 반드시 구현해야하는 함수입니다. 
      */
-     /*
-    이 함수를 호출하면 새로운 Sale 컨트랙트를 생성한다.
-    생성된 Sale 컨트랙트를 상태변수에 추가한다.
-    생성된 Sale 컨트랙트의 주소정보를 반환한다.
-     */
+    // 판매 등록
     function createSale(
-        uint256 itemId,
-        // uint256 minPrice,
-        uint256 purchasePrice,
-        uint256 startTime,
-        uint256 endTime,
-        address currencyAddress,
-        address nftAddress
+        uint256 itemId, // 아마 NFT_ID
+        // uint256 minPrice,   //최저가(우린 필요 없을듯)
+        uint256 purchasePrice,  //즉구가
+        // uint256 startTime,  // 판매 시작 시간
+        // uint256 endTime,    // 판매 끝나는 시간
+        address currencyAddress,    //ERC-20 주소
+        address nftAddress  // NFT 계약 주소
     ) public returns (address) {
         // TODO
-        address seller = msg.sender; //해당 컨트랙트 호출자가 판매자
-        Sale instance = new Sale(admin, seller, itemId, //minPrice,
-         purchasePrice, startTime, endTime, currencyAddress, nftAddress);
-        //생성한 인스턴스에게 tokenid에 해당하는 토큰의 소유권 넘겨주기
-        SsafyNFTcreateorContract.transferFrom(seller, address(instance), itemId);
-
+        address seller = msg.sender;    //해당 컨트랙트 호출자가 판매자
+        Sale instance = new Sale(admin, seller, itemId, purchasePrice, currencyAddress, nftAddress);
+        // 생성한 인스턴스에게 tokenid에 해당하는 토큰의 소유권 넘겨주기
+        NFTcreatorContract.transferFrom(seller, address(instance), itemId);
+        // return instance;
+        // emit NewSale(_saleContract, _owner, _workId);
         sales.push(address(instance));
         saleContractAddress[itemId] = address(instance);
         emit NewSale(address(instance), msg.sender, itemId);
@@ -80,199 +77,148 @@ contract SaleFactory is Ownable {
  */
 contract Sale {
     // 생성자에 의해 정해지는 값
-    address public seller; // 판매자 정보
-    address public buyer; // 구매자 정보
-    address admin; // 수퍼권한자 주소
-    uint256 public saleStartTime; // 판매시작 시간
-    uint256 public saleEndTime; // 판매종료 시간
-    //uint256 public minPrice; // 최소 제안가
-    uint256 public purchasePrice;  // 즉시 구매가
+    address public seller;  // 판매자
+    address public buyer;   // 구매자
+    address admin;  // 관리자
+    // uint256 public saleStartTime;   //판매 시작 시간
+    // uint256 public saleEndTime;     // 판매 종료 시간
+    // uint256 public minPrice;    // 최저가(우린 필요 없을듯)
+    uint256 public purchasePrice;   // 즉구가
     uint256 public tokenId; // 거래할 NFT tokenId
     address public currencyAddress; // 거래시 사용할 ERC-20(JavToken)의 주소
-    address public nftAddress; // nft creator 주소
-    bool public ended; // 판매상태(종료여부)
+    address public nftAddress;  // nft creator 주소(NFT 계약 주소)
+    bool public ended;  // 판매 종료 여부
 
     // 현재 최고 입찰 상태
-    //address public highestBidder; // 현재 최고 제안자 정보
-    //uint256 public highestBid;  // 현재 최고 제안가
+    // address public highestBidder;   // 필요 없을듯
+    // uint256 public highestBid;  // 필요 없을듯
 
-    SsafyNFT public SsafyNFTContract;
+    // IERC20 public erc20Contract; // 임시 
+    // IERC721 public erc721Constract; // 임시
     JavToken public JavTokenContract;
+    JAV_NFT public NFTcreatorContract;
 
-    //event HighestBidIncereased(address bidder, uint256 amount); // 현재 최고 제안자, 최고 제안가
-    event SaleEnded(address winner, uint256 amount);  // 최종 구매자 정보
-
+    // event HighestBidIncereased(address bidder, uint256 amount); // 경매 상위 입찰시 인거 같은데 우린 필요 없을듯
+    event SaleEnded(address winner, uint256 amount);    // 최종 구매자 정보(판매 종료시, 구매자, 가격 event 발생)
+    // 최초 배포시 관리자, 구매자, 판매자 등 기록
     constructor(
         address _admin,
         address _seller,
         uint256 _tokenId,
-        //uint256 _minPrice,
+        // uint256 _minPrice,
         uint256 _purchasePrice,
-        uint256 startTime,
-        uint256 endTime,
+        // uint256 startTime,
+        // uint256 endTime,
         address _currencyAddress,
         address _nftAddress
     ) {
-        //require(_minPrice > 0);
+        // require(_minPrice > 0);
+        require(_purchasePrice > 0); // 정말 필요한지 나중에 다시 확인해보자
         tokenId = _tokenId;
-        //minPrice = _minPrice;
+        // minPrice = _minPrice;
         purchasePrice = _purchasePrice;
         seller = _seller;
         admin = _admin;
-        saleStartTime = startTime;
-        saleEndTime = endTime;
+        // saleStartTime = startTime;
+        // saleEndTime = endTime;
         currencyAddress = _currencyAddress;
         nftAddress = _nftAddress;
         ended = false;
-        SsafyNFTContract = SsafyNFT(_nftAddress);
         JavTokenContract = JavToken(_currencyAddress);
+        NFTcreatorContract = JAV_NFT(_nftAddress);     // SSFTokenContract = SSFToken(_currencyAddress);
     }
-
-    /**
-    구매희망자가 가격을 제시하는 함수
-    - 판매자가 아닌경우 호출가능
-    - 해당Sale의 판매시점이 유효한 경우
-    - 구매희망자가 Sale 컨트랙트에게 구매희망자의 ERC-20토큰을 송금할수 있는 권한을 허용한 경우(ERC-20 approve)
-    - 판매자가 지정한 최저 제안가 이상의 금액 제시
-    - 현재 최고 제안가 초과 금액 제시
-    - 즉시 구매가보다 낮은 금액으로 호출
-    위 사항을 만족하는 경우
-    1. 최고 제안가와 제안자 정보를 갱신한다.
-    2. Sale 컨트랙트로 제안금액만큼의 ERC-20 토큰을 송금한다.
-     */
+    // 경매에서 가격 제시
     // function bid(uint256 bid_amount) public {
     //     // TODO
-    //     require(msg.sender != seller, "seller can't call this function");
-    //     require(block.timestamp < saleEndTime, "Sale time has expired");
-    //     require(JavTokenContract.balanceOf(msg.sender) >= bid_amount, "buyer do not have enough ERC20 token");
-    //     require(JavTokenContract.allowance(msg.sender, address(this)) != 0, "buyer did not approve this contract");
-    //     require(JavTokenContract.allowance(msg.sender, address(this)) >= bid_amount, "caller approve less amount of token");
-    //     require(bid_amount >= minPrice, "bid_amount is less than minPrice");
-    //     require(bid_amount > getHighestBid(), "bid_amount is less than highestBid");
-    //     if (highestBidder != address(0)) { // 기존 제안자가 있으면 환불
-    //         JavTokenContract.approve(address(this), getHighestBid());
-    //         JavTokenContract.transferFrom(address(this), highestBidder, highestBid);
-    //     }
-    //     highestBidder = msg.sender;
-    //     highestBid = bid_amount;
-    //     JavTokenContract.transferFrom(highestBidder, address(this), bid_amount);
-    //     emit HighestBidIncereased(highestBidder, highestBid);
     // }
-
-    /**
-    구매 희망자가 판매자가 제시한 즉시 구매가에 작품을 구매하는 함수
-    - 판매자가 아닌경우 호출가능
-    - 해당 Sale의 판매시점이 유효한 경우
-    - 구매 희망자가 Sale 컨트랙트에게 구매 희망자의 ERC-20토큰을 송금할 수 있는 권한을 허용한 경우 (ERC-20 approve)
-    위 사항을 만족하는 경우
-    1. 기존 제안자가 있다면 환불을 진행한다.
-    2. 구매자의 ERC-20토큰을 즉시 구매가 만큼 판매자에게 송금한다.
-    3. NFT 소유권을 구매자에게 이전한다.
-    4. 컨트랙트의 거래상태와 구매자 정보를 업데이트 한다.
-     */
-    function purchase(address buyer) public {
-        // TODO
-        require(msg.sender == seller, "caller is not seller");
-        SsafyNFTContract.transferFrom(address(this), buyer, tokenId);
-        JavTokenContract.approve(address(this), purchasePrice);
-        JavTokenContract.transferFrom(address(this), seller, purchasePrice);
-        emit SaleEnded(buyer, purchasePrice);
-        _end(); 
-    }
-
-     /**
-    판매 종료 시각 이후 최고입찰자가 판매를 종료하는 함수
-    - 판매가 종료된 경우 호출가능(판매 종료시각이 지난 경우)
-    - 호출자가 최고가 제안자인 경우
-    위 사항을 만족하는 경우
-    1. 최종 제안가를 판매자에게 송금한다.
-    2. NFT 소유권을 구매자에게 이전한다.
-    3. 컨트랙트의 거래 상태와 구매자 정보를 업데이트한다.
-    */
-    // function confirmItem() public {
-    //     // TODO
-    //     require(msg.sender == highestBidder || msg.sender == seller, "caller is not highestBidder or seller");
-    //     SsafyNFTContract.transferFrom(address(this), highestBidder, tokenId);
-    //     JavTokenContract.approve(address(this), getHighestBid());
-    //     JavTokenContract.transferFrom(address(this), seller, getHighestBid());
-    //     emit SaleEnded(highestBidder, getHighestBid());
-    //     _end(); 
-    // }
-    
-    /**
-    판매 종료 시간 이전에 판매자나 관리자가 판매를 철회하는 함수
-    - 철회 시점이 유효한 경우
-    - 호출자가 판매자 혹은 관리자인 경우
-    위 사항을 만족하는 경우
-    1. 환불을 진행한다.
-    2. NFT소유권을 판매자에게 되돌려 준다.
-    3. 컨트랙트의 거래 상태를 업데이트 한다.
-    */
-    function cancelSales() public {
-        // TODO
-        require(block.timestamp < saleEndTime, "Sale time has expired");
-        require(msg.sender == seller || msg.sender == admin, "caller is not approved");
-        // NFT 소유권을 판매자에게 되돌려주기
-        SsafyNFTContract.transferFrom(address(this), seller, tokenId);
+    // 즉구가 구매
+    // 받는 인자로 address buyer 해두셨는데, buyer = msg.sender입니다.
+    function purchase(uint256 purchase_amount) public {
+        // TODO 
+        require(msg.sender != seller, "seller can't call this function");
+        // require(block.timestamp < saleEndTime, "Sale time has expired");
+        require(SSFTokenContract.balanceOf(msg.sender) >= purchase_amount, "buyer do not have enough ERC20 token");
+        require(SSFTokenContract.allowance(msg.sender, address(this)) != 0, "buyer did not approve this contract");
+        require(SSFTokenContract.allowance(msg.sender, address(this)) >= purchase_amount, "caller approve less amount of token");
+        require(purchase_amount == purchasePrice, "Wrong price");
+        buyer = msg.sender;
+        SSFTokenContract.transferFrom(buyer, seller, purchase_amount);
+        NFTcreatorContract.transferFrom(address(this), buyer, tokenId);
+        emit SaleEnded(buyer, purchase_amount);
         _end();
     }
-
-    function getTimeLeft() public view returns (int256) {
-        return (int256)(saleEndTime - block.timestamp);
+    // 경매에서 최고 입찰자에게 파는 함수
+    // function confirmItem() public {
+    //     // TODO 
+    // }
+    // 판매 철회 함수
+    function cancelSales() public {
+        // TODO
+        // require(block.timestamp < saleEndTime, "Sale time has expired");
+        require(msg.sender == seller || msg.sender == admin, "caller is not approved");
+        // NFT 소유권을 판매자에게 되돌려주기
+        NFTcreatorContract.transferFrom(address(this), seller, tokenId);
+        _end();
     }
-
+    // 판매 종료 남은 시간
+    // function getTimeLeft() public view returns (int256) {
+    //     return (int256)(saleEndTime - block.timestamp);
+    // }
+    // 판매 정보
     function getSaleInfo()
         public
         view
         returns (
+            // uint256,
+            // uint256,
+            // uint256,
             uint256,
             uint256,
-            //uint256,
-            uint256,
-            uint256,
-            //address,
-            //uint256,
+            // address,
+            // uint256,
             address,
             address
         )
     {
         return (
-            saleStartTime,
-            saleEndTime,
-            //minPrice,
+            // saleStartTime,
+            // saleEndTime,
+            // minPrice,
             purchasePrice,
             tokenId,
-            //highestBidder,
-            //highestBid,
+            // highestBidder,
+            // highestBid,
             currencyAddress,
             nftAddress
         );
     }
-
+    // 경매에서 최고 입찰가 얼마인지 조회
     // function getHighestBid() public view returns(uint256){
     //     return highestBid;
     // }
 
     // internal 혹은 private 함수 선언시 아래와 같이 _로 시작하도록 네이밍합니다.
+    // 판매 종료
     function _end() internal {
         ended = true;
     }
-
+    // 잔액 조회
     function _getCurrencyAmount() private view returns (uint256) {
         return JavTokenContract.balanceOf(msg.sender);
     }
 
-    // modifier를 사용하여 함수 동작 조건을 재사용하는 것을 권장합니다. 
+    // modifier를 사용하여 함수 동작 조건을 재사용하는 것을 권장합니다.
+    // modifier = > 함수에 추가하여 조건 확인하는데 사용됨 function x() public onlySeller returns(bool){}이런 형식
     modifier onlySeller() {
         require(msg.sender == seller, "Sale: You are not seller.");
         _;
     }
-
-    modifier onlyAfterStart() {
-        require(
-            block.timestamp >= saleStartTime,
-            "Sale: This sale is not started."
-        );
-        _;
-    }
+    // 
+    // modifier onlyAfterStart() {
+    //     require(
+    //         block.timestamp >= saleStartTime,
+    //         "Sale: This sale is not started."
+    //     );
+    //     _;
+    // }
 }
