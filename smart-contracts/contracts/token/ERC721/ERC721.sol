@@ -118,13 +118,13 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-approve}.
      */
-    // NFT 전송 신청
+    // NFT 전송 권한 신청
     function approve(address to, uint256 tokenId) public virtual override {
         address owner = ERC721.ownerOf(tokenId); // NFT 오너
         require(to != owner, "ERC721: approval to current owner");  // 보내는 사람이 NFT 오너인지 확인
 
         require(
-            _msgSender() == owner || isApprovedForAll(owner, _msgSender()), //주문 넣은 사람이 NFT 오너 or 운영자에 의해 허락됬었는지??? 좀더 찾아봐야 할듯
+            _msgSender() == owner || isApprovedForAll(owner, _msgSender()), //주문 넣은 사람이 NFT 오너 or 기존에 허락됬었는지? 
             "ERC721: approve caller is not token owner or approved for all"
         );
 
