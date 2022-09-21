@@ -6,7 +6,7 @@ import { checkUser, connectAPI, createUser } from "../api/connect";
 export const AppContext = createContext<Value>({
   state: {
     account: "",
-    balance: "",
+    balance: 0,
     ssfBalance: "",
     nickname: "",
     profileImgPath: "",
@@ -29,7 +29,7 @@ type ChildrenProps = {
 // account, balance, ssfBalance, nickname, profileImgPath, backProfileImageUrl
 type State = {
   account: string;
-  balance: string;
+  balance: number;
   ssfBalance: string;
   nickname: string;
   profileImgPath: string;
@@ -52,7 +52,7 @@ type Value = {
 export const AppProvider = ({ children }: { children: JSX.Element }) => {
   const onboarding = new MetaMaskOnboarding();
   const [account, setAccount] = useState(""); // 지갑
-  const [balance, setBalance] = useState(""); // 잔액
+  const [balance, setBalance] = useState(0); // 잔액
   const [nickname, setNickname] = useState(""); // 닉네임
   const [profileImgPath, setProfileImgPath] = useState(""); // 프로필 이미지
   const [bannerImgPath, setBannerImgPath] = useState(""); // 프로필 뒷배경 이미지
@@ -189,14 +189,16 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
         method: "eth_getBalance",
         params: [account, "latest"],
       });
-      console.log(balance);
-
-      setBalance(balance);
+      // console.log(balance);
+      let dec = parseInt(balance);
+      setBalance(dec);
     } catch (err) {
       console.log(err);
     }
   };
 
+
+  // JAV 토큰으로 변환하기
   // 현재 SSF 가져오기
   const getSsfBalance = async () => {
     // try {
