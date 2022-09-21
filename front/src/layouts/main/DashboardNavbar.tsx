@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { alpha, styled } from "@mui/material/styles";
 import { Box, Stack, Button, AppBar, Toolbar } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
@@ -12,14 +12,14 @@ import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import { AppContext } from "../../utils/Context";
 
 // 헤더 화면 (상단 메뉴바)
 const DashboardNavbar = () => {
-  const [state, setState] = useState(false);
+  const { state, actions } = useContext(AppContext)
 
   // drawer
   const [drawerState, setDrawerState] = useState(false);
-
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -30,8 +30,12 @@ const DashboardNavbar = () => {
         return;
       }
 
-      setState(open);
+      setDrawerState(open);
     };
+
+    // useEffect(() => {
+    //   actions.retainConnect()
+    // }, [])
 
   const list = () => (
     <Box
@@ -42,9 +46,11 @@ const DashboardNavbar = () => {
     >
       <List>
         <div>
-          <AccountCircleIcon sx={{ fontSize: 35, color: "black" }} />
+          {state.account ? <img src={state.profileImgPath} alt="" /> : 
+          <AccountCircleIcon sx={{ fontSize: 35, color: "black" }} />}
           My wallet
         </div>
+          <div>{state.account ? state.account: <></>}</div>
       </List>
 
       <Divider />
@@ -58,30 +64,24 @@ const DashboardNavbar = () => {
         >
           <List style={{ padding: 0 }}>
             <ListItem style={{ padding: 0 }}>
-              <button style={{ width: "100%", height: "100%", padding: 0 }}>
                 <div style={{ width: '100%', height: "100%", display: 'flex', justifyContent: 'space-around'}}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>Metamask</div>
-                  <Button variant="contained">연결하기</Button>
+                  <Button variant="contained" onClick={actions.handleConnect}>연결하기</Button>
                 </div>
-              </button>
             </ListItem>
             <Divider />
             <ListItem style={{ padding: 0 }}>
-              <button style={{ width: "100%", height: "100%", padding: 0 }}>
                 <div style={{ width: '100%', height: "100%", display: 'flex', justifyContent: 'space-around'}}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>Metamask</div>
                   <Button variant="contained">연결하기</Button>
                 </div>
-              </button>
             </ListItem>
             <Divider />
             <ListItem style={{ padding: 0 }}>
-              <button style={{ width: "100%", height: "100%", padding: 0 }}>
                 <div style={{ width: '100%', height: "100%", display: 'flex', justifyContent: 'space-around'}}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>Metamask</div>
                   <Button variant="contained">연결하기</Button>
                 </div>
-              </button>
             </ListItem>
           </List>
         </Paper>
@@ -114,6 +114,7 @@ const DashboardNavbar = () => {
         <Box sx={{ px: 2.5, py: 3 }}>
           <RouterLink to="/">
             <div>BEASTAZOO</div>
+            <div>{state.account}</div>
           </RouterLink>
         </Box>
 
@@ -133,7 +134,7 @@ const DashboardNavbar = () => {
                 sx={{ fontSize: 35, color: "black" }}
               />
             </Button>
-            <Drawer anchor={"right"} open={state} onClose={toggleDrawer(false)}>
+            <Drawer anchor={"right"} open={drawerState} onClose={toggleDrawer(false)}>
               {list()}
             </Drawer>
           </div>
