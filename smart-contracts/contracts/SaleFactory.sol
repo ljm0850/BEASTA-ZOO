@@ -137,12 +137,12 @@ contract Sale {
         // TODO 
         require(msg.sender != seller, "seller can't call this function");
         // require(block.timestamp < saleEndTime, "Sale time has expired");
-        require(SSFTokenContract.balanceOf(msg.sender) >= purchase_amount, "buyer do not have enough ERC20 token");
-        require(SSFTokenContract.allowance(msg.sender, address(this)) != 0, "buyer did not approve this contract");
-        require(SSFTokenContract.allowance(msg.sender, address(this)) >= purchase_amount, "caller approve less amount of token");
+        require(JavTokenContract.balanceOf(msg.sender) >= purchase_amount, "buyer do not have enough ERC20 token");
+        require(JavTokenContract.allowance(msg.sender, address(this)) != 0, "buyer did not approve this contract");
+        require(JavTokenContract.allowance(msg.sender, address(this)) >= purchase_amount, "caller approve less amount of token");
         require(purchase_amount == purchasePrice, "Wrong price");
         buyer = msg.sender;
-        SSFTokenContract.transferFrom(buyer, seller, purchase_amount);
+        JavTokenContract.transferFrom(buyer, seller, purchase_amount);
         NFTcreatorContract.transferFrom(address(this), buyer, tokenId);
         emit SaleEnded(buyer, purchase_amount);
         _end();
