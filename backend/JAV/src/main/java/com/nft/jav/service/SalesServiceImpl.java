@@ -21,9 +21,8 @@ public class SalesServiceImpl implements SalesService {
     private final ServiceCollectionRepository serviceCollectionRepository;
 
     @Override
-    public List<SalesResDto> getUserSalesList(long user_id) {
-        User targetUser = userRepository.findById(user_id)
-                .orElseThrow(IllegalArgumentException::new);
+    public List<SalesResDto> getUserSalesList(String wallet_address) {
+        User targetUser = userRepository.findByWalletAddress(wallet_address);
 
         List<Sales> userSalesList = salesRepository.findAllByUserId(targetUser);
         List<SalesResDto> userSalesResDtoList = new ArrayList<>();
@@ -47,9 +46,8 @@ public class SalesServiceImpl implements SalesService {
     }
 
     @Override
-    public List<SalesResDto> getUserPurchaseList(long user_id) {
-        User targetUser = userRepository.findById(user_id)
-                .orElseThrow(IllegalArgumentException::new);
+    public List<SalesResDto> getUserPurchaseList(String wallet_address) {
+        User targetUser = userRepository.findByWalletAddress(wallet_address);
 
         List<Sales> userPurchaseList = salesRepository.findAllByUser_Wallet_address(targetUser.getWallet_address());
         System.out.println("구매한 거 : "+userPurchaseList.size());

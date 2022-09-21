@@ -22,9 +22,9 @@ public class NFTServiceImpl implements NFTService {
     private final NFTRepository nftRepository;
 
     @Override
-    public List<NFTResDto> getUserNFTList(long user_id) {
-        User targetUser = userRepository.findById(user_id)
-                .orElseThrow(IllegalArgumentException::new);
+    public List<NFTResDto> getUserNFTList(String wallet_address) {
+        User targetUser = userRepository.findByWalletAddress(wallet_address);
+
         List<NFT> userNFTList = nftRepository.findAllByUserId(targetUser);
 
         List<NFTResDto> userNFTResDtoList = new ArrayList<>();

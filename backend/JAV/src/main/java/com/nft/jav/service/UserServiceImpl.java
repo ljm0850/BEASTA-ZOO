@@ -53,10 +53,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResDto userInfo(long user_id) {
-        User targetUser = userRepository.findById(user_id)
-                .orElseThrow(IllegalArgumentException::new);
-
+    public UserResDto userInfo(String wallet_address) {
+        User targetUser = userRepository.findByWalletAddress(wallet_address);
 
         UserResDto userResDto = UserResDto.builder()
                 .user_id(targetUser.getUser_id())
@@ -74,25 +72,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Double getUserTier(long user_id) {
-        User targetUser = userRepository.findById(user_id)
-                .orElseThrow(IllegalArgumentException::new);
+    public Double getUserTier(String wallet_address) {
+        User targetUser = userRepository.findByWalletAddress(wallet_address);
 
         return targetUser.getTier();
     }
 
     @Override
-    public Double getUserToken(long user_id) {
-        User targetUser = userRepository.findById(user_id)
-                .orElseThrow(IllegalArgumentException::new);
+    public Double getUserToken(String wallet_address) {
+        User targetUser = userRepository.findByWalletAddress(wallet_address);
 
         return targetUser.getToken();
     }
 
     @Override
-    public UserResDto updateUserInfo(long user_id, UserReqDto userReqDto) {
-        User targetUser = userRepository.findById(user_id)
-                .orElseThrow(IllegalArgumentException::new);
+    public UserResDto updateUserInfo(String wallet_address, UserReqDto userReqDto) {
+        User targetUser = userRepository.findByWalletAddress(wallet_address);
 
         targetUser.updateTier(userReqDto.getTier());
         targetUser.updateNickname(userReqDto.getNickname());
