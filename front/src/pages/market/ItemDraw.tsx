@@ -1,12 +1,13 @@
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
+import { Box, Card, Button } from "@mui/material/";
+
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 
-import { ReactComponent as Jav } from '../../image/JAV.svg'
-import draw1 from "../../image/draw1.gif"
-import draw2 from "../../image/draw2.gif"
+import { ReactComponent as Jav } from "../../image/JAV.svg";
+import draw1 from "../../image/draw1.gif";
+import draw2 from "../../image/draw2.gif";
+import { useState } from "react";
+import JavModal from "../../layouts/modal/JavModal";
 
 const ItemDraw = () => {
   /**
@@ -21,16 +22,37 @@ const ItemDraw = () => {
    * 8. 백엔드에 token Id와 owner_address를 포함한 정보를 등록 요청합니다.
    */
 
+  // 뽑기 모달
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
-    <div style={{height: "100vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <div>
-        <img src="https://cdn.wip-news.com/news/photo/202204//12620__1509.jpg" alt="" />
-        <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+        <img
+          src="https://cdn.wip-news.com/news/photo/202204//12620__1509.jpg"
+          alt=""
+        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Box
             component="form"
             sx={{
               display: "flex",
-              "& > :not(style)": { m: 1, width: "25ch"},
+              "& > :not(style)": { m: 1, width: "25ch" },
             }}
             noValidate
             autoComplete="off"
@@ -38,26 +60,66 @@ const ItemDraw = () => {
             <Card sx={{ minWidth: 275 }}>
               <CardContent>
                 1회 뽑기
-                <img style={{width: "250px"}} src={draw1} alt="" />
+                <img style={{ width: "250px" }} src={draw1} alt="" />
               </CardContent>
-              <CardActions style={{display: "flex", justifyContent: "center"}}>
-                <Button sx={{fontWeight: "bold"}} variant="contained" size="small" color="primary"><Jav style={{width: '1.2rem', height: 'auto', marginRight: "0.3rem"}}/>100.00 JAV</Button>
+              <CardActions
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                <Button
+                  sx={{ fontWeight: "bold" }}
+                  variant="contained"
+                  size="small"
+                  color="primary"
+                  onClick={handleOpen}
+                >
+                  <Jav
+                    style={{
+                      width: "1.2rem",
+                      height: "auto",
+                      marginRight: "0.3rem",
+                    }}
+                  />
+                  100.00 JAV
+                </Button>
               </CardActions>
             </Card>
 
             <Card sx={{ minWidth: 275 }}>
               <CardContent>
                 10연속 뽑기
-              <img style={{width: "250px"}} src={draw2} alt="" />
+                <img style={{ width: "250px" }} src={draw2} alt="" />
               </CardContent>
-              <CardActions style={{display: "flex", justifyContent: "center"}}>
-                <Button sx={{fontWeight: "bold"}} variant="contained" size="small" color="secondary"><Jav style={{width: '1.2rem', height: 'auto', marginRight: "0.3rem"}}/>1000.00 JAV</Button>
+              <CardActions
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                <Button
+                  sx={{ fontWeight: "bold" }}
+                  variant="contained"
+                  size="small"
+                  color="secondary"
+                >
+                  <Jav
+                    style={{
+                      width: "1.2rem",
+                      height: "auto",
+                      marginRight: "0.3rem",
+                    }}
+                  />
+                  1000.00 JAV
+                </Button>
               </CardActions>
             </Card>
-
           </Box>
         </div>
       </div>
+
+      {/* 뽑기 후 NFT 모달로 보여주기 */}
+      <JavModal
+        open={open}
+        onClose={handleClose}
+        name="이잼민"
+        url="https://mblogthumb-phinf.pstatic.net/MjAyMTA1MTNfMjkz/MDAxNjIwOTEwNDQ3MjQ1.RjpPwu8qenTvn6uEdct9lXaDu6a-eaubruR2i06SjtUg.5izLqsFxNagkeTGMbhf6sGBbNE4adeUKdELQ-H4vozMg.PNG.ysg3355/image.png?type=w800"
+      ></JavModal>
     </div>
   );
 };
