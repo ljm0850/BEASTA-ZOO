@@ -7,7 +7,7 @@ import "./token/ERC721/ERC721.sol";
  * PJT Ⅰ - 과제 2) NFT Creator 구현
  * 상태 변수나 함수의 시그니처는 구현에 따라 변경할 수 있습니다.
  */
-contract SsafyNFT is ERC721 {
+contract JAV_NFT is ERC721 {
     constructor() ERC721("javjongNFT","JNFT"){
     }
     // 저장된 데이터들
