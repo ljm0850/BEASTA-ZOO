@@ -4,17 +4,18 @@ pragma solidity ^0.8.4;
 import "./access/Ownable.sol";
 import "./token/ERC20/ERC20.sol";
 import "./token/ERC721/ERC721.sol";
+import "./JavToken.sol";
 import "./JAV_NFT.sol";
-import "./SsafyToken.sol";
 
 /**
  * PJT Ⅲ - Req.1-SC1 SaleFactory 구현
  * 상태 변수나 함수의 시그니처, 이벤트는 구현에 따라 변경할 수 있습니다.
  */
 contract SaleFactory is Ownable {
+
     address public admin; // 관리자, 계약 배포자
     address[] public sales; // 판매자
-    mapping(uint256=>address) saleContractAddress;
+    mapping(uint256=>address) saleContractAddress;  // 토큰id -> Salecontract address 맵핑
     JAV_NFT public NFTcreatorContract;
 
     event NewSale(
@@ -25,7 +26,7 @@ contract SaleFactory is Ownable {
 
     constructor(address _NFTcreatorAddress) {
         admin = msg.sender;
-         NFTcreatorContract = JAV_NFT(_NFTcreatorAddress);
+        NFTcreatorContract = JAV_NFT(_NFTcreatorAddress);
     }
 
     /**
@@ -42,7 +43,7 @@ contract SaleFactory is Ownable {
         address nftAddress  // NFT 계약 주소
     ) public returns (address) {
         // TODO
-        address seller = msg.sender;
+        address seller = msg.sender;    //해당 컨트랙트 호출자가 판매자
         Sale instance = new Sale(admin, seller, itemId, purchasePrice, currencyAddress, nftAddress);
         // 생성한 인스턴스에게 tokenid에 해당하는 토큰의 소유권 넘겨주기
         NFTcreatorContract.transferFrom(seller, address(instance), itemId);
@@ -54,13 +55,25 @@ contract SaleFactory is Ownable {
         return address(instance);
     }
 
+    //생성된 모든 Sale 주소 반환
     function allSales() public view returns (address[] memory) {
         return sales;
+    }
+
+    function getSaleContractAddress(uint256 tokenId) public view returns (address) {
+        require(saleContractAddress[tokenId] != address(0), "this token is not on sale.");
+        return saleContractAddress[tokenId];
     }
 }
 
 /**
  *  PJT Ⅲ - Req.1-SC2) Sale 구현
+ */
+ /**
+각 거래를 위한 스마트 컨트랙트
+생성자(constructor), 제안하기(bid), 즉시구매(purchase), 구매완료(confirmItem), 판매취소(cancel)을 포함
+구매하고자 하는경우 구매희망자는 bid(), purchase()를 호출
+판매기한이 끝나면 최고가를 제안한 주소는 confirmItem()을 호출하여 판매자에게 ERC-20을 전송하고 NFT소유권을 자신의 것으로 변경한다.
  */
 contract Sale {
     // 생성자에 의해 정해지는 값
@@ -71,9 +84,9 @@ contract Sale {
     // uint256 public saleEndTime;     // 판매 종료 시간
     // uint256 public minPrice;    // 최저가(우린 필요 없을듯)
     uint256 public purchasePrice;   // 즉구가
-    uint256 public tokenId; // NFT ID
-    address public currencyAddress; // ERC-20주소
-    address public nftAddress;  // NFT 계약 주소ㅓ
+    uint256 public tokenId; // 거래할 NFT tokenId
+    address public currencyAddress; // 거래시 사용할 ERC-20(JavToken)의 주소
+    address public nftAddress;  // nft creator 주소(NFT 계약 주소)
     bool public ended;  // 판매 종료 여부
 
     // 현재 최고 입찰 상태
@@ -82,11 +95,11 @@ contract Sale {
 
     // IERC20 public erc20Contract; // 임시 
     // IERC721 public erc721Constract; // 임시
-    SsafyToken public SSFTokenContract;
+    JavToken public JavTokenContract;
     JAV_NFT public NFTcreatorContract;
 
     // event HighestBidIncereased(address bidder, uint256 amount); // 경매 상위 입찰시 인거 같은데 우린 필요 없을듯
-    event SaleEnded(address winner, uint256 amount);    // 판매 종료, 구매자, 가격
+    event SaleEnded(address winner, uint256 amount);    // 최종 구매자 정보(판매 종료시, 구매자, 가격 event 발생)
     // 최초 배포시 관리자, 구매자, 판매자 등 기록
     constructor(
         address _admin,
@@ -100,7 +113,7 @@ contract Sale {
         address _nftAddress
     ) {
         // require(_minPrice > 0);
-        require(_purchasePrice > 0);
+        require(_purchasePrice > 0); // 정말 필요한지 나중에 다시 확인해보자
         tokenId = _tokenId;
         // minPrice = _minPrice;
         purchasePrice = _purchasePrice;
@@ -111,7 +124,7 @@ contract Sale {
         currencyAddress = _currencyAddress;
         nftAddress = _nftAddress;
         ended = false;
-        SSFTokenContract = SsafyToken(_currencyAddress);   // 문법을 잘 모르겠따 NFTcreatorContract = JAVcreator(_nftAddress);
+        JavTokenContract = JavToken(_currencyAddress);
         NFTcreatorContract = JAV_NFT(_nftAddress);     // SSFTokenContract = SSFToken(_currencyAddress);
     }
     // 경매에서 가격 제시
@@ -119,6 +132,7 @@ contract Sale {
     //     // TODO
     // }
     // 즉구가 구매
+    // 받는 인자로 address buyer 해두셨는데, buyer = msg.sender입니다.
     function purchase(uint256 purchase_amount) public {
         // TODO 
         require(msg.sender != seller, "seller can't call this function");
@@ -190,7 +204,7 @@ contract Sale {
     }
     // 잔액 조회
     function _getCurrencyAmount() private view returns (uint256) {
-        return SSFTokenContract.balanceOf(msg.sender);
+        return JavTokenContract.balanceOf(msg.sender);
     }
 
     // modifier를 사용하여 함수 동작 조건을 재사용하는 것을 권장합니다.
