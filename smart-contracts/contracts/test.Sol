@@ -97,15 +97,7 @@ contract gene{
                 return res;
             }
         } else if (x == 0x004) {
-            if (y == 0x001) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x002) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x003) {
+            if (y == 0x001 || y == 0x002 || y == 0x003) {
                 uint[3] memory fusionArray = [x, x, y];
                 uint res = _fusionWinner(fusionArray, _random);
                 return res;
@@ -127,15 +119,7 @@ contract gene{
                 return res;
             }
         } else if (x == 0x005) {
-            if (y == 0x001) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x002) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x003) {
+            if (y == 0x001 || y == 0x002 || y == 0x003) {
                 uint[3] memory fusionArray = [x, x, y];
                 uint res = _fusionWinner(fusionArray, _random);
                 return res;
@@ -157,15 +141,7 @@ contract gene{
                 return res;
             }
         } else if (x == 0x006) {
-            if (y == 0x001) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x002) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x003) {
+            if (y == 0x001 || y == 0x002 || y == 0x003) {
                 uint[3] memory fusionArray = [x, x, y];
                 uint res = _fusionWinner(fusionArray, _random);
                 return res;
@@ -179,66 +155,6 @@ contract gene{
                 return res;
             } else if (y == 0x006) {
                 uint[3] memory fusionArray = [x, y, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else {
-                uint[3] memory fusionArray = [y, y, x];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            }
-        } else if (x == 0x006) {
-            if (y == 0x001) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x002) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x003) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x004) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x005) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x006) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else {
-                uint[3] memory fusionArray = [y, y, x];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            }
-        } else if (x == 0x006) {
-            if (y == 0x001) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x002) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x003) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x004) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x005) {
-                uint[3] memory fusionArray = [x, x, y];
-                uint res = _fusionWinner(fusionArray, _random);
-                return res;
-            } else if (y == 0x006) {
-                uint[3] memory fusionArray = [x, x, y];
                 uint res = _fusionWinner(fusionArray, _random);
                 return res;
             } else {
