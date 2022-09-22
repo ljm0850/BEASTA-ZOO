@@ -32,9 +32,6 @@ const ItemDraw = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const handleClickOpenAlert = () => setOpenAlert(true);
   const handleCloseAlert = () => setOpenAlert(false);
-  const agreeDraw = () => {
-    handleOpenItem();
-  };
 
   return (
     <div
@@ -132,7 +129,7 @@ const ItemDraw = () => {
       <AlertDialog
         open={openAlert}
         onClose={handleCloseAlert}
-        setAgree={agreeDraw}
+        setAgree={handleOpenItem}
         content="뽑으시겠습니까?"
       />
     </div>
