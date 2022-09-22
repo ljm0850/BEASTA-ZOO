@@ -1,13 +1,15 @@
 import Router from './routes';
-// import React from "react";
-import "./App.scss";
+import DashboardNavbar from './layouts/main/DashboardNavbar';
 
 function App() {
+
   return (
-    <div className="App">
-      <Router />
-    </div>
+    // <AppProvider>
+      <div className="App">
+        <DashboardNavbar/>
+        <Router />
+      </div>
+    // </AppProvider>
   );
 }
-
 export default App;
