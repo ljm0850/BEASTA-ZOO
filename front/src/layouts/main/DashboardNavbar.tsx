@@ -68,7 +68,7 @@ const DashboardNavbar = () => {
   };
 
   const getBalance = async (account: string) => {
-    console.log(account);
+    // console.log(account);
     // const response = await SSFTokenContract.methods.balanceOf(account).call();
     // setBalance(response);
   };

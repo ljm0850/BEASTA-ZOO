@@ -19,7 +19,13 @@ export function connectAPI(account: string, balance: string, chain: string) {
       console.log(error);
     });
   }
+
+  export const getUserInfo = async (account: string | undefined) => {
+    const { data } = await axios.get(`${ENDPOINT_URL}/user/info/${account}`)
+    return data
+  }
   
+  // 일부러 유저 존재 api는 따로 분리 해놓음 (추후 별도 api 가능성)
   export const checkUser = async (account: string) => {
     const { data } = await axios.get(`${ENDPOINT_URL}/user/info/${account}`)
     return data;

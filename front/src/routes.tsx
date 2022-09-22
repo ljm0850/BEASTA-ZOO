@@ -4,6 +4,7 @@ import MainLayout from "./layouts/main";
 
 import MainPage from "./pages/mainpage/MainPage";
 import ItemDraw from "./pages/market/ItemDraw"
+import Profile from "./pages/profile/Profile";
 
 export default function Router() {
   return useRoutes([
@@ -20,6 +21,12 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         { path:'draw', element: <ItemDraw /> },
+      ]
+    },
+    { path: "/user",
+      element: <MainLayout />,
+      children: [
+        { path:':account', element: <Profile /> },
       ]
     }
   ]);
