@@ -3,6 +3,11 @@ import Web3 from "web3";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { checkUser, connectAPI, createUser } from "../api/connect";
 
+
+// 이제는 사용하지 않는 컴포넌트입니다.
+// 코드 보는 용으로 잠시 남겨둡니당 - 재영
+
+
 export const AppContext = createContext<Value>({
   state: {
     account: "",
@@ -106,6 +111,36 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
         });
         setAccount(accounts[0]);
         await getUserInfo(accounts[0]);
+
+        const chainId = 31221;
+        const rpcurl = "http://20.196.209.2:8545";
+
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: web3.utils.toHex(chainId) }],
+        });
+
+        await window.ethereum
+        .request({
+          method: "wallet_watchAsset",
+          params: {
+            type: "ERC20",
+            options: {
+              address: "0xc8e19B765DCa7382F2b334f2CfAE1525c0015ab5",
+              symbol: "JAV",
+              decimals: 0,
+              image: "https://blog.kakaocdn.net/dn/drGCMU/btrMHIzOvBF/5GC5q2TVGKy8E2Hj2qYQj1/tfile.svg",
+            },
+          },
+        })
+        .then((success: any) => {
+          if (success) {
+          } else {
+            throw new Error("Something went wrong.");
+          }
+        })
+        .catch(console.error);
+
       } else {
         alert("install Metamask"); // 이후 메타마스크 설치 페이지로 이동시킬 것
         onClickInstall();

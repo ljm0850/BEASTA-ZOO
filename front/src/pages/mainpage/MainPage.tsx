@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
+import Login from "../../layouts/Login"
+import Logout from "../../layouts/Logout"
+
 const MainPage = () => {
   const navigate = useNavigate();
 
@@ -12,6 +15,7 @@ const MainPage = () => {
         <Button onClick={() => {navigate("/market/draw")}} variant="contained" size="large">
           뽑기하러 갑시다
         </Button>
+        <Login></Login>
       </Box>
     </div>
   );
