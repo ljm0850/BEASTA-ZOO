@@ -34,7 +34,6 @@ const JavModal = ({ name, url, open, onClose }: Props) => {
             {name}
           </Typography>
           {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-
           </Typography> */}
           <img
             style={{
@@ -42,15 +41,12 @@ const JavModal = ({ name, url, open, onClose }: Props) => {
               height: "auto",
             }}
             src={url}
+            alt="자브종"
           ></img>
         </Box>
       </Modal>
     </div>
   );
-};
-
-JavModal.defaultProps = {
-  name: "에러",
 };
 
 export default JavModal;
