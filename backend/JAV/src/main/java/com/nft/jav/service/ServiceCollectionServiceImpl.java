@@ -1,11 +1,13 @@
 package com.nft.jav.service;
 
-import com.nft.jav.data.dto.serviceCollectionResDto;
+import com.nft.jav.data.dto.ServiceCollectionResDto;
 import com.nft.jav.data.entity.ServiceCollection;
 import com.nft.jav.data.repository.ServiceCollectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,14 +23,18 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
     private final ServiceCollectionRepository serviceCollectionRepository;
 
     @Override
-    public List<serviceCollectionResDto> serviceCollectionList() {
+    public List<ServiceCollectionResDto> serviceCollectionList(int page) {
         logger.info("serviceCollectionList - 호출");
-        List<ServiceCollection> findAll = serviceCollectionRepository.findAll();
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<ServiceCollection> findAll = serviceCollectionRepository.findAll(pageRequest);
 
-        List<serviceCollectionResDto> findAllDto = new ArrayList<>();
-        for(int i=0; i<findAll.size(); i++){
-            ServiceCollection serviceCollection = findAll.get(i);
-            serviceCollectionResDto resDto = serviceCollectionResDto.builder()
+        List<ServiceCollectionResDto> findAllDto = new ArrayList<>();
+        for(ServiceCollection scr : findAll){
+
+            ServiceCollection serviceCollection = serviceCollectionRepository.findById(scr.getJav_id())
+                    .orElseThrow(IllegalArgumentException::new);
+
+            ServiceCollectionResDto resDto = ServiceCollectionResDto.builder()
                     .jav_id(serviceCollection.getJav_id())
                     .user_id(serviceCollection.getUser().getUser_id())
                     .jav_code(serviceCollection.getJav_code())
@@ -45,12 +51,12 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
     }
 
     @Override
-    public serviceCollectionResDto detailJav(long javId) {
+    public ServiceCollectionResDto detailJav(long javId) {
         logger.info("detailJav - 호출");
         ServiceCollection serviceCollection = serviceCollectionRepository.findById(javId)
                 .orElseThrow(IllegalArgumentException::new);
 
-        serviceCollectionResDto resDto = serviceCollectionResDto.builder()
+        ServiceCollectionResDto resDto = ServiceCollectionResDto.builder()
                 .jav_id(serviceCollection.getJav_id())
                 .user_id(serviceCollection.getUser().getUser_id())
                 .jav_code(serviceCollection.getJav_code())

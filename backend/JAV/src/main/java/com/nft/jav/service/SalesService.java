@@ -5,6 +5,7 @@ import com.nft.jav.data.dto.*;
 import java.util.List;
 
 public interface SalesService {
+    List<SalesResDto> getSales(int page);
     List<SalesResDto> getUserSalesList(String wallet_address);
 
     List<SalesResDto> getUserPurchaseList(String wallet_address);

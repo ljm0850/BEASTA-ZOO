@@ -11,9 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/community")
+@RequestMapping("/market")
 public class SalesController {
 
     private final Logger logger = LoggerFactory.getLogger(SalesController.class);
@@ -44,6 +46,13 @@ public class SalesController {
 
         String nftAddress = userCollectionService.getNFTAddress(user_collection_id);
         return new ResponseEntity<>(nftAddress,HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<SalesResDto>> getSales(@RequestParam int page) {
+        logger.info("전체 판매 목록 - 호출");
+        List<SalesResDto> salesResDtoList = salesService.getSales(page);
+        return new ResponseEntity<>(salesResDtoList,HttpStatus.OK);
     }
 
     @PostMapping("/liked/{user_id}/{sale_id}")

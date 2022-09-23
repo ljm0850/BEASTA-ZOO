@@ -1,6 +1,6 @@
 package com.nft.jav.controller;
 
-import com.nft.jav.data.dto.serviceCollectionResDto;
+import com.nft.jav.data.dto.ServiceCollectionResDto;
 import com.nft.jav.service.ServiceCollectionService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,13 +20,13 @@ public class ServiceCollectionController {
     private final ServiceCollectionService serviceCollectionService;
 
     @GetMapping("")
-    public ResponseEntity<List<serviceCollectionResDto>> serviceCollectionList(@RequestParam int page){
+    public ResponseEntity<List<ServiceCollectionResDto>> serviceCollectionList(@RequestParam int page){
         logger.info("serviceCollectionList - 호출");
-        return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(), HttpStatus.OK);
+        return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(page), HttpStatus.OK);
     }
 
     @GetMapping("/{jav_id}")
-    public ResponseEntity<serviceCollectionResDto> detailJav(@PathVariable long jav_id){
+    public ResponseEntity<ServiceCollectionResDto> detailJav(@PathVariable long jav_id){
         logger.info("detailJav - 호출");
         return new ResponseEntity<>(serviceCollectionService.detailJav(jav_id), HttpStatus.OK);
     }
