@@ -1,10 +1,10 @@
 package com.nft.jav.service;
 
-import com.nft.jav.data.dto.serviceCollectionResDto;
+import com.nft.jav.data.dto.ServiceCollectionResDto;
 
 import java.util.List;
 
 public interface ServiceCollectionService {
-    List<serviceCollectionResDto> serviceCollectionList();
-    serviceCollectionResDto detailJav(long javId);
+    List<ServiceCollectionResDto> serviceCollectionList(int page);
+    ServiceCollectionResDto detailJav(long javId);
 }

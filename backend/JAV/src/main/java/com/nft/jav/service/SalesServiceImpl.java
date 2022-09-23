@@ -4,6 +4,10 @@ import com.nft.jav.data.dto.*;
 import com.nft.jav.data.entity.*;
 import com.nft.jav.data.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,33 @@ public class SalesServiceImpl implements SalesService {
     private final NFTRepository nftRepository;
     private final UserCollectionRepository userCollectionRepository;
     private final ServiceCollectionRepository serviceCollectionRepository;
+    private final Logger logger = LoggerFactory.getLogger(SalesServiceImpl.class);
+
+    @Override
+    public List<SalesResDto> getSales(int page) {
+        logger.info("getSales - 호출");
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<Sales> findAll = salesRepository.findAllSale(pageRequest);
+
+        List<SalesResDto> findAllDto = new ArrayList<>();
+        for(Sales targetSale : findAll){
+
+            SalesResDto salesResDto = SalesResDto.builder()
+                    .sale_id(targetSale.getSale_id())
+                    .price(targetSale.getPrice())
+                    .state(targetSale.getState())
+                    .sale_completed_date(targetSale.getSale_completed_date())
+                    .sale_start_date(targetSale.getSale_start_date())
+                    .buyer_wallet(targetSale.getBuyer_wallet())
+                    .contract_address(targetSale.getContract_address())
+                    .seller_wallet(targetSale.getSeller_wallet())
+                    .build();
+
+            findAllDto.add(salesResDto);
+        }
+
+        return findAllDto;
+    }
 
     @Override
     public List<SalesResDto> getUserSalesList(String wallet_address) {
