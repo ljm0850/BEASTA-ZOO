@@ -3,7 +3,7 @@ import { useRoutes, Navigate } from "react-router-dom";
 import MainLayout from "./layouts/main";
 
 import MainPage from "./pages/mainpage/MainPage";
-import ItemDraw from "./pages/market/ItemDraw"
+import ItemDraw from "./pages/market/ItemDraw";
 
 export default function Router() {
   return useRoutes([
@@ -16,11 +16,10 @@ export default function Router() {
         { path: "/", element: <MainPage /> },
       ],
     },
-    { path: "/market",
+    {
+      path: "/market",
       element: <MainLayout />,
-      children: [
-        { path:'draw', element: <ItemDraw /> },
-      ]
-    }
+      children: [{ path: "draw", element: <ItemDraw /> }],
+    },
   ]);
 }
