@@ -20,9 +20,9 @@ public class ServiceCollectionController {
     private final ServiceCollectionService serviceCollectionService;
 
     @GetMapping("")
-    public ResponseEntity<List<ServiceCollectionResDto>> serviceCollectionList(@RequestParam int page){
+    public ResponseEntity<List<ServiceCollectionResDto>> serviceCollectionList(@RequestParam int page, @RequestParam int size){
         logger.info("serviceCollectionList - 호출");
-        return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(page), HttpStatus.OK);
+        return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(page,size), HttpStatus.OK);
     }
 
     @GetMapping("/{jav_id}")

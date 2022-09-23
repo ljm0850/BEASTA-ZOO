@@ -23,18 +23,19 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
     private final ServiceCollectionRepository serviceCollectionRepository;
 
     @Override
-    public List<ServiceCollectionResDto> serviceCollectionList(int page) {
+    public List<ServiceCollectionResDto> serviceCollectionList(int page, int size) {
         logger.info("serviceCollectionList - 호출");
-        PageRequest pageRequest = PageRequest.of(page, 10);
+        PageRequest pageRequest = PageRequest.of(page, size);
         Page<ServiceCollection> findAll = serviceCollectionRepository.findAll(pageRequest);
 
         List<ServiceCollectionResDto> findAllDto = new ArrayList<>();
-        for(ServiceCollection scr : findAll){
+        for(ServiceCollection serviceCollection : findAll){
 
-            ServiceCollection serviceCollection = serviceCollectionRepository.findById(scr.getJav_id())
-                    .orElseThrow(IllegalArgumentException::new);
+//            ServiceCollection serviceCollection = serviceCollectionRepository.findById(scr.getJav_id())
+//                    .orElseThrow(IllegalArgumentException::new);
 
             ServiceCollectionResDto resDto = ServiceCollectionResDto.builder()
+                    .total_page(findAll.getTotalPages())
                     .jav_id(serviceCollection.getJav_id())
                     .user_id(serviceCollection.getUser().getUser_id())
                     .jav_code(serviceCollection.getJav_code())
