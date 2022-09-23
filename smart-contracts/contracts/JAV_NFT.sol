@@ -64,50 +64,20 @@ contract JAV_NFT is ERC721 {
         return tokenId;
     }
 
-    // 알고리즘
-    // 파츠 한개씩 만 반환
-    // function randomGene() pure internal returns (uint80){
-    //     // 랜덤
-    //     return 1111111111111111111111;
-    // }
-    // 파츠 한개씩 만 반환
-    // function makeGene(uint _gene1, uint _gene2) pure internal returns (uint80){
-    //     // 특별한 알고리즘 필요
-    //     uint temp = _gene1 + _gene2;
-    //     return temp;
-    // }
-    // 부위마다 랜덤 범위가 달라서 gene과 다르게 한번에 값이 나오게 했음
-    // function randomAccessory() pure internal returns (uint8[4] memory){
-    //     // 랜덤
-    //     uint8[4] memory temp; 
-    //     return temp;
-    // }
-    // 뽑기
-    function pickup(string memory _tokenURI) public returns (uint256) {
-        // 돈 관련 체크 필요 혹은 public을 external로 변경하여 다른 계약에서 호출, 호출시 this.pickup()형태
-        uint[3] memory _gene = [gacha(),gacha(),gacha()];
-        uint[4] memory _accessory = [getAcce1(),getAcce2(),getAcce3(),getAcce4()];
+    function pickup(string memory _tokenURI, uint[3] memory _gene, uint[4] memory _accessory) public returns (uint256){
         uint256 value = create(msg.sender,_tokenURI,_gene,_accessory);
         return value;
     }
 
     // 조합
-    function fusionJavs(string memory _tokenURI, uint256 NFTid1, uint256 NFTid2) public returns (uint256){
+    function fusionJavs(string memory _tokenURI, uint256 NFTid1, uint256 NFTid2 ,uint[3] memory _gene, uint[4] memory _accessory ) public returns (uint256){
         // 돈 관련 체크 필요 혹은 public을 external로 변경
         // burn된 token의 경우 ERC721에서 ownerOf 하면서 처리해줌
         require(msg.sender == ownerOf(NFTid1), "you are not NFT owner");
         require(msg.sender == ownerOf(NFTid2), "you are not NFT owner");
-        uint[3] memory NFT1_gene = javsData[NFTid1].gene;
-        uint[3] memory NFT2_gene = javsData[NFTid2].gene;
-        uint[3] memory new_gene;
-        for (uint i = 0; i < 3; i++) {
-            new_gene[i] = fusion(NFT1_gene[i],NFT2_gene[i]);
-        }
-
-        uint[4] memory _accessory = [getAcce1(),getAcce2(),getAcce3(),getAcce4()];
         _burn(NFTid1);
         _burn(NFTid2);
-        uint256 value = create(msg.sender,_tokenURI,new_gene,_accessory);
+        uint256 value = create(msg.sender,_tokenURI,_gene,_accessory);
         return value;
     }
     
@@ -124,113 +94,78 @@ contract JAV_NFT is ERC721 {
     uint[3] gachaWeight = [1, 1, 1];
     uint temp;
 
-    function gacha() public returns (uint) {
+    function gacha(uint[15] memory _nums) public view returns (uint[3] memory) {
+        uint[3] memory color = [_colorPicker(_nums[0]),_colorPicker(_nums[1]),_colorPicker(_nums[2])];
+        uint[3] memory self = [_gacha(_nums[3]),_gacha(_nums[4]),_gacha(_nums[5])];
+        uint[3] memory mother = [_gacha(_nums[6]),_gacha(_nums[7]),_gacha(_nums[8])];
+        uint[3] memory fatherMother = [_gacha(_nums[9]),_gacha(_nums[10]),_gacha(_nums[11])];
+        uint[3] memory motherMother = [_gacha(_nums[12]),_gacha(_nums[13]),_gacha(_nums[14])];
+        uint[3] memory myGene;
 
-        uint random = uint(keccak256(abi.encodePacked(block.timestamp + temp))) % 100;
-        uint random2 = uint(keccak256(abi.encodePacked(random))) % 100;
-        uint random3 = uint(keccak256(abi.encodePacked(random2))) % 100;
-        uint random4 = uint(keccak256(abi.encodePacked(random3))) % 100;
-        uint random5 = uint(keccak256(abi.encodePacked(random4))) % 100;
 
-        uint color = _colorPicker(random);
-        uint self = _gacha(random2);
-        uint mother = _gacha(random3);
-        uint fatherMother = _gacha(random4);
-        uint motherMother = _gacha(random5);
-        
-        uint myGene = color * (16 ** 21)
-        + self * (16 ** 18)
-        + self * (16 ** 15)
-        + mother * (16 ** 12)
-        + self * (16 ** 9)
-        + fatherMother * (16 ** 6)
-        + mother * (16 ** 3)
-        + motherMother * (16 ** 0);
-
-        temp ++;
-        
+        for (uint i = 0; i<3; i++){
+            myGene[i] = color[i] * 19342813113834066795298816
+            + self[i] * 4722366482869645213696
+            + self[i] * 1152921504606846976
+            + mother[i] * 281474976710656
+            + self[i] * 68719476736
+            + fatherMother[i] * 16777216
+            + mother[i] * 4096
+            + motherMother[i];
+        }
         return myGene;
     }
 
-    function fusion(uint _geneX, uint _geneY) public view returns (uint) {
+    // function fusion(uint NFT_ID1, uint NFT_ID2, uint[12] memory _nums) public view returns (uint[3] memory) {
+    // function getFusionGene(uint NFT_ID1, uint NFT_ID2, uint[4] memory _nums1, uint[4] memory _nums2, uint[4] memory _nums3) public view returns(uint[3] memory){
+    //     uint[3] memory gene ;
+    //     gene[0] = fusion(NFT_ID1,NFT_ID2,_nums1);
+    //     gene[1] = fusion(NFT_ID1,NFT_ID2,_nums2);
+    //     gene[2] = fusion(NFT_ID1,NFT_ID2,_nums3);
+    //     return gene;
+    // }
+    
+    function fusion(uint NFT_ID1, uint NFT_ID2, uint[4] memory _nums, uint8 body) public view returns (uint) {
+        // body엔 파츠 번호 0,1,2 가 들어가야함
+        uint _geneX = getJavsGene(NFT_ID1)[body];
+        uint _geneY = getJavsGene(NFT_ID2)[body];
         uint[7] memory arrayX;
         uint[7] memory arrayY;
-        uint random = uint(keccak256(abi.encodePacked(block.timestamp))) % 100;
-        uint random2 = uint(keccak256(abi.encodePacked(random))) % 100;
-        uint random3 = uint(keccak256(abi.encodePacked(random2))) % 100;
-        uint random4 = uint(keccak256(abi.encodePacked(random3))) % 100;
-
+        // uint mod = 4096; //(16**3)
         for (uint i = 1; i < weight.length + 1; i++) {
+            // arrayX[i-1] = (_geneX % mod) / (mod / 4096);
+            // arrayY[i-1] = (_geneX % mod) / (mod / 4096);
             arrayX[i-1] = _geneX % (16 ** ((i * 3) - (i - 1) * 3));
             arrayY[i-1] = _geneY % (16 ** ((i * 3) - (i - 1) * 3));
+            // mod *= 4096;
         }
 
-        uint winX = _winner(arrayX, random);
-        uint winY = _winner(arrayY, random2);
 
-        uint winZ = _fusion(winX, winY, random3);
-        uint color = _colorPicker(random4);
+        uint winX = _winner(arrayX, _nums[0]%100);
+        uint winY = _winner(arrayY, _nums[1]%100); 
+        uint winZ = _fusion(winX,winY,_nums[2]%100);
+        uint color = _colorPicker(_nums[3]%100);
         
-        uint childTemp = color * (16 ** 21)
-        + winZ * (16 ** 18)
-        + arrayX[6] * (16 ** 15)
-        + arrayY[6] * (16 ** 12);
-
-        uint child = childTemp
-        + arrayX[5] * (16 ** 9)
-        + arrayX[4] * (16 ** 6)
-        + arrayY[5] * (16 ** 3)
-        + arrayY[4] * (16 ** 0);
+        uint child ;
+        child = color * 19342813113834066795298816
+            + winZ * 4722366482869645213696
+            + arrayX[6] * 1152921504606846976
+            + arrayY[6] * 281474976710656
+            + arrayX[5] * 68719476736
+            + arrayX[4] * 16777216
+            + arrayY[5] * 4096
+            + arrayY[4];
         
         return child;
     }
 
-    function getAcce1() public view returns (uint) {
-      uint random = uint(keccak256(abi.encodePacked(block.timestamp + 1001))) % 100;
-
-      for (uint i = 1; i < 17; i++) {
-          if (random < i * 100 / 16) {
-            uint acce = 16 ** 2 + i;
-            return acce;
-          }
-      }
-      return 0;
-    }
-
-    function getAcce2() public view returns (uint) {
-      uint random = uint(keccak256(abi.encodePacked(block.timestamp + 1002))) % 100;
-
-      for (uint i = 1; i < 13; i++) {
-          if (random < i * 100 / 12) {
-            uint acce = 2 * (16 ** 2) + i;
-            return acce;
-          }
-      }
-      return 0;
-    }
-
-    function getAcce3() public view returns (uint) {
-      uint random = uint(keccak256(abi.encodePacked(block.timestamp + 1003))) % 100;
-
-      for (uint i = 1; i < 14; i++) {
-          if (random < i * 100 / 13) {
-            uint acce = 3 * (16 ** 2) + i;
-            return acce;
-          }
-      }
-      return 0;
-    }
-
-    function getAcce4() public view returns (uint) {
-      uint random = uint(keccak256(abi.encodePacked(block.timestamp + 1004))) % 100;
-
-      for (uint i = 1; i < 13; i++) {
-          if (random < i * 100 / 12) {
-            uint acce = 4 * (16 ** 2) + i;
-            return acce;
-          }
-      }
-      return 0;
+    function getAcce(uint[4] memory _nums) public pure returns (uint[4] memory){
+        uint[4] memory acce;
+        acce[0] = 1*256 + _nums[0] % 16 +1;
+        acce[1] = 2*256 + _nums[1] % 13 +1;
+        acce[2] = 3*256 + _nums[2] % 14 +1;
+        acce[3] = 4*256 + _nums[3] % 13 +1;
+        return acce;
     }
 
     function _winner(uint[7] memory _array, uint _random) private view returns (uint) {
@@ -239,7 +174,7 @@ contract JAV_NFT is ERC721 {
         for (uint i = 0; i < 7; i++) {
             weightSum += weight[i];
 
-            if (_random < weightSum * 100 / 40) {
+            if (_random < weightSum * 5 / 2) {
                 return _array[i];
             }
         }
@@ -387,29 +322,11 @@ contract JAV_NFT is ERC721 {
         return 0;
     }
 
-    function _colorPicker(uint _random) private view returns (uint) {
-        uint weightSum;
-
-        for (uint i = 0; i < 3; i++) {
-            weightSum += colorWeight[i];
-
-            if (_random < weightSum * 100 / 3) {
-                return i + 1;
-            }
-        }
-        return 0;
+    function _colorPicker(uint _random) private pure returns (uint) {
+        return (_random % 3) +1;
     }
 
-    function _gacha(uint _random) private view returns (uint) {
-        uint weightSum;
-
-        for (uint i = 0; i < 3; i++) {
-            weightSum += gachaWeight[i];
-
-            if (_random < weightSum * 100 / 3) {
-                return i + 1;
-            }
-        }
-        return 0;
+    function _gacha(uint _random) private pure returns (uint) {
+        return _random %3 + 1;
     }
 }
