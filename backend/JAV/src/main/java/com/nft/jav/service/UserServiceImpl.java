@@ -90,6 +90,7 @@ public class UserServiceImpl implements UserService {
         User targetUser = userRepository.findByWalletAddress(wallet_address);
 
         targetUser.updateTier(userReqDto.getTier());
+        logger.info(userReqDto.getTier()+" "+userReqDto.getNickname());
         targetUser.updateNickname(userReqDto.getNickname());
         targetUser.updateToken(userReqDto.getToken());
         targetUser.updateProfileDescription(userReqDto.getProfile_description());
