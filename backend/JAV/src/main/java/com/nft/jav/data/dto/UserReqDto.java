@@ -11,10 +11,6 @@ import javax.persistence.Column;
 @NoArgsConstructor
 @ToString
 public class UserReqDto {
-    private long user_id;
-
-    private String wallet_address;
-
     private String nickname;
 
     private String profile_img_path;
@@ -30,10 +26,8 @@ public class UserReqDto {
     private double token;
 
     @Builder
-    public UserReqDto(long user_id, String wallet_address, String nickname,
+    public UserReqDto(String nickname,
                       String profile_img_path, String banner_img_path, String profile_description, long first_discover_count, double tier, double token) {
-        this.user_id = user_id;
-        this.wallet_address = wallet_address;
         this.nickname = nickname;
         this.profile_img_path = profile_img_path;
         this.banner_img_path = banner_img_path;

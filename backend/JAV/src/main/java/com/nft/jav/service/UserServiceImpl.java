@@ -88,13 +88,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResDto updateUserInfo(String wallet_address, UserReqDto userReqDto) {
         User targetUser = userRepository.findByWalletAddress(wallet_address);
-
+        logger.info(userReqDto.toString());
         targetUser.updateTier(userReqDto.getTier());
-        logger.info(userReqDto.getTier()+" "+userReqDto.getNickname());
+
         targetUser.updateNickname(userReqDto.getNickname());
         targetUser.updateToken(userReqDto.getToken());
         targetUser.updateProfileDescription(userReqDto.getProfile_description());
-        targetUser.updateWalletAddress(userReqDto.getWallet_address());
         targetUser.updateBannerImgPath(userReqDto.getBanner_img_path());
         targetUser.updateFirstDiscoverCount(userReqDto.getFirst_discover_count());
         targetUser.updateProfileImgPath(userReqDto.getProfile_img_path());
