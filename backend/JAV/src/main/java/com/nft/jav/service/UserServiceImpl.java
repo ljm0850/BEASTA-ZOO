@@ -25,13 +25,10 @@ public class UserServiceImpl implements UserService {
 
         if(targetUser != null) {
             UserResDto userResDto = UserResDto.builder()
-                    .user_id(targetUser.getUser_id())
-                    .wallet_address(targetUser.getWallet_address())
                     .nickname(targetUser.getNickname())
                     .profile_img_path(targetUser.getProfile_img_path())
                     .banner_img_path(targetUser.getBanner_img_path())
                     .profile_description(targetUser.getProfile_description())
-                    .create_date(targetUser.getCreate_date())
                     .first_discover_count(targetUser.getFirst_discover_count())
                     .tier(targetUser.getTier())
                     .token(targetUser.getToken())
@@ -45,8 +42,6 @@ public class UserServiceImpl implements UserService {
             targetUser = userRepository.save(newUser);
 
             UserResDto userResDto = UserResDto.builder()
-                    .user_id(targetUser.getUser_id())
-                    .wallet_address(targetUser.getWallet_address())
                     .build();
             return userResDto;
         }
@@ -57,13 +52,10 @@ public class UserServiceImpl implements UserService {
         User targetUser = userRepository.findByWalletAddress(wallet_address);
 
         UserResDto userResDto = UserResDto.builder()
-                .user_id(targetUser.getUser_id())
-                .wallet_address(targetUser.getWallet_address())
                 .nickname(targetUser.getNickname())
                 .profile_img_path(targetUser.getProfile_img_path())
                 .banner_img_path(targetUser.getBanner_img_path())
                 .profile_description(targetUser.getProfile_description())
-                .create_date(targetUser.getCreate_date())
                 .first_discover_count(targetUser.getFirst_discover_count())
                 .tier(targetUser.getTier())
                 .token(targetUser.getToken())
@@ -99,10 +91,7 @@ public class UserServiceImpl implements UserService {
         targetUser.updateProfileImgPath(userReqDto.getProfile_img_path());
 
         UserResDto userResDto = UserResDto.builder()
-                .user_id(targetUser.getUser_id())
                 .tier(targetUser.getTier())
-                .wallet_address(targetUser.getWallet_address())
-                .create_date(targetUser.getCreate_date())
                 .first_discover_count(targetUser.getFirst_discover_count())
                 .banner_img_path(targetUser.getBanner_img_path())
                 .nickname(targetUser.getNickname())

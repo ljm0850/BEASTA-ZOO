@@ -149,13 +149,10 @@ public class CommunityServiceImpl implements CommunityService{
             User targetUser = target.get(i);
 
             UserResDto userResDto = UserResDto.builder()
-                    .user_id(targetUser.getUser_id())
-                    .wallet_address(targetUser.getWallet_address())
                     .nickname(targetUser.getNickname())
                     .profile_img_path(targetUser.getProfile_img_path())
                     .banner_img_path(targetUser.getBanner_img_path())
                     .profile_description(targetUser.getProfile_description())
-                    .create_date(targetUser.getCreate_date())
                     .first_discover_count(targetUser.getFirst_discover_count())
                     .tier(targetUser.getTier())
                     .token(targetUser.getToken())
