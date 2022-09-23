@@ -9,6 +9,7 @@ import draw2 from "../../image/draw2.gif";
 import { useState } from "react";
 import JavModal from "../../layouts/modal/JavModal";
 import AlertDialog from "../../layouts/dialog/AlertDialog";
+import Web3 from "web3";
 
 const ItemDraw = () => {
   /**
@@ -32,6 +33,15 @@ const ItemDraw = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const handleClickOpenAlert = () => setOpenAlert(true);
   const handleCloseAlert = () => setOpenAlert(false);
+
+  // 뽑기 컨트랙트 전송
+  const web3 = new Web3(window.ethereum);
+
+  const payDraw = async () => {
+    const accounts = await web3.eth.getAccounts();
+    // const drawContract = new web3.eth.Contract(drawABI, drawAddress);
+    const nonce = await web3.eth.getTransactionCount(accounts[0]);
+  };
 
   return (
     <div
