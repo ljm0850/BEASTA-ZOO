@@ -48,7 +48,7 @@ const Items = () => {
         <>
           {isCollection === true ? (
             <Container maxWidth="xl">
-              <ItemsList products={item} />
+              <ItemsList products={item} sx={{ mt: 1 }} />
             </Container>
           ) : (
             <Container>
