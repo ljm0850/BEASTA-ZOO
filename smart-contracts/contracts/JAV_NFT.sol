@@ -2,6 +2,7 @@
 pragma solidity ^0.8.4;
 
 import "./token/ERC721/ERC721.sol";
+import "./JavToken.sol";
 /**
  * PJT Ⅰ - 과제 2) NFT Creator 구현
  * 상태 변수나 함수의 시그니처는 구현에 따라 변경할 수 있습니다.
@@ -10,7 +11,7 @@ contract JAV_NFT is ERC721 {
     constructor() ERC721("javjongNFT","JNFT"){
     }
     // import
-    
+    JavToken public JavTokenContract;
 
     // 저장된 데이터들
     struct javsDetail {
@@ -65,7 +66,10 @@ contract JAV_NFT is ERC721 {
     }
 
     function pickup(string memory _tokenURI, uint[3] memory _gene, uint[4] memory _accessory) public returns (uint256){
+        // require(JavTokenContract.allowance(msg.sender, ) >= 100); //NFT를 발급하려는 JA
+        JavTokenContract.transferFrom(msg.sender, address(this), 100);
         uint256 value = create(msg.sender,_tokenURI,_gene,_accessory);
+
         return value;
     }
 
