@@ -1,4 +1,4 @@
-import { useRoutes, Navigate } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 
 import MainLayout from "./layouts/main";
 
