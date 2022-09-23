@@ -46,8 +46,15 @@ export function connectAPI(account: string, balance: string, chain: string) {
     token: number;
   }
 
-  // https://j7c108.p.ssafy.io:8080/user/info/0x983716873adcf49f5f3f1f82c93f004a3d3aff39
+  // 유저 정보 업데이트
   export const updateUserInfo = async (account: string, option: UserInfo) => {
     const { data } = await axios.put(`${ENDPOINT_URL}/user/info/${account}`, option)
     return data
   }
+
+  // 내 NFT 목록
+  export const getMyNFTs = async (account: string | undefined) => {
+    const { data } = await axios.get(`${ENDPOINT_URL}/user/nft/${account}`)
+    return data
+  }
+
