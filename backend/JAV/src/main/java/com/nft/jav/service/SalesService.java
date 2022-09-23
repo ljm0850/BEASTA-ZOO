@@ -13,4 +13,6 @@ public interface SalesService {
     PurchaseResDto purchaseNFT(PurchaseReqDto purchaseReqDto);
 
     SalesResDto saleNFT(SalesReqDto salesReqDto);
+
+    SalesResDto getSale(long sale_id);
 }

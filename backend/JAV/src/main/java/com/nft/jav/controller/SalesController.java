@@ -55,6 +55,13 @@ public class SalesController {
         return new ResponseEntity<>(salesResDtoList,HttpStatus.OK);
     }
 
+    @GetMapping("/{sale_id}")
+    public ResponseEntity<SalesResDto> getSale(@PathVariable long sale_id) {
+        logger.info("특정 판매 목록 - 호출");
+        SalesResDto salesResDto = salesService.getSale(sale_id);
+        return new ResponseEntity<>(salesResDto,HttpStatus.OK);
+    }
+
     @PostMapping("/liked/{user_id}/{sale_id}")
     public ResponseEntity<LikedResDto> addLiked(@PathVariable long user_id, @PathVariable long sale_id) {
         logger.info("addLiked - 호출");

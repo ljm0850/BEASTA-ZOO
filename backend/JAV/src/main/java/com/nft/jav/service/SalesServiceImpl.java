@@ -173,4 +173,26 @@ public class SalesServiceImpl implements SalesService {
                 .build();
         return salesResDto;
     }
+
+    @Override
+    public SalesResDto getSale(long sale_id) {
+
+        Sales sales = salesRepository.findById(sale_id)
+                .orElseThrow(IllegalArgumentException::new);
+
+        SalesResDto salesResDto = SalesResDto.builder()
+                .nft_id(sales.getNft().getNft_id())
+                .buyer_wallet(sales.getBuyer_wallet())
+                .contract_address(sales.getContract_address())
+                .sale_completed_date(sales.getSale_completed_date())
+                .state(sales.getState())
+                .sale_start_date(sales.getSale_start_date())
+                .price(sales.getPrice())
+                .sale_id(sales.getSale_id())
+                .seller_wallet(sales.getSeller_wallet())
+                .user_id(sales.getUser().getUser_id())
+                .build();
+
+        return salesResDto;
+    }
 }
