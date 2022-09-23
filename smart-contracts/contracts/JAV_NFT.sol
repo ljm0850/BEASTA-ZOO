@@ -46,7 +46,13 @@ contract JAV_NFT is ERC721 {
     function getJavsCreate_at(uint256 tokenId) public view returns (uint256) {
         return javsData[tokenId].create_at;
     }
-
+    
+    //판매 권한 넘기기
+    function saleApprovalForAll (
+        address from
+    ) public virtual {
+        _setApprovalForAll(from,msg.sender,true);
+    }
     // 뽑기,조합 관련 함수들
     
     // NFT 생성
