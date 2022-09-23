@@ -65,7 +65,7 @@ public class User extends BaseTimeEntity {
     public void updateWalletAddress(String wallet_address) {
         this.wallet_address = wallet_address;
     }
-    public void updateNickname(String Nickname) {
+    public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
     public void updateProfileImgPath(String profile_img_path) {
