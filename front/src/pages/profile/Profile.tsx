@@ -1,14 +1,21 @@
+import * as React from 'react';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getUserInfo, updateUserInfo } from "../../api/connect";
 
 import * as IPFS from "ipfs-core";
 
+import CircularProgress from '@mui/material/CircularProgress';
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
+import EditIcon from "@mui/icons-material/Edit";
 import ethereum_logo from "../../image/ethereum_logo.svg";
+
+import styles from "./Profile.module.scss";
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -31,10 +38,23 @@ interface UserInfo {
   token: number;
 }
 
+export interface State extends SnackbarOrigin {
+  open: boolean;
+}
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const Profile = () => {
   const account: string | undefined = useParams().account;
 
-  const [ user, setUser ] = useState<UserInfo>({
+  const [ spinner, setSpinner ] = useState(false);
+
+  const [user, setUser] = useState<UserInfo>({
     banner_img_path: "",
     first_discover_count: 0,
     nickname: "",
@@ -42,24 +62,17 @@ const Profile = () => {
     profile_img_path: "",
     tier: 0,
     token: 0,
-  })
+  });
+
 
   const [reduceAccount, setReduceAccount] = useState("");
-  // const [nickname, setNickname] = useState("");
-  // const [bannerImgPath, setBannerImgPath] = useState("");
-  // const [profileImgPath, setProfileImgPath] = useState("");
-  // const [profileDescription, setProfileDescription] = useState("");
-  // const [userTier, setUserTier] = useState(0);
-  // const [firstDiscoverCount, setFirstDiscoverCount] = useState(0);
-
   const [loginedAccount, setLoginedAccount] = useState("");
   const getAccount = async () => {
     const accounts = await window.ethereum.request({ method: "eth_accounts" });
     setLoginedAccount(accounts[0]);
   };
 
-  // scss 쓸때 지워야 함.
-  const [accountColor, setAccountColor] = useState("black");
+  // 카피 버튼
   const [copy, setCopy] = useState("copy");
 
   const copyHandler = () => {
@@ -71,14 +84,7 @@ const Profile = () => {
 
   const get_UserInfo = async () => {
     await getUserInfo(account).then((res) => {
-      setUser({...res});
-
-      // setNickname(res.nickname);
-      // setBannerImgPath(res.banner_img_path);
-      // setProfileImgPath(res.profile_img_path);
-      // setProfileDescription(res.profile_description);
-      // setUserTier(res.tier);
-      // setFirstDiscoverCount(res.first_discover_count);
+      setUser({ ...res });
     });
   };
 
@@ -94,151 +100,246 @@ const Profile = () => {
     }
   }, []);
 
-
-  // ipfs 부분
-
-  // IPFS를 이용해 Hash값을 얻어내는 과정
-  // const [fileUrl, updateFileUrl] = useState(``);
-  // async function onChange(e: any) {
-  //   const file = e.target.files[0];
-  //   try {
-  //     // const IPFS = require('ipfs-core')
-  //     const ipfs = await IPFS.create()
-  //     const added = await ipfs.add(file);
-  //     console.log(added)
-  //     const url = `https://ipfs.io/ipfs/${added.path}`;
-  //     updateFileUrl(url);
-  //   } catch (error) {
-  //     console.log("Error uploading file: ", error);
-  //   }
-  // }
-
+  // ipfs 사용 부분
+  // 프로필 사진 변경
   const changeProfileHandler = async (e: any) => {
+    setSpinner(true)
     const file = e.target.files[0];
     try {
-      const ipfs = await IPFS.create();
+      const ipfs = await IPFS.create({ repo: "ok" + Math.random() });
       const added = await ipfs.add(file);
       const url = `https://ipfs.io/ipfs/${added.path}`;
-
-      // { banner_img_path:"",
-      //   create_date:"",
-      //   first_discover_count:0,
-      //   nickname:"",
-      //   profile_description:"",
-      //   profile_img_path:"https://ipfs.io/ipfs/QmNoZihxTGmTmRucqakCRCFYRYwmXTwSBhQ1qgpPQEC8ne",
-      //   tier:0,
-      //   token:0,
-      //   user_id:0,
-      //   wallet_address:""
-      // }
       const option = {
         ...user,
         profile_img_path: url,
-      }
+      };
 
       updateUserInfo(loginedAccount, option)
         .then((res) => {
-          console.log(res)
-        }) .catch((err) => {
-          console.log(err)
+          setUser({
+            ...res,
+            profile_img_path: res.profile_img_path
+          })
+          setSpinner(false)
         })
-      
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (error) {
       console.log("Error uploading file: ", error);
+      setSpinner(false)
+      setState({ open: true, vertical: 'top', horizontal: 'center' });
     }
   };
 
+  // 배너 변경
   const changeBannerHandler = async (e: any) => {
+    setSpinner(true)
     const file = e.target.files[0];
     try {
-      const ipfs = await IPFS.create();
+      const ipfs = await IPFS.create({ repo: "ok" + Math.random() });
       const added = await ipfs.add(file);
       const url = `https://ipfs.io/ipfs/${added.path}`;
       const option = {
         ...user,
-        banner_img_path: url
-      }
+        banner_img_path: url,
+      };
       updateUserInfo(loginedAccount, option)
         .then((res) => {
-          console.log(res)
-        }) .catch((err) => {
-          console.log(err)
+          setUser({
+            ...res,
+            banner_img_path: res.banner_img_path
+          })
+          setSpinner(false)
         })
-      
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (error) {
       console.log("Error uploading file: ", error);
+      setSpinner(false)
+      setState({ open: true, vertical: 'top', horizontal: 'center' });
     }
   };
 
+  // Snackbar
+  const [state, setState] = React.useState<State>({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = state;
+
+  const handleClick = (newState: SnackbarOrigin) => () => {
+    setState({ open: true, ...newState });
+  };
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+  };
+
+  //
+
   return (
     <div style={{ marginTop: "110px" }}>
-      {!user.banner_img_path ? (
-        // 프로필 배너가 없을 경우
-        <div
-          style={{
-            display: "block",
-            background: "#F7F8F9",
-            height: "26vw",
-            maxHeight: "320px",
-          }}
-        >
-          {!user.profile_img_path ? (
-            // 프로필 사진이 있을 경우
-            <div
-              style={{
-                display: "flex",
-                position: "relative",
-                top: "55%",
-                left: "70px",
-                background: "gray",
-                height: "20vw",
-                width: "20vw",
-                maxHeight: "170px",
-                maxWidth: "170px",
-                borderRadius: 100,
-                border: "5px solid #fff",
-                boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.3)",
-              }}
-            ></div>
-          ) : (
-            // 프로필 사진이 없을 경우
-            <img src={user.profile_img_path} alt="profile image" />
-          )}
-        </div>
-      ) : (
-        // banner가 있을 경우
-        <div
-          style={{
-            display: "block",
-            background: user.banner_img_path,
-            height: "26vw",
-            maxHeight: "320px",
-          }}
-        >
-          {!user.profile_img_path ? (
-            // 프로필 사진이 없을 경우
-            <div
-              style={{
-                display: "flex",
-                position: "relative",
-                top: "55%",
-                left: "70px",
-                background: "gray",
-                height: "20vw",
-                width: "20vw",
-                maxHeight: "170px",
-                maxWidth: "170px",
-                borderRadius: 100,
-                border: "5px solid #fff",
-                boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.3)",
-              }}
-            ></div>
-          ) : (
-            // 프로필 사진이 있을 경우
-            <img src={user.profile_img_path} alt="profile image" />
-          )}
-        </div>
-      )}
+      {spinner && <div className={styles.spinner} ><CircularProgress /></div>}
+      <button onClick={handleClick({
+          vertical: 'top',
+          horizontal: 'center',
+        })}>발생</button>
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        onClose={handleClose}
+        message="I love snacks"
+        key={vertical + horizontal}
+      >
+        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+        에러가 발생했습니다. 새로고침 후 다시 시도해 보세요.
+        </Alert>
+      </Snackbar>
+
+      <div>
+        {account?.toLowerCase() === loginedAccount ? (
+          // 접속 계정, 프로필 동일 => 프로필 변경 가능
+          <div>
+            {!user.banner_img_path ? (
+              // 배너가 없을 경우
+              <label htmlFor="banner" className={styles.banner}>
+                <div className={styles.bannerEditIcon}>
+                  <EditIcon />
+                </div>
+                <input
+                  style={{ visibility: "hidden" }}
+                  type="file"
+                  id="banner"
+                  name="banner"
+                  onChange={changeBannerHandler}
+                />
+                {!user.profile_img_path ? (
+                  // 프로필 사진이 없을 경우
+                  <label htmlFor="profileImg" className={styles.profileImg}>
+                    <div className={styles.profileImgEditIcon}>
+                      <EditIcon />
+                    </div>
+                    <input
+                      style={{ visibility: "hidden" }}
+                      type="file"
+                      id="profileImg"
+                      name="profileImg"
+                      onChange={changeProfileHandler}
+                    />
+                  </label>
+                ) : (
+                  // 프로필 사진이 있을 경우
+                  <label htmlFor="profileImg" className={styles.profilePosition}>
+                    <input
+                      style={{ visibility: "hidden" }}
+                      type="file"
+                      id="profileImg"
+                      name="profileImg"
+                      onChange={changeProfileHandler}
+                    />
+                    <img className={styles.existProfileImg} src={user.profile_img_path} alt="profile" />
+                    <div className={styles.existprofileImgEditIcon}>
+                      <EditIcon />
+                    </div>
+                  </label>
+                )}
+              </label>
+            ) : (
+              // banner가 있을 경우
+              <label htmlFor="banner" style={{backgroundImage: `url(${user.banner_img_path})`}} className={styles.existBannerImg}>
+                <div className={styles.exisbannerImgEditIcon}>
+                  <EditIcon />
+                </div>
+                <input
+                  style={{ visibility: "hidden" }}
+                  type="file"
+                  id="banner"
+                  name="banner"
+                  onChange={changeBannerHandler}
+                />
+                {!user.profile_img_path ? (
+                  // 프로필 사진이 없을 경우
+                  <label htmlFor="profileImg" className={styles.profileImg}>
+                    <div className={styles.profileImgEditIcon}>
+                      <EditIcon />
+                    </div>
+                    <input
+                      style={{ visibility: "hidden" }}
+                      type="file"
+                      id="profileImg"
+                      name="profileImg"
+                      onChange={changeProfileHandler}
+                    />
+                  </label>
+                ) : (
+                  // 프로필 사진이 있을 경우
+                  <label htmlFor="profileImg" className={styles.profilePosition}>
+                    <input
+                      style={{ visibility: "hidden" }}
+                      type="file"
+                      id="profileImg"
+                      name="profileImg"
+                      onChange={changeProfileHandler}
+                    />
+                    <img className={styles.existProfileImg} src={user.profile_img_path} alt="profile" />
+                    <div className={styles.existprofileImgEditIcon}>
+                      <EditIcon />
+                    </div>
+                  </label>
+                )}
+              </label>
+            )}
+          </div>
+        ) : (
+          // 현재 프로필 != 접속 계정 => 프로필 변경 불가
+          <div>
+            {!user.banner_img_path ? (
+              // 프로필 배너가 없을 경우
+              <div
+                style={{
+                  display: "block",
+                  background: "#F7F8F9",
+                  height: "26vw",
+                  maxHeight: "320px",
+                }}
+              >
+                <div className={styles.padding}></div>
+                {!user.profile_img_path ? (
+                  // 프로필 사진이 없을 경우
+                  <div className={styles.nonAuthProfile}></div>
+                ) : (
+                  // 프로필 사진이 있을 경우
+                  <div className={styles.nonAuthProfilePosition}>
+                    <img className={styles.existProfileImg} src={user.profile_img_path} alt="profile" />
+                  </div>
+                )}
+              </div>
+            ) : (
+              // banner가 있을 경우
+              <div
+                className={styles.nonAuthBanner}
+                style={{
+                  backgroundImage: `url(${user.banner_img_path})`,
+                }}
+              >
+                <div className={styles.padding}></div>
+                {!user.profile_img_path ? (
+                  // 프로필 사진이 없을 경우
+                  <div className={styles.nonAuthProfile}></div>
+                ) : (
+                  // 프로필 사진이 있을 경우
+                  <div className={styles.nonAuthProfilePosition}>
+                    <img className={styles.existProfileImg} src={user.profile_img_path} alt="profile" />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       <div style={{ marginTop: "80px", marginLeft: "50px" }}>
         <div style={{ fontSize: "2rem", fontWeight: "bold" }}>
@@ -247,20 +348,13 @@ const Profile = () => {
 
         <BootstrapTooltip title={<h2>{copy}</h2>}>
           <div
-            style={{
-              display: "inline-block",
-              cursor: "pointer",
-              color: accountColor,
-              fontSize: "1.3rem",
-            }}
+            className={styles.myAccount}
             onClick={copyHandler}
             onMouseOut={() => {
               setCopy("copy");
-              setAccountColor("black");
             }}
             onMouseOver={() => {
               setCopy("copy");
-              setAccountColor("gray");
             }}
           >
             <img style={{ width: "25px" }} src={ethereum_logo} alt="" />
@@ -268,6 +362,11 @@ const Profile = () => {
           </div>
         </BootstrapTooltip>
       </div>
+
+      {/* 구분선 */}
+
+
+
       <Divider />
 
       <div>testing area</div>
@@ -276,29 +375,9 @@ const Profile = () => {
         {fileUrl && <img src={fileUrl} width="600px" />}
       </div> */}
 
-      <div>보고있는 프로필 {account}</div>
+      <div>보고있는 프로필 {account?.toLowerCase()}</div>
       <div>로그인된 계좌 {loginedAccount}</div>
 
-      <div>
-        {account === loginedAccount ? (
-          <div>
-            프로필 사진 변경
-            <input type="file" onChange={changeProfileHandler} />
-          </div>
-        ) : (
-          <></>
-        )}
-      </div>
-      <div>
-        {account === loginedAccount ? (
-          <div>
-            배경 사진 변경
-            <input type="file" onChange={changeBannerHandler} />
-          </div>
-        ) : (
-          <></>
-        )}
-      </div>
     </div>
   );
 };
