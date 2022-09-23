@@ -23,17 +23,7 @@ const ImgStyle = styled("img")({
 });
 
 const ItemsCard = ({ product }: { product: Product }) => {
-  const {
-    url,
-    price,
-    nftId,
-    buyerWallet,
-    saleId,
-    saleStartDate,
-    saleCompleteDate,
-    contractAddress,
-    sellerId,
-  } = product;
+  const { url, price, nftId, saleId, sellerId } = product;
   const symbol = "JAV";
 
   return (
