@@ -49,9 +49,9 @@ public class SalesController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<SalesResDto>> getSales(@RequestParam int page) {
+    public ResponseEntity<List<SalesResDto>> getSales(@RequestParam int page, @RequestParam int size) {
         logger.info("전체 판매 목록 - 호출");
-        List<SalesResDto> salesResDtoList = salesService.getSales(page);
+        List<SalesResDto> salesResDtoList = salesService.getSales(page,size);
         return new ResponseEntity<>(salesResDtoList,HttpStatus.OK);
     }
 

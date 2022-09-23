@@ -26,15 +26,16 @@ public class SalesServiceImpl implements SalesService {
     private final Logger logger = LoggerFactory.getLogger(SalesServiceImpl.class);
 
     @Override
-    public List<SalesResDto> getSales(int page) {
+    public List<SalesResDto> getSales(int page, int size) {
         logger.info("getSales - 호출");
-        PageRequest pageRequest = PageRequest.of(page, 10);
+        PageRequest pageRequest = PageRequest.of(page, size);
         Page<Sales> findAll = salesRepository.findAllSale(pageRequest);
 
         List<SalesResDto> findAllDto = new ArrayList<>();
         for(Sales targetSale : findAll){
 
             SalesResDto salesResDto = SalesResDto.builder()
+                    .total_page(findAll.getTotalPages())
                     .sale_id(targetSale.getSale_id())
                     .price(targetSale.getPrice())
                     .state(targetSale.getState())
