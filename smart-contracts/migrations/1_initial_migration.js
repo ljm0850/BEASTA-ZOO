@@ -14,6 +14,7 @@ const SaleFactory = artifacts.require("SaleFactory");
 module.exports = function (deployer) {
   deployer.deploy(Migrations);
   deployer.deploy(JAV_NFT);
-  await const NFTAddress = deployer.deploy(JavToken, "JavJong", "JAV", 0);
-  deployer.deploy(SaleFactory, NFTAddress);
+  deployer.deploy(JavToken, "JavJong", "JAV", 0).then(function () {
+     return deployer.deploy(SaleFactory, JavToken.address)
+   });
 };
