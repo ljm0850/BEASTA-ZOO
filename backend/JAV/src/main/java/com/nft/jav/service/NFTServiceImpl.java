@@ -34,6 +34,9 @@ public class NFTServiceImpl implements NFTService {
             userNFTResDtoList.add(NFTResDto.builder()
                     .nft_id(targetNFT.getNft_id())
                     .nft_address(targetNFT.getNft_address())
+                    .user_id(targetUser.getUser_id())
+                    .jav_code(targetNFT.getJav_code())
+                    .img_address(targetNFT.getImg_address())
                     .build());
         }
 
