@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
 import Login from "../../layouts/Login"
+import Draw from "../Draw";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const MainPage = () => {
           뽑기하러 갑시다
         </Button>
         <Login></Login>
+        <Draw />
       </Box>
     </div>
   );

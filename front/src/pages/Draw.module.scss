@@ -1,0 +1,448 @@
+html, body {
+  width: 100%;
+  height: 100%;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.bttn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 190px;
+  height: 45px;
+  border-radius: 22px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  border: solid 1px #2570cc;
+  transition: transform .3s ease;
+  .bttnTxt {
+    position: relative;
+    color: #2570cc;
+  }
+  margin-top: 50px;
+}
+
+.bttn:hover {
+  transform: scale3d(1.1, 1.1, 1.1);
+}
+
+@import url('https://fonts.googleapis.com/css?family=Ropa+Sans');
+
+$digits: 4;
+
+$Place0: 45%;
+$Place1: 35%;
+$Place2: 25%;
+$Place3: 15%;
+$Place4: 5%;
+$Place5: -5%;
+$Place6: -15%;
+$Place7: -25%;
+$Place8: -35%;
+$Place9: -45%;
+
+$yIndexArr: -30%
+  30%
+  40%
+  20% -20%
+  $Place0
+  30% -30% -40% -20%
+  20%
+  $Place5 -20% -30%
+  45%
+  30%
+  25%
+  $Place7
+  30%
+  38%
+  49% -25%
+  15%
+  $Place1;
+
+$blue-light: #55b3f2;
+$green-light: #47b3a8;
+$orange-light: #f59b32;
+$red-light: #e65c5c;
+
+* {
+  box-sizing: border-box;
+}
+
+// Counter at the Hero section
+.counter {
+  width: 172px;
+  height: 63px;
+  background-color: transparent;
+  border: solid 2px #55b3f2;
+  display: flex;
+  padding: 1px;
+  flex-direction: row;
+
+  // Any direct child element
+  > * {
+    margin: 1px;
+    width: 42px;
+    height: 55px;
+    background-color: #55b3f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Ropa Sans', sans-serif;
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 1.5;
+    letter-spacing: 2.5px;
+    color: #ffffff;
+
+    // Set counter's block colors
+    $colors-list: $blue-light $green-light $orange-light $red-light;
+    @each $current-color in $colors-list {
+      $i: index($colors-list, $current-color);
+      &:nth-child(#{$i}) {
+        background: $current-color;
+      }
+    }
+  }
+}
+
+.digitsDiv {
+  display: flex;
+  flex-direction: column;
+  z-index: -1;
+  transform: translateY(45%);
+  text-align: center;
+}
+
+.digitsContainer {
+  z-index: -2;
+}
+
+// @for $i from 1 through 4 {
+//   /* The element to apply the animation to */
+//   div.digitsContainer:nth-child(#{$i}) {
+//     .digitsDiv.spin {
+//       animation: digitsSpin-#{$i} 5s Both;
+
+//       @keyframes digitsSpin-#{$i} {
+//         10% {
+//           transform: translateY(nth($yIndexArr, $i*6 - 5));
+//         }
+
+//         20% {
+//           transform: translateY(nth($yIndexArr, $i*6 - 4));
+//         }
+
+//         30% {
+//           transform: translateY(nth($yIndexArr, $i*6 - 3));
+//         }
+
+//         45% {
+//           transform: translateY(nth($yIndexArr, $i*6 - 2));
+//         }
+
+//         75% {
+//           transform: translateY(nth($yIndexArr, $i*6 - 1));
+//         }
+
+//         100% {
+//           transform: translateY(nth($yIndexArr, $i*6));
+//         }
+//       }
+//     }
+//   }
+// }
+
+.spin0 {
+  animation: digitsSpin-0 5s Both;
+  @keyframes digitsSpin-0 {
+    10% {
+      transform: translateY(-30%);
+    }
+
+    20% {
+      transform: translateY(40%);
+    }
+
+    30% {
+      transform: translateY(20%);
+    }
+
+    45% {
+      transform: translateY(-35%);
+    }
+
+    75% {
+      transform: translateY(45%);
+    }
+
+    100% {
+      transform: translateY($Place0);
+    }
+  }
+}
+
+.spin1 {
+  animation: digitsSpin-1 5s Both;
+  @keyframes digitsSpin-1 {
+    10% {
+      transform: translateY(-25%);
+    }
+
+    20% {
+      transform: translateY(35%);
+    }
+
+    30% {
+      transform: translateY(-20%);
+    }
+
+    45% {
+      transform: translateY(35%);
+    }
+
+    75% {
+      transform: translateY(-27%);
+    }
+
+    100% {
+      transform: translateY($Place1);
+    }
+  }
+}
+
+.spin2 {
+  animation: digitsSpin-2 5s Both;
+  @keyframes digitsSpin-2 {
+    10% {
+      transform: translateY(30%);
+    }
+
+    20% {
+      transform: translateY(45%);
+    }
+
+    30% {
+      transform: translateY(-15%);
+    }
+
+    45% {
+      transform: translateY(-30%);
+    }
+
+    75% {
+      transform: translateY(15%);
+    }
+
+    100% {
+      transform: translateY($Place2);
+    }
+  }
+}
+
+.spin3 {
+  animation: digitsSpin-3 5s Both;
+  @keyframes digitsSpin-3 {
+    10% {
+      transform: translateY(0%);
+    }
+
+    20% {
+      transform: translateY(30%);
+    }
+
+    30% {
+      transform: translateY(15%);
+    }
+
+    45% {
+      transform: translateY(-5%);
+    }
+
+    75% {
+      transform: translateY(25%);
+    }
+
+    100% {
+      transform: translateY($Place3);
+    }
+  }
+}
+
+.spin4 {
+  animation: digitsSpin-4 5s Both;
+  @keyframes digitsSpin-4 {
+    10% {
+      transform: translateY(-40%);
+    }
+
+    20% {
+      transform: translateY(35%);
+    }
+
+    30% {
+      transform: translateY(-25%);
+    }
+
+    45% {
+      transform: translateY(-5%);
+    }
+
+    75% {
+      transform: translateY(30%);
+    }
+
+    100% {
+      transform: translateY($Place4);
+    }
+  }
+}
+
+.spin5 {
+  animation: digitsSpin-5 5s Both;
+  @keyframes digitsSpin-5 {
+    10% {
+      transform: translateY(-25%);
+    }
+
+    20% {
+      transform: translateY(40%);
+    }
+
+    30% {
+      transform: translateY(15%);
+    }
+
+    45% {
+      transform: translateY(-20%);
+    }
+
+    75% {
+      transform: translateY(10%);
+    }
+
+    100% {
+      transform: translateY($Place5);
+    }
+  }
+}
+
+.spin6 {
+  animation: digitsSpin-6 5s Both;
+  @keyframes digitsSpin-6 {
+    10% {
+      transform: translateY(-15%);
+    }
+
+    20% {
+      transform: translateY(-40%);
+    }
+
+    30% {
+      transform: translateY(-28%);
+    }
+
+    45% {
+      transform: translateY(-40%);
+    }
+
+    75% {
+      transform: translateY(10%);
+    }
+
+    100% {
+      transform: translateY($Place6);
+    }
+  }
+}
+
+.spin7 {
+  animation: digitsSpin-7 5s Both;
+  @keyframes digitsSpin-7 {
+    10% {
+      transform: translateY(-30%);
+    }
+
+    20% {
+      transform: translateY(-15%);
+    }
+
+    30% {
+      transform: translateY(25%);
+    }
+
+    45% {
+      transform: translateY(35%);
+    }
+
+    75% {
+      transform: translateY(-45%);
+    }
+
+    100% {
+      transform: translateY($Place7);
+    }
+  }
+}
+
+.spin8 {
+  animation: digitsSpin-8 5s Both;
+  @keyframes digitsSpin-8 {
+    10% {
+      transform: translateY(-40%);
+    }
+
+    20% {
+      transform: translateY(45%);
+    }
+
+    30% {
+      transform: translateY(-20%);
+    }
+
+    45% {
+      transform: translateY(-5%);
+    }
+
+    75% {
+      transform: translateY(0%);
+    }
+
+    100% {
+      transform: translateY($Place8);
+    }
+  }
+}
+
+.spin9 {
+  animation: digitsSpin-9 5s Both;
+  @keyframes digitsSpin-9 {
+    10% {
+      transform: translateY(30%);
+    }
+
+    20% {
+      transform: translateY(-30%);
+    }
+
+    30% {
+      transform: translateY(25%);
+    }
+
+    45% {
+      transform: translateY(35%);
+    }
+
+    75% {
+      transform: translateY(5%);
+    }
+
+    100% {
+      transform: translateY($Place9);
+    }
+  }
+}

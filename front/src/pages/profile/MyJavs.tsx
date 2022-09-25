@@ -60,7 +60,7 @@ const MyJavs = (props: Props) => {
         {nfts.map((contact, index) => (
           <Grid item xs={2} sm={3} md={4} lg={3} xl={2} key={index}>
             <div className={styles.javs}>
-              <img style={{}} src={contact.nft_address} alt="" />
+              <img style={{}} src={contact.img_address} alt="" />
             </div>
           </Grid>
         ))}
