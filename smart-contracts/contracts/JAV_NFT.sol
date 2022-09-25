@@ -126,9 +126,9 @@ contract JAV_NFT is ERC721 {
         uint _geneY = getJavsGene(NFT_ID2)[body];
         uint[7] memory arrayX;
         uint[7] memory arrayY;
-        for (uint i = 1; i < weight.length + 1; i++) {
-            arrayX[7-i] = _geneX % 4096;
-            arrayY[7-i] = _geneY % 4096;
+        for (uint i = 0; i < weight.length; i++) {
+            arrayX[6-i] = _geneX % 4096;
+            arrayY[6-i] = _geneY % 4096;
             _geneX /= 4096;
             _geneY /= 4096;
         }
