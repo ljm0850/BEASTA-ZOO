@@ -1,5 +1,7 @@
 import { Box, Container, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { MotionContainer, varBounceIn } from "../../components/animate";
 import { Product } from "../../layouts/items/ItemsCard";
 import ItemsList from "../../layouts/items/ItemsList";
 
@@ -14,6 +16,17 @@ const Items = () => {
     saleCompleteDate: "123",
     contractAddress: "주소",
     sellerId: 1,
+  };
+  const resultItem2 = {
+    url: "https://img.freepik.com/free-photo/the-red-or-white-cat-i-on-white-studio_155003-13189.jpg?w=2000",
+    price: 500,
+    nftId: 2,
+    buyerWallet: "222",
+    saleId: 2,
+    saleStartDate: "1233",
+    saleCompleteDate: "1233",
+    contractAddress: "주소2",
+    sellerId: 2,
   };
 
   const [item, setItem] = useState<Product[]>([]);
@@ -32,6 +45,7 @@ const Items = () => {
     setLoading(true);
     const resultList = [];
     resultList.push(resultItem);
+    resultList.push(resultItem2);
 
     setItem(resultList);
     setLoading(false);
@@ -48,23 +62,31 @@ const Items = () => {
         <>
           {isCollection === true ? (
             <Container maxWidth="xl">
-              <ItemsList products={item} sx={{ mt: 1 }} />
+              <ItemsList sx={{ mt: 1 }} products={item} />
             </Container>
           ) : (
             <Container>
-              <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>
-                <Typography variant="h3" paragraph>
-                  검색 결과 없음
-                </Typography>
-                <Typography sx={{ color: "text.secondary" }}>
-                  판매되고 있는 아이템이 없습니다.
-                </Typography>
-                {/* <Box
-                  component="img"
-                  src="/static/illustrations/illustration_register.png"
-                  sx={{ height: 260, mx: "auto", my: { xs: 5, sm: 10 } }}
-                /> */}
-              </Box>
+              <MotionContainer initial="initial" sx={{ mt: 10 }} open>
+                <Box
+                  sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}
+                >
+                  <motion.div variants={varBounceIn}>
+                    <Typography variant="h3" paragraph>
+                      검색 결과 없음
+                    </Typography>
+                  </motion.div>
+                  <Typography sx={{ color: "text.secondary" }}>
+                    판매되고 있는 아이템이 없습니다.
+                  </Typography>
+                  {/* <motion.div variants={varBounceIn}>
+                    <Box
+                      component="img"
+                      src="/static/illustrations/illustration_register.png"
+                      sx={{ height: 260, mx: "auto", my: { xs: 5, sm: 10 } }}
+                    />
+                  </motion.div> */}
+                </Box>
+              </MotionContainer>
             </Container>
           )}
         </>
