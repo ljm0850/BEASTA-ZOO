@@ -8,10 +8,11 @@ import "./JavToken.sol";
  * 상태 변수나 함수의 시그니처는 구현에 따라 변경할 수 있습니다.
  */
 contract JAV_NFT is ERC721 {
-    constructor() ERC721("javjongNFT","JNFT"){
+    JavToken public JavTokenContract;
+    constructor(address _JavTokenAddress) ERC721("javjongNFT","JNFT"){
+        JavTokenContract = JavToken(_JavTokenAddress);
     }
     // import
-    JavToken public JavTokenContract;
 
     // 저장된 데이터들
     struct javsDetail {
