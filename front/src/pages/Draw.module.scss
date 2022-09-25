@@ -75,19 +75,20 @@ $red-light: #e65c5c;
 
 // Counter at the Hero section
 .counter {
-  width: 172px;
-  height: 63px;
+  width: 483px;
+  height: 217px;
   background-color: transparent;
   border: solid 2px #55b3f2;
   display: flex;
   padding: 1px;
   flex-direction: row;
+  // overflow: hidden;
 
   // Any direct child element
   > * {
-    margin: 1px;
-    width: 42px;
-    height: 55px;
+    margin: 5px;
+    width: 149px;
+    height: 200px;
     background-color: #55b3f2;
     display: flex;
     justify-content: center;
@@ -116,6 +117,16 @@ $red-light: #e65c5c;
   z-index: -1;
   transform: translateY(45%);
   text-align: center;
+
+  span {
+    text-align: center;
+    width: 149px;
+    height: 200px;
+    img {
+      width: 149px;
+      height: 200px;
+    }
+  }
 }
 
 .digitsContainer {
