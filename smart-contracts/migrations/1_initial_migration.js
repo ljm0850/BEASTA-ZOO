@@ -18,7 +18,7 @@ module.exports = function (deployer) {
   .then(() => {
     return deployer.deploy(JAV_NFT, JavToken.address) 
    })
-  .then(()=>{
+  .then(() => {
     return deployer.deploy(SaleFactory, JAV_NFT.address)
   })
 };
