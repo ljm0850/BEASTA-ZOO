@@ -68,7 +68,7 @@ contract JAV_NFT is ERC721 {
 
     function pickup(string memory _tokenURI, uint[3] memory _gene, uint[4] memory _accessory) public returns (uint256){
         // require(JavTokenContract.allowance(msg.sender, ) >= 100); //NFT를 발급하려는 JA
-        // JavTokenContract.transferFrom(msg.sender, address(this), 100);
+        JavTokenContract.transferFrom(msg.sender, address(this), 100);
         uint256 value = create(msg.sender,_tokenURI,_gene,_accessory);
 
         return value;
