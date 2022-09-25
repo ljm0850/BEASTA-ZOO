@@ -8,10 +8,11 @@ import "./JavToken.sol";
  * 상태 변수나 함수의 시그니처는 구현에 따라 변경할 수 있습니다.
  */
 contract JAV_NFT is ERC721 {
-    constructor() ERC721("javjongNFT","JNFT"){
+    JavToken public JavTokenContract;
+    constructor(address _JavTokenAddress) ERC721("javjongNFT","JNFT"){
+        JavTokenContract = JavToken(_JavTokenAddress);
     }
     // import
-    JavToken public JavTokenContract;
 
     // 저장된 데이터들
     struct javsDetail {
@@ -119,15 +120,6 @@ contract JAV_NFT is ERC721 {
         }
         return myGene;
     }
-
-    // function fusion(uint NFT_ID1, uint NFT_ID2, uint[12] memory _nums) public view returns (uint[3] memory) {
-    // function getFusionGene(uint NFT_ID1, uint NFT_ID2, uint[4] memory _nums1, uint[4] memory _nums2, uint[4] memory _nums3) public view returns(uint[3] memory){
-    //     uint[3] memory gene ;
-    //     gene[0] = fusion(NFT_ID1,NFT_ID2,_nums1);
-    //     gene[1] = fusion(NFT_ID1,NFT_ID2,_nums2);
-    //     gene[2] = fusion(NFT_ID1,NFT_ID2,_nums3);
-    //     return gene;
-    // }
     
     function fusion(uint NFT_ID1, uint NFT_ID2, uint[4] memory _nums, uint8 body) public view returns (uint) {
         // body엔 파츠 번호 0,1,2 가 들어가야함
@@ -135,31 +127,28 @@ contract JAV_NFT is ERC721 {
         uint _geneY = getJavsGene(NFT_ID2)[body];
         uint[7] memory arrayX;
         uint[7] memory arrayY;
-        // uint mod = 4096; //(16**3)
-        for (uint i = 1; i < weight.length + 1; i++) {
-            // arrayX[i-1] = (_geneX % mod) / (mod / 4096);
-            // arrayY[i-1] = (_geneX % mod) / (mod / 4096);
-            arrayX[i-1] = _geneX % (16 ** ((i * 3) - (i - 1) * 3));
-            arrayY[i-1] = _geneY % (16 ** ((i * 3) - (i - 1) * 3));
-            // mod *= 4096;
+        for (uint i = 0; i < weight.length; i++) {
+            arrayX[6-i] = _geneX % 4096;
+            arrayY[6-i] = _geneY % 4096;
+            _geneX /= 4096;
+            _geneY /= 4096;
         }
-
 
         uint winX = _winner(arrayX, _nums[0]%100);
         uint winY = _winner(arrayY, _nums[1]%100); 
+
         uint winZ = _fusion(winX,winY,_nums[2]%100);
         uint color = _colorPicker(_nums[3]%100);
         
         uint child ;
-        child = color * 19342813113834066795298816
-            + winZ * 4722366482869645213696
-            + arrayX[6] * 1152921504606846976
-            + arrayY[6] * 281474976710656
-            + arrayX[5] * 68719476736
-            + arrayX[4] * 16777216
-            + arrayY[5] * 4096
+        child = color * 19342813113834066795298816  // 16^21
+            + winZ * 4722366482869645213696 // 16^18
+            + arrayX[6] * 1152921504606846976 // 16^15
+            + arrayY[6] * 281474976710656 //16^12
+            + arrayX[5] * 68719476736 // 16^9
+            + arrayX[4] * 16777216  // 16^6
+            + arrayY[5] * 4096  // 16^3
             + arrayY[4];
-        
         return child;
     }
 
