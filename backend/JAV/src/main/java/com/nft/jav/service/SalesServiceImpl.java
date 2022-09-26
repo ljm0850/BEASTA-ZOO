@@ -33,10 +33,11 @@ public class SalesServiceImpl implements SalesService {
 
         List<SalesResDto> findAllDto = new ArrayList<>();
         for(Sales targetSale : findAll){
-
             SalesResDto salesResDto = SalesResDto.builder()
                     .total_page(findAll.getTotalPages())
                     .sale_id(targetSale.getSale_id())
+                    .nft_id(targetSale.getNft().getNft_id())
+                    .img_address(targetSale.getNft().getImg_address())
                     .price(targetSale.getPrice())
                     .state(targetSale.getState())
                     .sale_completed_date(targetSale.getSale_completed_date())
@@ -65,6 +66,8 @@ public class SalesServiceImpl implements SalesService {
             userSalesResDtoList.add(SalesResDto.builder()
                     .sale_id(targetSale.getSale_id())
                     .price(targetSale.getPrice())
+                    .nft_id(targetSale.getNft().getNft_id())
+                    .img_address(targetSale.getNft().getImg_address())
                     .state(targetSale.getState())
                     .sale_completed_date(targetSale.getSale_completed_date())
                     .sale_start_date(targetSale.getSale_start_date())
@@ -91,6 +94,7 @@ public class SalesServiceImpl implements SalesService {
             userSalesResDtoList.add(SalesResDto.builder()
                     .sale_id(targetSale.getSale_id())
                     .price(targetSale.getPrice())
+                    .img_address(targetSale.getNft().getImg_address())
                     .state(targetSale.getState())
                     .sale_completed_date(targetSale.getSale_completed_date())
                     .sale_start_date(targetSale.getSale_start_date())
@@ -162,6 +166,7 @@ public class SalesServiceImpl implements SalesService {
         SalesResDto salesResDto = SalesResDto.builder()
                 .nft_id(sales.getNft().getNft_id())
                 .buyer_wallet(sales.getBuyer_wallet())
+                .img_address(sales.getNft().getImg_address())
                 .contract_address(sales.getContract_address())
                 .sale_completed_date(sales.getSale_completed_date())
                 .state(sales.getState())
@@ -169,7 +174,6 @@ public class SalesServiceImpl implements SalesService {
                 .price(sales.getPrice())
                 .sale_id(sales.getSale_id())
                 .seller_wallet(sales.getSeller_wallet())
-                .user_id(sales.getUser().getUser_id())
                 .build();
         return salesResDto;
     }
@@ -182,6 +186,7 @@ public class SalesServiceImpl implements SalesService {
 
         SalesResDto salesResDto = SalesResDto.builder()
                 .nft_id(sales.getNft().getNft_id())
+                .img_address(sales.getNft().getImg_address())
                 .buyer_wallet(sales.getBuyer_wallet())
                 .contract_address(sales.getContract_address())
                 .sale_completed_date(sales.getSale_completed_date())
@@ -190,7 +195,6 @@ public class SalesServiceImpl implements SalesService {
                 .price(sales.getPrice())
                 .sale_id(sales.getSale_id())
                 .seller_wallet(sales.getSeller_wallet())
-                .user_id(sales.getUser().getUser_id())
                 .build();
 
         return salesResDto;
