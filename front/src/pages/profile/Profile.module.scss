@@ -1,0 +1,223 @@
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  background: rgba(112, 112, 112, 0.3);
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+}
+
+.banner {
+  display: block;
+  background: #F7F8F9;
+  height: 26vw;
+  max-height: 320px;
+  z-index: 10;
+}
+
+.bannerEditIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: #F7F8F9;
+  height: 26vw;
+  max-height: 320px;
+  opacity: 0;
+  color: #fff;
+  &:hover {
+    background: rgb(214, 214, 214);
+    transition: background-color 0.5s, opacity 0.5s;
+    opacity: 1;
+
+    cursor: pointer;
+  }
+  &:not(:hover) {
+    background: #F7F8F9;
+    transition: background-color 0.5s, opacity 0.5s;
+    opacity: 0;
+  }
+}
+
+// 이미지가 존재하지 않을 때, 빈 원
+.profileImg {
+  display: block;
+  position: relative;
+  bottom: 55%;
+  left: 3vw;
+  background: #e6e6e6;
+  height: 20vw;
+  width: 20vw;
+  max-height: 170px;
+  max-width: 170px;
+  border-radius: 100%;
+  border: 5px solid #fff;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+}
+
+
+.profileImgEditIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vw;
+  width: 20vw;
+  max-height: 170px;
+  max-width: 170px;
+  border-radius: 100%;
+  color: #fff;
+  &:hover {
+    background: rgb(214, 214, 214);
+    transition: background-color 0.5s, opacity 0.5s;
+    opacity: 1;
+
+    cursor: pointer;
+  }
+  &:not(:hover) {
+    background: #F7F8F9;
+    transition: background-color 0.5s, opacity 0.5s;
+    opacity: 0;
+  }
+}
+
+// 사진 이미지가 존재할 때,
+.existProfileImg {
+  display: block;
+  position: relative;
+  height: 20vw;
+  width: 20vw;
+  max-height: 170px;
+  aspect-ratio: 1 / 1;
+  max-width: 170px;
+  border-radius: 100%;
+  background-color: #fff;
+  object-fit: cover;
+  border: 5px solid #fff;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+}
+
+.profilePosition {
+  display: flex;
+  position: relative;
+  bottom: 55%;
+  left: 3vw;
+  width: 180px;
+}
+
+.existprofileImgEditIcon {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid #fff;
+  height: 20vw;
+  width: 20vw;
+  max-height: 170px;
+  max-width: 170px;
+  background: black;
+  border-radius: 100%;
+  color: #fff;
+  z-index: 50;
+  &:hover {
+    background: rgba(142, 142, 142, 0.5);
+    transition: background-color 0.5s, opacity 0.5s;
+    opacity: 1;
+
+    cursor: pointer;
+  }
+  &:not(:hover) {
+    background: #F7F8F9;
+    transition: background-color 0.5s, opacity 0.5s;
+    opacity: 0;
+  }
+}
+
+
+.existBannerImg {
+  display: block;
+  background-size: cover;
+  height: 26vw;
+  max-height: 320px;
+  z-index: 10;
+}
+
+.exisbannerImgEditIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: #F7F8F9;
+  height: 26vw;
+  max-height: 320px;
+  opacity: 0;
+  color: #fff;
+  &:hover {
+    background: rgba(142, 142, 142, 0.5);
+    transition: background-color 0.5s, opacity 0.5s;
+    opacity: 1;
+    cursor: pointer;
+  }
+  &:not(:hover) {
+    background: #F7F8F9;
+    transition: background-color 0.5s, opacity 0.5s;
+    opacity: 0;
+  }
+}
+
+.nonAuthBanner {
+  display: block;
+  background-size: cover;
+  height: 26vw;
+  max-height: 320px;
+  z-index: 10;
+}
+
+.nonAuthProfile {
+  display: flex;
+  position: relative;
+  bottom: 45%;
+  left: 70px;
+  background: #F7F8F9;
+  height: 20vw;
+  width: 20vw;
+  max-height: 170px;
+  max-width: 170px;
+  border-radius: 100%;
+  border: 5px solid #fff;
+  box-Shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.padding {
+  display: flex;
+  height: 26vw;
+  max-height: 320px;
+}
+
+.nonAuthProfilePosition {
+  position: relative;
+  bottom: 45%;
+  left: 3vw;
+  width: 180px;
+}
+
+.myAccount {
+  display: inline-block;
+  cursor: pointer;
+  color: black;
+  font-size: 1.3rem;
+  font-weight: bold;
+  &:hover {
+    color: gray;
+    transition: all 0.5s;
+  }
+
+  &:not(:hover) {
+    color: black;
+    transition: all 0.5s;
+  }
+}

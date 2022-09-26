@@ -2,14 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import Web3 from "web3";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { checkUser, connectAPI, createUser } from "../api/connect";
+import { checkUser, createUser } from "../api/connect";
 
 import Button from "@mui/material/Button";
-import Drawer from "@mui/material/Drawer";
-import Divider from "@mui/material/Divider";
-import Paper from "@mui/material/Paper";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 
 const Login = () => {
   const navigate = useNavigate()

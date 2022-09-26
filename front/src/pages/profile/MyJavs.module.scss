@@ -1,0 +1,23 @@
+.javs {
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 7 / 9;
+  border-radius: 2%;
+
+  img {
+    aspect-ratio: 7 / 9;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover {
+      // border-radius: 100%;
+      transform: scale(1.1);
+      transition: all 0.5s;
+    }
+
+    &:not(:hover) {
+      transition: all 0.5s;
+    }
+  }
+}
+
