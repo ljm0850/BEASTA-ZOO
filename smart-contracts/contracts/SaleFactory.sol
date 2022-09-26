@@ -49,6 +49,7 @@ contract SaleFactory is Ownable {
         // NFTcreatorContract.saleApprovalForAll(seller);
         NFTcreatorContract.approve(address(instance), itemId);
         NFTcreatorContract.transferFrom(seller, address(instance), itemId);
+        NFTcreatorContract.setSaleAddress(address(instance));
         // return instance;
         // emit NewSale(_saleContract, _owner, _workId);
         sales.push(address(instance));
@@ -149,6 +150,7 @@ contract Sale {
         buyer = msg.sender;
         JavTokenContract.transferFrom(buyer, seller, purchase_amount);
         NFTcreatorContract.transferFrom(address(this), buyer, tokenId);
+        NFTcreatorContract.pushSaleData(tokenId,purchase_amount);
         emit SaleEnded(buyer, purchase_amount);
         _end();
     }
