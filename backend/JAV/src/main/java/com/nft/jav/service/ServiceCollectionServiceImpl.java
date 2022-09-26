@@ -1,7 +1,10 @@
 package com.nft.jav.service;
 
+import com.nft.jav.data.dto.SalesResDto;
 import com.nft.jav.data.dto.ServiceCollectionResDto;
+import com.nft.jav.data.entity.Sales;
 import com.nft.jav.data.entity.ServiceCollection;
+import com.nft.jav.data.repository.SalesRepository;
 import com.nft.jav.data.repository.ServiceCollectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,6 +24,7 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
 
     private final Logger logger = LoggerFactory.getLogger(ServiceCollectionServiceImpl.class);
     private final ServiceCollectionRepository serviceCollectionRepository;
+    private final SalesRepository salesRepository;
 
     @Override
     public List<ServiceCollectionResDto> serviceCollectionList(int page, int size) {
@@ -49,6 +53,32 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
         }
 
         return findAllDto;
+    }
+
+    @Override
+    public List<SalesResDto> getSaleByJavCode(String jav_code) {
+        List<Sales> salesLit = salesRepository.findAllByJavCode(jav_code);
+
+        List<SalesResDto> userSalesResDtoList = new ArrayList<>();
+
+        for(int i=0;i<salesLit.size();i++) {
+            Sales targetSale = salesLit.get(i);
+
+            userSalesResDtoList.add(SalesResDto.builder()
+                    .sale_id(targetSale.getSale_id())
+                    .price(targetSale.getPrice())
+                    .nft_id(targetSale.getNft().getNft_id())
+                    .img_address(targetSale.getNft().getImg_address())
+                    .state(targetSale.getState())
+                    .sale_completed_date(targetSale.getSale_completed_date())
+                    .sale_start_date(targetSale.getSale_start_date())
+                    .buyer_wallet(targetSale.getBuyer_wallet())
+                    .contract_address(targetSale.getContract_address())
+                    .seller_wallet(targetSale.getSeller_wallet())
+                    .build());
+        }
+
+        return userSalesResDtoList;
     }
 
     @Override

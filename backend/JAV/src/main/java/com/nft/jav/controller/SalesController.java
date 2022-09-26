@@ -49,9 +49,9 @@ public class SalesController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<SalesResDto>> getSales(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<List<SalesResPageDto>> getSales(@RequestParam int page, @RequestParam int size) {
         logger.info("전체 판매 목록 - 호출");
-        List<SalesResDto> salesResDtoList = salesService.getSales(page,size);
+        List<SalesResPageDto> salesResDtoList = salesService.getSales(page,size);
         return new ResponseEntity<>(salesResDtoList,HttpStatus.OK);
     }
 
@@ -60,6 +60,13 @@ public class SalesController {
         logger.info("특정 판매 목록 - 호출");
         SalesResDto salesResDto = salesService.getSale(sale_id);
         return new ResponseEntity<>(salesResDto,HttpStatus.OK);
+    }
+
+    @GetMapping("/nft/{jav_code}")
+    public ResponseEntity<List<SalesResDto>> getNftByJavCode(@PathVariable String jav_code) {
+        logger.info("같은 자브코드의 판매 완료 리스트 호출");
+        List<SalesResDto> salesResDtoList = salesService.getSaleByJavCodeCompleted(jav_code);
+        return new ResponseEntity<>(salesResDtoList,HttpStatus.OK);
     }
 
     @PostMapping("/liked/{user_id}/{sale_id}")

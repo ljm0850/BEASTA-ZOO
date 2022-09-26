@@ -22,4 +22,10 @@ public interface SalesRepository extends JpaRepository<Sales, Long> {
 
     @Query(value = "SELECT S from Sales S where S.state=0")
     Page<Sales> findAllSale(PageRequest pageRequest);
+
+    @Query("select S from Sales S where S.nft.jav_code=:jav_code and S.state=1")
+    List<Sales> findAllByJavCodeComplete(@Param("jav_code") String jav_code);
+
+    @Query("select S from Sales S where S.nft.jav_code=:jav_code and S.state=0")
+    List<Sales> findAllByJavCode(@Param("jav_code") String jav_code);
 }
