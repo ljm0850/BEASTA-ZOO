@@ -1,10 +1,11 @@
 import { useRoutes } from "react-router-dom";
 
 import MainLayout from "./layouts/main";
-
 import MainPage from "./pages/mainpage/MainPage";
 import ItemDraw from "./pages/market/ItemDraw"
 import Profile from "./pages/profile/Profile";
+import Items from "./pages/market/Items";
+
 
 export default function Router() {
   return useRoutes([
@@ -17,7 +18,8 @@ export default function Router() {
         { path: "/", element: <MainPage /> },
       ],
     },
-    { path: "/market",
+    {
+      path: "/market",
       element: <MainLayout />,
       children: [
         { path:'draw', element: <ItemDraw /> },
@@ -29,5 +31,6 @@ export default function Router() {
         { path:':account', element: <Profile /> },
       ]
     }
+
   ]);
 }

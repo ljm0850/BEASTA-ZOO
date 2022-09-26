@@ -6,6 +6,7 @@ import Login from "../../layouts/Login"
 import Draw from "../Draw";
 import { useEffect, useState } from "react";
 
+
 const MainPage = () => {
   const navigate = useNavigate();
 
@@ -27,9 +28,31 @@ const MainPage = () => {
 
 
   return (
-    <div style={{height: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Box sx={{ "& button": { m: 1 } }}>
-        <Button onClick={() => {navigate("/market/draw")}} variant="contained" size="large">
+        <Button
+          onClick={() => {
+            navigate("/market");
+          }}
+          variant="contained"
+          size="large"
+        >
+          마켓으로 갑시다
+        </Button>
+        <Button
+          onClick={() => {
+            navigate("/market/draw");
+          }}
+          variant="contained"
+          size="large"
+        >
           뽑기하러 갑시다
         </Button>
         <Login></Login>
