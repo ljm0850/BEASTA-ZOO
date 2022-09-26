@@ -8,8 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +29,18 @@ public class SalesServiceImpl implements SalesService {
     private final Logger logger = LoggerFactory.getLogger(SalesServiceImpl.class);
 
     @Override
-    public List<SalesResPageDto> getSales(int page, int size) {
+    public List<SalesResPageDto> getSales(String search, int page, int size) {
         logger.info("getSales - 호출");
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Sales> findAll = salesRepository.findAllSale(pageRequest);
+
+        Page<Sales> findAll;
+
+        if(search.equals("0000000")){
+            findAll = salesRepository.findAllSale(pageRequest);
+        } else {
+            findAll = salesRepository.findAll(searchParts(search), pageRequest);
+        }
+
 
         List<SalesResPageDto> findAllDto = new ArrayList<>();
         for(Sales targetSale : findAll){
@@ -51,6 +62,66 @@ public class SalesServiceImpl implements SalesService {
         }
 
         return findAllDto;
+    }
+
+    public Specification<Sales> searchParts(String search){
+        return ((cl, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            Predicate isSale = criteriaBuilder.equal(cl.get("state"), 0);
+            predicates.add(isSale);
+
+            if(search.charAt(0) != '0'){
+                String head = search.charAt(0)+"%";
+                logger.info(head);
+                Predicate headSearch = criteriaBuilder.like(cl.get("nft").get("jav_code"), head);
+                predicates.add(headSearch);
+            }
+
+            if(search.charAt(1) != '0'){
+                String ear = "_"+search.charAt(1)+"%";
+                logger.info(ear);
+                Predicate earSearch = criteriaBuilder.like(cl.get("nft").get("jav_code"), ear);
+                predicates.add(earSearch);
+            }
+
+            if(search.charAt(2) != '0'){
+                String face = "__"+search.charAt(2)+"%";
+                logger.info(face);
+                Predicate faceSearch = criteriaBuilder.like(cl.get("nft").get("jav_code"), face);
+                predicates.add(faceSearch);
+            }
+
+            if(search.charAt(3) != '0'){
+                String eye = "___"+search.charAt(3)+"%";
+                logger.info(eye);
+                Predicate eyeSearch = criteriaBuilder.like(cl.get("nft").get("jav_code"), eye);
+                predicates.add(eyeSearch);
+            }
+
+            if(search.charAt(4) != '0'){
+                String body = "____"+search.charAt(4)+"%";
+                logger.info(body);
+                Predicate bodySearch = criteriaBuilder.like(cl.get("nft").get("jav_code"), body);
+                predicates.add(bodySearch);
+            }
+
+            if(search.charAt(5) != '0'){
+                String acc = "_____"+search.charAt(5)+"%";
+                logger.info(acc);
+                Predicate accSearch = criteriaBuilder.like(cl.get("nft").get("jav_code"), acc);
+                predicates.add(accSearch);
+            }
+
+            if(search.charAt(6) != '0'){
+                String background = "______"+search.charAt(6)+"%";
+                logger.info(background);
+                Predicate backgroundSearch = criteriaBuilder.like(cl.get("nft").get("jav_code"), background);
+                predicates.add(backgroundSearch);
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        });
     }
 
     @Override
