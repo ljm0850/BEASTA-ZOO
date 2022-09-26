@@ -1,5 +1,6 @@
 package com.nft.jav.controller;
 
+import com.nft.jav.data.dto.SalesResDto;
 import com.nft.jav.data.dto.ServiceCollectionResDto;
 import com.nft.jav.service.ServiceCollectionService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,12 @@ public class ServiceCollectionController {
     public ResponseEntity<List<ServiceCollectionResDto>> serviceCollectionList(@RequestParam int page, @RequestParam int size){
         logger.info("serviceCollectionList - 호출");
         return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(page,size), HttpStatus.OK);
+    }
+
+    @GetMapping("/sale/{jav_code}")
+    public ResponseEntity<List<SalesResDto>> saleListByJavCode(@RequestParam String jav_code){
+        logger.info("saleListByJavCode - 호출");
+        return new ResponseEntity<>(serviceCollectionService.getSaleByJavCode(jav_code), HttpStatus.OK);
     }
 
     @GetMapping("/{jav_id}")

@@ -26,14 +26,14 @@ public class SalesServiceImpl implements SalesService {
     private final Logger logger = LoggerFactory.getLogger(SalesServiceImpl.class);
 
     @Override
-    public List<SalesResDto> getSales(int page, int size) {
+    public List<SalesResPageDto> getSales(int page, int size) {
         logger.info("getSales - 호출");
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Sales> findAll = salesRepository.findAllSale(pageRequest);
 
-        List<SalesResDto> findAllDto = new ArrayList<>();
+        List<SalesResPageDto> findAllDto = new ArrayList<>();
         for(Sales targetSale : findAll){
-            SalesResDto salesResDto = SalesResDto.builder()
+            SalesResPageDto salesResDto = SalesResPageDto.builder()
                     .total_page(findAll.getTotalPages())
                     .sale_id(targetSale.getSale_id())
                     .nft_id(targetSale.getNft().getNft_id())
@@ -198,5 +198,32 @@ public class SalesServiceImpl implements SalesService {
                 .build();
 
         return salesResDto;
+    }
+
+    @Override
+    public List<SalesResDto> getSaleByJavCodeCompleted(String jav_code) {
+
+        List<Sales> salesLit = salesRepository.findAllByJavCodeComplete(jav_code);
+
+        List<SalesResDto> userSalesResDtoList = new ArrayList<>();
+
+        for(int i=0;i<salesLit.size();i++) {
+            Sales targetSale = salesLit.get(i);
+
+            userSalesResDtoList.add(SalesResDto.builder()
+                    .sale_id(targetSale.getSale_id())
+                    .price(targetSale.getPrice())
+                    .nft_id(targetSale.getNft().getNft_id())
+                    .img_address(targetSale.getNft().getImg_address())
+                    .state(targetSale.getState())
+                    .sale_completed_date(targetSale.getSale_completed_date())
+                    .sale_start_date(targetSale.getSale_start_date())
+                    .buyer_wallet(targetSale.getBuyer_wallet())
+                    .contract_address(targetSale.getContract_address())
+                    .seller_wallet(targetSale.getSeller_wallet())
+                    .build());
+        }
+
+        return userSalesResDtoList;
     }
 }

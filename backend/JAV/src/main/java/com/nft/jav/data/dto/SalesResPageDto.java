@@ -1,21 +1,17 @@
 package com.nft.jav.data.dto;
 
-import com.nft.jav.data.entity.Liked;
-import com.nft.jav.data.entity.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @ToString
-public class SalesResDto {
-
+public class SalesResPageDto {
+    private int total_page;
     private long sale_id;
     private long nft_id;
     private int state;
@@ -35,8 +31,9 @@ public class SalesResDto {
 
     @Builder
 
-    public SalesResDto(long sale_id, long nft_id, String img_address, int state, double price, String contract_address,
-                       String seller_wallet, String buyer_wallet, LocalDateTime sale_start_date, LocalDateTime sale_completed_date) {
+    public SalesResPageDto(int total_page, long sale_id, long nft_id, String img_address, int state, double price, String contract_address,
+                           String seller_wallet, String buyer_wallet, LocalDateTime sale_start_date, LocalDateTime sale_completed_date) {
+        this.total_page = total_page;
         this.sale_id = sale_id;
         this.nft_id = nft_id;
         this.img_address = img_address;
