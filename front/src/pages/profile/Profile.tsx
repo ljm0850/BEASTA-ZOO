@@ -120,6 +120,7 @@ const Profile = () => {
         profile_img_path: url,
       };
 
+      console.log(url);
       updateUserInfo(loginedAccount, option)
         .then((res) => {
           setUser({
@@ -420,16 +421,48 @@ const Profile = () => {
 
       <Divider />
 
-      <Box sx={{ typography: "body1", margin: "10px 40px 0 40px" }}>
+      <Box sx={{ margin: "10px 40px 0 40px" }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
-              <Tab label="My Javs" style={{textTransform: "none"}} value="1" />
-              <Tab label="Favorited" disabled style={{textTransform: "none"}} value="2" />
-              <Tab label="Collections" disabled style={{textTransform: "none"}} value="3" />
+            <TabList
+              textColor="inherit"
+              TabIndicatorProps={{ style: { background: "black" } }}
+              onChange={handleChange}
+              aria-label="lab API tabs example"
+            >
+              <Tab
+                label="My Javs"
+                style={{
+                  textTransform: "none",
+                  fontWeight: "600",
+                  fontSize: "1rem",
+                }}
+                value="1"
+              />
+              <Tab
+                label="Favorited"
+                style={{
+                  textTransform: "none",
+                  fontWeight: "600",
+                  fontSize: "1rem",
+                }}
+                value="2"
+              />
+              <Tab
+                label="Collections"
+                disabled
+                style={{
+                  textTransform: "none",
+                  fontWeight: "600",
+                  fontSize: "1rem",
+                }}
+                value="3"
+              />
             </TabList>
           </Box>
-          <TabPanel value="1"><MyJavs account={account}/></TabPanel>
+          <TabPanel value="1">
+            <MyJavs account={account} />
+          </TabPanel>
           <TabPanel value="2">Item Two</TabPanel>
           <TabPanel value="3">Item Three</TabPanel>
         </TabContext>
