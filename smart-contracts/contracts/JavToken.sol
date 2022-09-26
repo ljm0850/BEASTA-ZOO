@@ -12,7 +12,7 @@ contract JavToken is ERC20, Ownable{
     
     constructor(string memory name, string memory symbol, uint8 decimal) ERC20(name, symbol, decimal) {}
     
-    function mint(uint256 amount) public onlyOwner{
+    function mint(uint256 amount) public {
         _mint(_msgSender(), amount);
     }
     
