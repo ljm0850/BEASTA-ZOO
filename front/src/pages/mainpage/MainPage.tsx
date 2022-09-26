@@ -3,16 +3,38 @@ import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
-import Login from "../../layouts/Login"
-import Logout from "../../layouts/Logout"
+import Login from "../../layouts/Login";
+import Logout from "../../layouts/Logout";
 
 const MainPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div style={{height: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Box sx={{ "& button": { m: 1 } }}>
-        <Button onClick={() => {navigate("/market/draw")}} variant="contained" size="large">
+        <Button
+          onClick={() => {
+            navigate("/market");
+          }}
+          variant="contained"
+          size="large"
+        >
+          마켓으로 갑시다
+        </Button>
+        <Button
+          onClick={() => {
+            navigate("/market/draw");
+          }}
+          variant="contained"
+          size="large"
+        >
           뽑기하러 갑시다
         </Button>
         <Login></Login>
