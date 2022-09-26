@@ -18,11 +18,9 @@ public class SalesResDto {
     private int total_page;
 
     private long sale_id;
-
-    private long user_id;
-
     private long nft_id;
     private int state;
+    private String img_address;
 
     private double price;
 
@@ -38,12 +36,12 @@ public class SalesResDto {
 
     @Builder
 
-    public SalesResDto(int total_page, long sale_id, long user_id, long nft_id, int state, double price, String contract_address,
+    public SalesResDto(int total_page, long sale_id, long nft_id, String img_address, int state, double price, String contract_address,
                        String seller_wallet, String buyer_wallet, LocalDateTime sale_start_date, LocalDateTime sale_completed_date) {
         this.total_page = total_page;
         this.sale_id = sale_id;
-        this.user_id = user_id;
         this.nft_id = nft_id;
+        this.img_address = img_address;
         this.state = state;
         this.price = price;
         this.contract_address = contract_address;
