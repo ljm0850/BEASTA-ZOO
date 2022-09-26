@@ -28,10 +28,6 @@ contract JAV_NFT is ERC721 {
         uint256 create_at;
     }
 
-    struct saleData {
-        uint[] prices;
-    }
-
     uint256 private _tokenIds;
     mapping(uint256 => string) tokenURIs;
     mapping(uint256 => javsDetail) javsData;
