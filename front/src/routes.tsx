@@ -2,10 +2,10 @@ import { useRoutes } from "react-router-dom";
 
 import MainLayout from "./layouts/main";
 import MainPage from "./pages/mainpage/MainPage";
-import ItemDraw from "./pages/market/ItemDraw"
+import ItemDraw from "./pages/market/ItemDraw";
 import Profile from "./pages/profile/Profile";
 import Items from "./pages/market/Items";
-
+import SaleRegistration from "./pages/market/SaleRegistration";
 
 export default function Router() {
   return useRoutes([
@@ -22,15 +22,15 @@ export default function Router() {
       path: "/market",
       element: <MainLayout />,
       children: [
-        { path:'draw', element: <ItemDraw /> },
-      ]
+        { path: "", element: <Items /> },
+        { path: "draw", element: <ItemDraw /> },
+        { path: "register", element: <SaleRegistration /> },
+      ],
     },
-    { path: "/user",
+    {
+      path: "/user",
       element: <MainLayout />,
-      children: [
-        { path:':account', element: <Profile /> },
-      ]
-    }
-
+      children: [{ path: ":account", element: <Profile /> }],
+    },
   ]);
 }
