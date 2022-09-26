@@ -24,6 +24,10 @@ contract SaleFactory is Ownable {
         uint256 _workId
     );
 
+    event Cancel(
+        uint256 tokenId,
+    );
+
     constructor(address _NFTcreatorAddress) {
         admin = msg.sender;
         NFTcreatorContract = JAV_NFT(_NFTcreatorAddress);
@@ -161,6 +165,7 @@ contract Sale {
         // NFT 소유권을 판매자에게 되돌려주기
         NFTcreatorContract.transferFrom(address(this), seller, tokenId);
         _end();
+        emit Cancel(tokenId);
     }
     // 판매 종료 남은 시간
     // function getTimeLeft() public view returns (int256) {
