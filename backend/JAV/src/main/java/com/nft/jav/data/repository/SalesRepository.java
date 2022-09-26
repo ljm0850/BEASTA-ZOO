@@ -20,6 +20,6 @@ public interface SalesRepository extends JpaRepository<Sales, Long> {
     @Query("select S from Sales S where S.buyer_wallet=:user_wallet_address and S.state=1")
     List<Sales> findAllByUser_Wallet_address(@Param("user_wallet_address") String user_wallet_address);
 
-    @Query(value = "SELECT S from Sales S where S.state=1")
+    @Query(value = "SELECT S from Sales S where S.state=0")
     Page<Sales> findAllSale(PageRequest pageRequest);
 }
