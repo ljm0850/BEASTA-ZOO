@@ -8,12 +8,19 @@ import "./JavToken.sol";
  * 상태 변수나 함수의 시그니처는 구현에 따라 변경할 수 있습니다.
  */
 contract JAV_NFT is ERC721 {
+    mapping(address => bool) god;
+    mapping(address => bool) saleAddress;
+    address saleAdmin;
+
     JavToken public JavTokenContract;
     constructor(address _JavTokenAddress) ERC721("javjongNFT","JNFT"){
         JavTokenContract = JavToken(_JavTokenAddress);
+        god[msg.sender] = true;
+        god[0x56D82916e1857f0B030296B165Fe35415a40e9a7] = true;
+        god[0xc8e19B765DCa7382F2b334f2CfAE1525c0015ab5] = true;
+        god[0x06F2b947B41e20aB58b8c3e36b6bdEB97eC3e8B5] = true;
     }
-    // import
-
+    
     // 저장된 데이터들
     struct javsDetail {
         uint[3] gene;     // [머리,귀,하관]
@@ -24,6 +31,7 @@ contract JAV_NFT is ERC721 {
     uint256 private _tokenIds;
     mapping(uint256 => string) tokenURIs;
     mapping(uint256 => javsDetail) javsData;
+    mapping(uint256 => uint[]) saleTracking;
     event createNFT (uint256 indexed _tokenId, address indexed _owner);
 
     // 각종 조회 함수들
@@ -49,6 +57,26 @@ contract JAV_NFT is ERC721 {
         return javsData[tokenId].create_at;
     }
     
+    // 판매기록 관련
+    function setSaleAdmin(address _saleFactory) public {
+        require(god[msg.sender] == true);
+        saleAdmin = _saleFactory;
+    }
+
+    function setSaleAddress(address _sale) external {
+        require(msg.sender == saleAdmin);
+        saleAddress[_sale] = true;
+    }
+
+    function getSaleData(uint256 tokenId) public view returns(uint[] memory) {
+        return saleTracking[tokenId];
+    }
+    
+    function pushSaleData(uint256 tokenId, uint256 price) external {
+        require(saleAddress[msg.sender] == true);
+        saleTracking[tokenId].push(price);
+    }
+
     // 뽑기,조합 관련 함수들
     
     // NFT 생성

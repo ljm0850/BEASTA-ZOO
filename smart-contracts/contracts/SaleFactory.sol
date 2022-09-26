@@ -24,10 +24,6 @@ contract SaleFactory is Ownable {
         uint256 _workId
     );
 
-    event Cancel(
-        uint256 tokenId,
-    );
-
     constructor(address _NFTcreatorAddress) {
         admin = msg.sender;
         NFTcreatorContract = JAV_NFT(_NFTcreatorAddress);
@@ -53,6 +49,7 @@ contract SaleFactory is Ownable {
         // NFTcreatorContract.saleApprovalForAll(seller);
         NFTcreatorContract.approve(address(instance), itemId);
         NFTcreatorContract.transferFrom(seller, address(instance), itemId);
+        NFTcreatorContract.setSaleAddress(address(instance));
         // return instance;
         // emit NewSale(_saleContract, _owner, _workId);
         sales.push(address(instance));
@@ -95,6 +92,9 @@ contract Sale {
     address public nftAddress;  // nft creator 주소(NFT 계약 주소)
     bool public ended;  // 판매 종료 여부
 
+    event Cancel(
+        uint256 tokenId
+    );
     // 현재 최고 입찰 상태
     // address public highestBidder;   // 필요 없을듯
     // uint256 public highestBid;  // 필요 없을듯
@@ -150,6 +150,7 @@ contract Sale {
         buyer = msg.sender;
         JavTokenContract.transferFrom(buyer, seller, purchase_amount);
         NFTcreatorContract.transferFrom(address(this), buyer, tokenId);
+        NFTcreatorContract.pushSaleData(tokenId,purchase_amount);
         emit SaleEnded(buyer, purchase_amount);
         _end();
     }
