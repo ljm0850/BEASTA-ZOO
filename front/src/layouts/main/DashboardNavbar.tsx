@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { alpha, styled } from "@mui/material/styles";
 import { Box, Stack, Button, AppBar, Toolbar } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
@@ -37,14 +37,12 @@ const DashboardNavbar = () => {
   const isLogined = sessionStorage.getItem("isLogined");
   const nickname = sessionStorage.getItem("nickname");
   const profileImgPath = sessionStorage.getItem("profileImgPath");
-  const bannerImgPath = sessionStorage.getItem("bannerImgPath");
-  const profileDescription = sessionStorage.getItem("profileDescription");
 
   const copyHandler = () => {
     navigator.clipboard.writeText(account);
     setCopy("copied!");
   };
-
+  
   // drawer
   const [drawerState, setDrawerState] = useState(false);
   const toggleDrawer =
@@ -68,7 +66,7 @@ const DashboardNavbar = () => {
   };
 
   const getBalance = async (account: string) => {
-    console.log(account);
+    // console.log(account);
     // const response = await SSFTokenContract.methods.balanceOf(account).call();
     // setBalance(response);
   };
