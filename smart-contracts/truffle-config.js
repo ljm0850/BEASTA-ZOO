@@ -18,10 +18,14 @@
  *
  */
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
-//
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+
+const fs = require('fs');
+const mnemonic = fs.readFileSync(".secret").toString().trim();
+
+const PrivateKeyProvider = require("truffle-privatekey-provider");
+const privateKey = "0x73aa84c7b24087489083d766d69d40dc85c28743cb01c7748992644c50b76b61";
+const privateKeyProvider = new PrivateKeyProvider(privateKey, "http://20.196.209.2:8545/")
 
 module.exports = {
   /**
@@ -42,9 +46,11 @@ module.exports = {
     // options below to some value.
     // e.g., 가나슈 환경 
      development: {
-      host: "127.0.0.1",     // Localhost (default: none)
-      port: 7545,            // Standard Ethereum port (default: none)
-      network_id: "*",       // Any network (default: none)
+      // host: "127.0.0.1",     // Localhost (default: none)
+      // port: 7545,            // Standard Ethereum port (default: none)
+      // network_id: "*",       // Any network (default: none)
+      provider: privateKeyProvider,
+      network_id: "*"
      },
     // Another network with more advanced options...
     // advanced: {
@@ -58,12 +64,13 @@ module.exports = {
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
     // ropsten: {
-    // provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/YOUR-PROJECT-ID`),
-    // network_id: 3,       // Ropsten's id
-    // gas: 5500000,        // Ropsten has a lower block limit than mainnet
-    // confirmations: 2,    // # of confs to wait between deployments. (default: 0)
-    // timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
-    // skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    //   provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/4985c515f9824ebd8d814f9f66245b38`),
+    //   network_id: 3,       // Ropsten's id
+    //   gas: 5500000,        // Ropsten has a lower block limit than mainnet
+    //   confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+    //   networkCheckTimeout: 10000,
+    //   timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+    //   skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     // },
     // Useful for private networks
     // private: {
@@ -81,7 +88,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.10",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.16",    // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
@@ -93,6 +100,9 @@ module.exports = {
     }
   },
 
+  plugins: [
+    'truffle-plugin-verify'
+  ],
   // Truffle DB is currently disabled by default; to enable it, change enabled:
   // false to enabled: true. The default storage location can also be
   // overridden by specifying the adapter settings, as shown in the commented code below.
