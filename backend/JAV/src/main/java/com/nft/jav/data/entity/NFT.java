@@ -28,9 +28,14 @@ public class NFT extends BaseTimeEntity {
     @Column
     private String jav_code;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "jav_id")
+    private ServiceCollection serviceCollection;
+
     @Builder
-    public NFT(long nft_id, User user, String nft_address, String img_address, String jav_code) {
+    public NFT(long nft_id, User user, ServiceCollection serviceCollection, String nft_address, String img_address, String jav_code) {
         this.nft_id = nft_id;
+        this.serviceCollection = serviceCollection;
         this.user = user;
         this.nft_address = nft_address;
         this.img_address = img_address;

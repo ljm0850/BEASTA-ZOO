@@ -34,11 +34,13 @@ public class CombiServiceImpl implements CombiService{
 
         User targetUser = userRepository.findById(combiReqDto.getUser_id())
                 .orElseThrow(IllegalArgumentException::new);
+        ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(combiReqDto.getJav_code());
 
         NFT savedNFT = nftRepository.save(NFT.builder()
                 .user(targetUser)
                 .nft_address(combiReqDto.getNft_address())
                 .jav_code(combiReqDto.getJav_code())
+                .serviceCollection(serviceTarget)
                 .img_address(combiReqDto.getImg_address())
                 .build());
 
@@ -52,8 +54,6 @@ public class CombiServiceImpl implements CombiService{
         nftRepository.delete(targetNft2);
 
         // 서비스 전체 도감에서 최초 발견자인지 확인
-        ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(combiReqDto.getJav_code());
-
         long userCount = targetUser.getFirst_discover_count();
         int serviceCount = serviceTarget.getDiscover_user_count();
 

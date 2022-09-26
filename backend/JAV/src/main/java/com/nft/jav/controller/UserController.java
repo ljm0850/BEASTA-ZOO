@@ -56,10 +56,11 @@ public class UserController {
     }
 
     @GetMapping("/nft/{wallet_address}")
-    public ResponseEntity<List<NFTResDto>> nftList(@PathVariable String wallet_address) {
+    public ResponseEntity<List<NFTResDto>> nftList(@PathVariable String wallet_address, @RequestParam int page,
+                                                   @RequestParam int size, @RequestParam int sort) {
         logger.info("nftList - 호출");
 
-        List<NFTResDto> nftResDtoList = nftService.getUserNFTList(wallet_address);
+        List<NFTResDto> nftResDtoList = nftService.getUserNFTList(wallet_address, page, size, sort);
         return new ResponseEntity<>(nftResDtoList,HttpStatus.OK);
     }
 

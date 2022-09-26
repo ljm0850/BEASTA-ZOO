@@ -37,16 +37,17 @@ public class DrawServiceImpl implements DrawService{
         User targetUser = userRepository.findById(drawReqDto.getUser_id())
                 .orElseThrow(IllegalArgumentException::new);
 
+        ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(drawReqDto.getJav_code());
+
         NFT savedNFT = nftRepository.save(NFT.builder()
                 .user(targetUser)
                 .nft_address(drawReqDto.getNft_address())
                 .jav_code(drawReqDto.getJav_code())
+                .serviceCollection(serviceTarget)
                 .img_address(drawReqDto.getImg_address())
                 .build());
 
         // 서비스 전체 도감에서 최초 발견자인지 확인
-        ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(drawReqDto.getJav_code());
-
         long userCount = targetUser.getFirst_discover_count();
         int serviceCount = serviceTarget.getDiscover_user_count();
 
