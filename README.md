@@ -166,9 +166,12 @@
 
 ## 5. 시연시나리오
 
-> 
+> - 배포
 
-<br/>
+![SC-시연1](.\README.assets\SC-시연8.gif)
+
++ 토큰 발행
+  + ![SC-시연2](.\README.assets\SC-시연1.gif)`
 
 #### 1) 메인페이지
 
@@ -177,10 +180,17 @@
 #### 2) 마켓플레이스
 
 - **뽑기**
+  - ![SC-시연2](.\README.assets\SC-시연4.gif)
 
 - **조합**
+  - !![SC-시연2](.\README.assets\SC-시연5.gif)
 
 - **거래**
+  - 판매등록
+  - ![SC-시연2](.\README.assets\SC-시연6.gif)
+  - 구매
+  - ![SC-시연2](.\README.assets\SC-시연7.gif)
+
 
 <br/>
 
