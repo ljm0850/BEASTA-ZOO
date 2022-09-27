@@ -41,6 +41,7 @@ public class NFTServiceImpl implements NFTService {
         List<NFTResDto> userNFTResDtoList = new ArrayList<>();
         for(NFT targetNFT : userNFTList) {
             userNFTResDtoList.add(NFTResDto.builder()
+                    .count(userNFTList.getTotalElements())
                     .total_page(userNFTList.getTotalPages())
                     .nft_id(targetNFT.getNft_id())
                     .nft_address(targetNFT.getNft_address())
