@@ -30,14 +30,10 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
     public List<ServiceCollectionResDto> serviceCollectionList(int page, int size) {
         logger.info("serviceCollectionList - 호출");
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<ServiceCollection> findAll = serviceCollectionRepository.findAll(pageRequest);
+        Page<ServiceCollection> findAll = serviceCollectionRepository.findDiscoverJav(pageRequest);
 
         List<ServiceCollectionResDto> findAllDto = new ArrayList<>();
         for(ServiceCollection serviceCollection : findAll){
-
-//            ServiceCollection serviceCollection = serviceCollectionRepository.findById(scr.getJav_id())
-//                    .orElseThrow(IllegalArgumentException::new);
-
             ServiceCollectionResDto resDto = ServiceCollectionResDto.builder()
                     .total_page(findAll.getTotalPages())
                     .jav_id(serviceCollection.getJav_id())
@@ -79,6 +75,31 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
         }
 
         return userSalesResDtoList;
+    }
+
+    @Override
+    public List<ServiceCollectionResDto> latestJav(int size) {
+        logger.info("latestJavList - 호출");
+        PageRequest pageRequest = PageRequest.of(0, size);
+        Page<ServiceCollection> findAll = serviceCollectionRepository.findLatest(pageRequest);
+
+        List<ServiceCollectionResDto> findAllDto = new ArrayList<>();
+        for(ServiceCollection serviceCollection : findAll){
+            ServiceCollectionResDto resDto = ServiceCollectionResDto.builder()
+                    .total_page(findAll.getTotalPages())
+                    .jav_id(serviceCollection.getJav_id())
+                    .user_id(serviceCollection.getUser().getUser_id())
+                    .jav_code(serviceCollection.getJav_code())
+                    .level(serviceCollection.getLevel())
+                    .jav_img_path(serviceCollection.getJav_img_path())
+                    .discover_time(serviceCollection.getCreate_date())
+                    .discover_user_count(serviceCollection.getDiscover_user_count())
+                    .build();
+
+            findAllDto.add(resDto);
+        }
+
+        return findAllDto;
     }
 
     @Override

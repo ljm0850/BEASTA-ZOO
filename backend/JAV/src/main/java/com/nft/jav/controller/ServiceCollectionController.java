@@ -26,6 +26,12 @@ public class ServiceCollectionController {
         return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(page,size), HttpStatus.OK);
     }
 
+    @GetMapping("/latest")
+    public ResponseEntity<List<ServiceCollectionResDto>> latestJavList(@RequestParam int size){
+        logger.info("latestJavList - 호출");
+        return new ResponseEntity<>(serviceCollectionService.latestJav(size), HttpStatus.OK);
+    }
+
     @GetMapping("/sale/{jav_code}")
     public ResponseEntity<List<SalesResDto>> saleListByJavCode(@RequestParam String jav_code){
         logger.info("saleListByJavCode - 호출");
