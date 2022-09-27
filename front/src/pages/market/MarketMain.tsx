@@ -1,6 +1,11 @@
+import { Box, Grid } from "@mui/material";
+import { useEffect, useState } from "react";
+import ItemFilterContainer from "../../layouts/items/ItemFilterContainer";
 import Items from "./Items";
 
 const MarketMain = () => {
+  const [search, setSearch] = useState<string>("0000000");
+
   /**
    * 프로젝트 구현
    * 1. API를 호출하고 응답 데이터를 화면에 표시합니다.
@@ -9,9 +14,16 @@ const MarketMain = () => {
    */
 
   return (
-    <div>
-      <Items page={0} size={10} search={"0000000"} />
-    </div>
+    <Box sx={{ mx: 5 }}>
+      <Grid container spacing={6}>
+        <Grid item xs={12} sm={3}>
+          <ItemFilterContainer setSearch={setSearch} search={search} />
+        </Grid>
+        <Grid item xs={12} sm={9}>
+          <Items page={0} size={10} search={search} />
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
