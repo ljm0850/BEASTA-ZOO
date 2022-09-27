@@ -68,7 +68,7 @@ public class CommunityController {
     }
 
     @GetMapping("/rank")
-    public ResponseEntity<List<UserResDto>> rankUser(){
+    public ResponseEntity<List<RankResDto>> rankUser(){
         logger.info("ranking - 호출");
         return new ResponseEntity<>(communityService.rankUser(), HttpStatus.OK);
     }

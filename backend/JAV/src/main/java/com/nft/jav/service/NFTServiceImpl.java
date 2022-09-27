@@ -2,10 +2,13 @@ package com.nft.jav.service;
 
 import com.nft.jav.data.dto.NFTResDto;
 import com.nft.jav.data.entity.NFT;
+import com.nft.jav.data.entity.Sales;
 import com.nft.jav.data.entity.User;
 import com.nft.jav.data.repository.NFTRepository;
 import com.nft.jav.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,16 +25,23 @@ public class NFTServiceImpl implements NFTService {
     private final NFTRepository nftRepository;
 
     @Override
-    public List<NFTResDto> getUserNFTList(String wallet_address) {
+    public List<NFTResDto> getUserNFTList(String wallet_address, int page, int size, int sort) {
         User targetUser = userRepository.findByWalletAddress(wallet_address);
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<NFT> userNFTList;
 
-        List<NFT> userNFTList = nftRepository.findAllByUserId(targetUser);
+        if(sort==0){ // 최근순
+            userNFTList= nftRepository.findAllByUserSortLatest(targetUser,pageRequest);
+        } else if(sort==1){ // 오래된순
+            userNFTList= nftRepository.findAllByUserSortOldest(targetUser,pageRequest);
+        } else { // 티어순
+            userNFTList= nftRepository.findAllByUserSortTier(targetUser,pageRequest);
+        }
 
         List<NFTResDto> userNFTResDtoList = new ArrayList<>();
-        for(int i=0;i<userNFTList.size();i++) {
-            NFT targetNFT = userNFTList.get(i);
-
+        for(NFT targetNFT : userNFTList) {
             userNFTResDtoList.add(NFTResDto.builder()
+                    .total_page(userNFTList.getTotalPages())
                     .nft_id(targetNFT.getNft_id())
                     .nft_address(targetNFT.getNft_address())
                     .user_id(targetUser.getUser_id())

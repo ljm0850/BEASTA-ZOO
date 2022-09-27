@@ -1,12 +1,10 @@
 package com.nft.jav.service;
 
-import com.nft.jav.data.dto.CommunityModiReqDto;
-import com.nft.jav.data.dto.CommunityReqDto;
-import com.nft.jav.data.dto.CommunityResDto;
-import com.nft.jav.data.dto.UserResDto;
+import com.nft.jav.data.dto.*;
 import com.nft.jav.data.entity.Community;
 import com.nft.jav.data.entity.User;
 import com.nft.jav.data.repository.CommunityRepository;
+import com.nft.jav.data.repository.UserCollectionRepository;
 import com.nft.jav.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,7 +23,7 @@ public class CommunityServiceImpl implements CommunityService{
 
     private final Logger logger = LoggerFactory.getLogger(CommunityServiceImpl.class);
     private final CommunityRepository communityRepository;
-
+    private final UserCollectionRepository userCollectionRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -138,30 +136,25 @@ public class CommunityServiceImpl implements CommunityService{
     }
 
     @Override
-    public List<UserResDto> rankUser() {
+    public List<RankResDto> rankUser() {
         logger.info("rankUser service - 호출");
 
-        List<User> target = userRepository.findAll(Sort.by(Sort.Direction.DESC, "first_discover_count"));
+        List<RankRes> target = userCollectionRepository.countByUser();
 
-        List<UserResDto> userResDtoList = new ArrayList<>();
+        List<RankResDto> rankDtoList = new ArrayList<>();
 
         for(int i=0; i<target.size(); i++){
-            User targetUser = target.get(i);
-
-            UserResDto userResDto = UserResDto.builder()
-                    .nickname(targetUser.getNickname())
-                    .profile_img_path(targetUser.getProfile_img_path())
-                    .banner_img_path(targetUser.getBanner_img_path())
-                    .profile_description(targetUser.getProfile_description())
-                    .first_discover_count(targetUser.getFirst_discover_count())
-                    .tier(targetUser.getTier())
-                    .token(targetUser.getToken())
+            RankRes rankRes = target.get(i);
+            rankRes.getUser().updateTier(i+1);
+            RankResDto rankResDto = RankResDto.builder()
+                    .nickname(rankRes.getUser().getNickname())
+                    .user_id(rankRes.getUser().getUser_id())
+                    .grade(rankRes.getCount())
                     .build();
-
-            userResDtoList.add(userResDto);
+            logger.info(rankResDto.toString());
+            rankDtoList.add(rankResDto);
         }
 
-        return userResDtoList;
+        return rankDtoList;
     }
-
 }

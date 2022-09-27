@@ -1,5 +1,6 @@
 package com.nft.jav.service;
 
+import com.nft.jav.data.dto.UserRankResDto;
 import com.nft.jav.data.dto.UserReqDto;
 import com.nft.jav.data.dto.UserResDto;
 
@@ -8,7 +9,7 @@ public interface UserService {
 
     UserResDto userInfo(String wallet_address);
 
-    Double getUserTier(String wallet_address);
+    UserRankResDto getUserTier(String wallet_address);
 
     Double getUserToken(String wallet_address);
 

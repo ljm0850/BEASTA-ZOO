@@ -56,10 +56,11 @@ public class UserController {
     }
 
     @GetMapping("/nft/{wallet_address}")
-    public ResponseEntity<List<NFTResDto>> nftList(@PathVariable String wallet_address) {
+    public ResponseEntity<List<NFTResDto>> nftList(@PathVariable String wallet_address, @RequestParam int page,
+                                                   @RequestParam int size, @RequestParam int sort) {
         logger.info("nftList - 호출");
 
-        List<NFTResDto> nftResDtoList = nftService.getUserNFTList(wallet_address);
+        List<NFTResDto> nftResDtoList = nftService.getUserNFTList(wallet_address, page, size, sort);
         return new ResponseEntity<>(nftResDtoList,HttpStatus.OK);
     }
 
@@ -79,12 +80,11 @@ public class UserController {
         return new ResponseEntity<>(purchaseResDtoList, HttpStatus.OK);
     }
 
-    @GetMapping("/tier/{wallet_address}")
-    public ResponseEntity<Double> tier(@PathVariable String wallet_address) {
-        logger.info("tier - 호출");
-
-        Double userTier = userService.getUserTier(wallet_address);
-        return new ResponseEntity<>(userTier,HttpStatus.OK);
+    @GetMapping("/rank/{wallet_address}")
+    public ResponseEntity<UserRankResDto> tier(@PathVariable String wallet_address) {
+        logger.info("user rank - 호출");
+        UserRankResDto userRankResDto = userService.getUserTier(wallet_address);
+        return new ResponseEntity<>(userRankResDto,HttpStatus.OK);
     }
 
     @GetMapping("/token/{wallet_address}")
