@@ -3,15 +3,16 @@ import { Box, Card, Link, Typography, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export interface Product {
-  url: string | undefined;
-  price: number | 0;
-  nftId: number | undefined;
-  buyerWallet: string | undefined;
-  saleId: number | 0;
+  url: string;
+  price: number;
+  nftId: number;
+  buyerWallet: string;
+  sellerWallet: string;
+  saleId: number;
   saleStartDate: string;
   saleCompleteDate: string;
   contractAddress: string;
-  sellerId: number | 0;
+  state: number;
 }
 
 const ImgStyle = styled("img")({
@@ -23,7 +24,7 @@ const ImgStyle = styled("img")({
 });
 
 const ItemsCard = ({ product }: { product: Product }) => {
-  const { url, price, nftId, saleId, sellerId } = product;
+  const { url, price, state, saleId, sellerWallet } = product;
   const symbol = "JAV";
 
   return (
@@ -40,7 +41,10 @@ const ItemsCard = ({ product }: { product: Product }) => {
           component={RouterLink}
         >
           <Typography variant="subtitle1" noWrap>
-            {nftId}
+            {state === 0 ? "판매중" : "판매완료"}
+          </Typography>
+          <Typography variant="subtitle1" noWrap>
+            판매자 : {sellerWallet}
           </Typography>
         </Link>
 

@@ -4,8 +4,9 @@ import MainLayout from "./layouts/main";
 import MainPage from "./pages/mainpage/MainPage";
 import ItemDraw from "./pages/market/ItemDraw";
 import Profile from "./pages/profile/Profile";
-import Items from "./pages/market/Items";
 import SaleRegistration from "./pages/market/SaleRegistration";
+import ItemPurchase from "./pages/market/ItemPurchase";
+import MarketMain from "./pages/market/MarketMain";
 
 export default function Router() {
   return useRoutes([
@@ -22,9 +23,9 @@ export default function Router() {
       path: "/market",
       element: <MainLayout />,
       children: [
-        { path: "", element: <Items /> },
+        { path: "", element: <MarketMain /> },
         { path: "draw", element: <ItemDraw /> },
-        { path: "register", element: <SaleRegistration /> },
+        { path: "buy/:nftId", element: <ItemPurchase /> },
       ],
     },
     {
