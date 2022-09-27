@@ -13,7 +13,10 @@ import java.util.List;
 @Repository
 public interface UserCollectionRepository extends JpaRepository<UserCollection, Long> {
 
-    @Query(value = "select U.user, count(U.user) as grade from UserCollection U group by U.user order by grade desc")
+    @Query(value = "select " +
+            "new com.nft.jav.data.dto.RankRes(U.user, count(U.user)) " +
+            "from UserCollection U " +
+            "group by U.user order by 2 desc")
     List<RankRes> countByUser();
 
     @Query(value = "select count(U.user) from UserCollection U where U.user.wallet_address =:wallet_address")
