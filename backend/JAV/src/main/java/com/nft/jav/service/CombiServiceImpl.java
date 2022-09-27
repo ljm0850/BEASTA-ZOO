@@ -1,14 +1,12 @@
 package com.nft.jav.service;
 
 import com.nft.jav.data.dto.CombiReqDto;
+import com.nft.jav.data.dto.NFTAbleResDto;
 import com.nft.jav.data.entity.NFT;
 import com.nft.jav.data.entity.ServiceCollection;
 import com.nft.jav.data.entity.User;
 import com.nft.jav.data.entity.UserCollection;
-import com.nft.jav.data.repository.NFTRepository;
-import com.nft.jav.data.repository.ServiceCollectionRepository;
-import com.nft.jav.data.repository.UserCollectionRepository;
-import com.nft.jav.data.repository.UserRepository;
+import com.nft.jav.data.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -25,6 +25,7 @@ public class CombiServiceImpl implements CombiService{
     private final Logger logger = LoggerFactory.getLogger(CombiServiceImpl.class);
     private final NFTRepository nftRepository;
     private final UserRepository userRepository;
+    private final SalesRepository salesRepository;
     private final ServiceCollectionRepository serviceCollectionRepository;
     private final UserCollectionRepository userCollectionRepository;
 
@@ -85,5 +86,31 @@ public class CombiServiceImpl implements CombiService{
         if(savedNFT !=null && savedUserCollection !=null) return true;
 
         return false;
+    }
+
+    @Override
+    public List<NFTAbleResDto> availableNFT(String wallet_address) {
+        User targetUser = userRepository.findByWalletAddress(wallet_address);
+        List<NFT> userNFT = nftRepository.findAllByUserId(targetUser);
+        List<NFT> salesNFT = salesRepository.findNFTByUser(targetUser);
+
+        List<NFTAbleResDto> nftList = new ArrayList<>();
+
+        for(int i=0; i<userNFT.size(); i++){
+            NFT targetNFT = userNFT.get(i);
+            if(!salesNFT.contains(userNFT.get(i))) {
+                NFTAbleResDto nftAbleResDto = NFTAbleResDto.builder()
+                        .img_address(targetNFT.getImg_address())
+                        .nft_id(targetNFT.getNft_id())
+                        .jav_code(targetNFT.getJav_code())
+                        .nft_address(targetNFT.getNft_address())
+                        .user_id(targetNFT.getUser().getUser_id())
+                        .build();
+
+                nftList.add(nftAbleResDto);
+            }
+        }
+
+        return nftList;
     }
 }
