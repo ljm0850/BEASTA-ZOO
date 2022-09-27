@@ -123,6 +123,10 @@ const ItemFilterContainer = ({ search, setSearch }: Props) => {
     }
   };
 
+  const clearFilter = () => {
+    setSearch("0000000");
+  };
+
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -170,6 +174,14 @@ const ItemFilterContainer = ({ search, setSearch }: Props) => {
           </Accordion>
         );
       })}
+      <Button
+        onClick={() => clearFilter()}
+        size="large"
+        variant="contained"
+        color="warning"
+      >
+        초기화
+      </Button>
       <p>{search}</p>
     </div>
   );

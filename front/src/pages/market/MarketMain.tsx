@@ -1,5 +1,5 @@
 import { Box, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ItemFilterContainer from "../../layouts/items/ItemFilterContainer";
 import Items from "./Items";
 
