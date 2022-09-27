@@ -9,7 +9,22 @@ import draw2 from "../../image/draw2.gif";
 import { useState } from "react";
 import JavModal from "../../layouts/modal/JavModal";
 import AlertDialog from "../../layouts/dialog/AlertDialog";
-import Web3 from "web3";
+import _ from "lodash";
+// SC import
+import {
+  web3,
+  JAV_NFT_Contract,
+  JavToken_Contract,
+  CreateJavToken,
+  BalanceOfJavToken,
+  getWalletAddress,
+  PickUp
+} from "../../common/ABI";
+// 이미지 합성
+// import mergeImages from 'merge-images';
+
+// 테스트
+import { ethers } from "ethers";
 
 const ItemDraw = () => {
   /**
@@ -34,8 +49,40 @@ const ItemDraw = () => {
   const handleClickOpenAlert = () => setOpenAlert(true);
   const handleCloseAlert = () => setOpenAlert(false);
 
-  // 뽑기 컨트랙트 전송
-  const web3 = new Web3(window.ethereum);
+
+
+  // function createImage(genes,acces) {
+  //   // const [b64, setB64] = useState("");
+  //   // const reload = () => {
+  //   const ears = require(`./asset/ears/${_.random(1, 9)}.svg`);
+  //   const head = require(`./asset/head/${_.random(1, 7)}.svg`);
+  //   const eyes = require(`./asset/eyes/${_.random(1, 16)}.svg`);
+  //   const body = require(`./asset/body/${_.random(1, 12)}.svg`);
+  //   const background = require(`./asset/background/${_.random(1, 12)}.svg`);
+  //   const face = require(`./asset/face/${_.random(1, 9)}.svg`);
+  //   const acc = require(`./asset/acc/${_.random(1, 12)}.svg`);
+  //   // }
+  // }
+  // 테스트중
+
+  const test = async () => {
+    const address = await getWalletAddress();
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const signature = await signer.signMessage(address);
+    console.log(signer);
+    CreateJavToken(address);
+    console.log(BalanceOfJavToken());
+  };
+
+  // 뽑기 함수
+  const pickup = async () => {
+    const address = await getWalletAddress();
+    // 유전 획득
+    // await console.log(BigInt(genes[0]).toString(16));
+    await PickUp(address);
+   
+  };
 
   const payDraw = async () => {
     const accounts = await web3.eth.getAccounts();
@@ -64,6 +111,8 @@ const ItemDraw = () => {
             alignItems: "center",
           }}
         >
+          <button onClick={test}> 10000 JavToken 받기</button>
+          <button onClick={pickup}> JAV NFT 발급</button>
           <Box
             component="form"
             sx={{
@@ -96,32 +145,6 @@ const ItemDraw = () => {
                     }}
                   />
                   100.00 JAV
-                </Button>
-              </CardActions>
-            </Card>
-
-            <Card sx={{ minWidth: 275 }}>
-              <CardContent>
-                10연속 뽑기
-                <img style={{ width: "250px" }} src={draw2} alt="" />
-              </CardContent>
-              <CardActions
-                style={{ display: "flex", justifyContent: "center" }}
-              >
-                <Button
-                  sx={{ fontWeight: "bold" }}
-                  variant="contained"
-                  size="small"
-                  color="secondary"
-                >
-                  <Jav
-                    style={{
-                      width: "1.2rem",
-                      height: "auto",
-                      marginRight: "0.3rem",
-                    }}
-                  />
-                  1000.00 JAV
                 </Button>
               </CardActions>
             </Card>

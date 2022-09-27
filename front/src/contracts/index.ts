@@ -1285,7 +1285,7 @@ export const CreateSale = async (nftId: BigInt, purchasePrice: BigInt) => {
 export const PurchaseNFT = async (nftId: BigInt, sellPrice: BigInt, purchaseAmount: BigInt) => {
   const SaleContractAddress = CreateSale(nftId, sellPrice);
 
-  const SaleContract = new web3.eth.Contract()
+  //const SaleContract = new web3.eth.Contract()
   
 }
 
