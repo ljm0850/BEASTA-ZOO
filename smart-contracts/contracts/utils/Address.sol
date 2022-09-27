@@ -31,7 +31,7 @@ library Address {
 
         uint256 size;
         assembly {
-            size := extcodesize(account)
+            size := extcodesize(account) // :=는 재할당
         }
         return size > 0;
     }
