@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { getMyNFTs } from "../../api/connect";
+import JavModal from "../../layouts/modal/JavModal";
+import SaleModal from "../../layouts/modal/SaleModal";
 
 import Grid from "@mui/material/Grid";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -13,7 +15,7 @@ interface Props {
   account: string | undefined;
 }
 
-interface NFT {
+export interface NFT {
   count: number;
   nft_id: number;
   nft_address: string;
@@ -78,6 +80,7 @@ const MyJavs = (props: Props) => {
     setLoad(true); //로딩 시작
     getMyNFTs(account, page, 12, Number(sortOption))
       .then((res) => {
+        console.log(res)
         setItemCount(res[0].count)
         setList((prev) => [...prev, ...res]); //리스트 추가
         preventRef.current = true;
@@ -95,10 +98,18 @@ const MyJavs = (props: Props) => {
   }, [page]);
 
 
-  // modal 
+  // JAV info modal 
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {setOpen(true)};
   const handleClose = () => setOpen(false);
+  const [ modalData, setModalData ] = useState<NFT>();
+
+  // JAV sale modal
+  const [saleModalOpen, setSaleModalOpen] = useState(false);
+  const saleModalOpenHandler = () => { setSaleModalOpen(true)};
+  const saleModalClose = () => setSaleModalOpen(false);
+  const [saleJavImg, setSaleJavImg] = useState("");
+  const [saleJavData, setSaleJavData] = useState(''); 
 
 
   return (
@@ -144,9 +155,17 @@ const MyJavs = (props: Props) => {
             {list.map((contact, index) => (
               <Grid item xs={2} sm={3} md={4} lg={3} xl={2} key={index}>
                 <div className={styles.javs}>
-                  <img src={contact.img_address} onClick={handleOpen} alt="" />
-                  <div className={styles.sale}>판매하기</div>
+                  <img src={contact.img_address} onClick={() => {
+                    handleOpen()
+                    setModalData(contact)
+                  }} alt="" />
+                  <div className={styles.sale} onClick={() => {
+                    saleModalOpenHandler()
+                    setSaleJavImg(contact.img_address)
+                    setSaleJavData(contact.nft_address)
+                  }}>판매하기</div>
                 </div>
+
               </Grid>
             ))}
           </Grid>
@@ -156,6 +175,9 @@ const MyJavs = (props: Props) => {
         <div>no item</div>
       )}
       <div ref={obsRef}></div>
+      {/* modal */}
+      <JavModal open={open} onClose={handleClose} name={"123"} data={modalData}></JavModal>
+      <SaleModal open={saleModalOpen} onClose={saleModalClose} jav={saleJavData} imgAddr={saleJavImg}/>
     </div>
   );
 };

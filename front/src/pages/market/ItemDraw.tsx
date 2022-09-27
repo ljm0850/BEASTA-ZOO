@@ -134,8 +134,15 @@ const ItemDraw = () => {
         open={openItem}
         onClose={handleCloseItem}
         name="이잼민"
-        url="https://mblogthumb-phinf.pstatic.net/MjAyMTA1MTNfMjkz/MDAxNjIwOTEwNDQ3MjQ1.RjpPwu8qenTvn6uEdct9lXaDu6a-eaubruR2i06SjtUg.5izLqsFxNagkeTGMbhf6sGBbNE4adeUKdELQ-H4vozMg.PNG.ysg3355/image.png?type=w800"
-      />
+        data={{
+          count: 0,
+          nft_id: 123,
+          nft_address: "https://mblogthumb-phinf.pstatic.net/MjAyMTA1MTNfMjkz/MDAxNjIwOTEwNDQ3MjQ1.RjpPwu8qenTvn6uEdct9lXaDu6a-eaubruR2i06SjtUg.5izLqsFxNagkeTGMbhf6sGBbNE4adeUKdELQ-H4vozMg.PNG.ysg3355/image.png?type=w800",
+          img_address: "string",
+          user_id: 123,
+          jav_code: 1231,
+          total_page: 3,
+        }} />
       <AlertDialog
         open={openAlert}
         onClose={handleCloseAlert}
