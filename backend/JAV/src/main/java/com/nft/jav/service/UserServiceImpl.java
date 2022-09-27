@@ -1,8 +1,10 @@
 package com.nft.jav.service;
 
+import com.nft.jav.data.dto.UserRankResDto;
 import com.nft.jav.data.dto.UserReqDto;
 import com.nft.jav.data.dto.UserResDto;
 import com.nft.jav.data.entity.User;
+import com.nft.jav.data.repository.UserCollectionRepository;
 import com.nft.jav.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,6 +19,7 @@ public class UserServiceImpl implements UserService {
     private final Logger logger = LoggerFactory.getLogger(CommunityServiceImpl.class);
 
     private final UserRepository userRepository;
+    private final UserCollectionRepository userCollectionRepository;
 
     @Override
     public UserResDto login(String wallet_address) {
@@ -64,10 +67,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Double getUserTier(String wallet_address) {
+    public UserRankResDto getUserTier(String wallet_address) {
         User targetUser = userRepository.findByWalletAddress(wallet_address);
+        UserRankResDto userRankResDto = UserRankResDto.builder()
+                .rank(targetUser.getTier())
+                .grade(userCollectionRepository.countByWallet(wallet_address))
+                .build();
 
-        return targetUser.getTier();
+        return userRankResDto;
     }
 
     @Override
