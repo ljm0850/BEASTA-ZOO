@@ -52,7 +52,7 @@ const Items = ({ page, size, search }: Props) => {
 
   useEffect(() => {
     getItem();
-  }, []);
+  }, [search]);
 
   return (
     <div>
