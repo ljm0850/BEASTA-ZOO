@@ -1636,23 +1636,23 @@ export const CreateSale = async (address: string, tokenId:Number, price:Number) 
   return SaleContractAddress;
 }
 
-export const Purchase = async (address:string, saleAddress:string, price:Number) {
+export const Purchase = async (address:string, saleAddress:string, price:Number) => {
   await JavToken_Contract.methods.approve(saleAddress, price).send({from : address});
 
-  export const Sale_Contract = new web3.eth.Contract(
+  const Sale_Contract = new web3.eth.Contract(
     ABI.CONTRACT_ABI.SALE_ABI,
     saleAddress
   );
 
   await Sale_Contract.methods.purchase(price);
-}
+};
 
 export const cancelSale = async(saleAddress:string) => {
-  export const Sale_Contract = new web3.eth.Contract(
+  const Sale_Contract = new web3.eth.Contract(
     ABI.CONTRACT_ABI.SALE_ABI,
     saleAddress
   );
 
   const bool = await Sale_Contract.methods.cancelSales();
   return bool;
-}
+};
