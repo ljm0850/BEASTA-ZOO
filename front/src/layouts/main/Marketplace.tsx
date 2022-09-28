@@ -1,4 +1,5 @@
 import { Navigate, useNavigate } from "react-router-dom";
+import styles from "./Marketplace.module.scss";
 
 import Items from "../../pages/market/Items";
 import { Button } from "@mui/material";
@@ -16,6 +17,7 @@ const Marketplace = () => {
           }}
           variant="contained"
           size="large"
+          className={styles.marketNav}
         >
           View all
         </Button>

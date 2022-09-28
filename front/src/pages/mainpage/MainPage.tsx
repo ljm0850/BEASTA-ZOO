@@ -45,14 +45,10 @@ const MainPage = () => {
         { sessionStorage.getItem("isLogined") && <p>Welcome, {userNickname}</p>}
         <div className={styles.mainBanner}>
           <img src={banner} alt="banner" onClick={() => {navigate("/market/draw")}} className={styles.banner} />
-          {/* <img src={guide} alt="banner" className={styles.guide} /> */}
+          <img src={guide} alt="banner" className={styles.guide} />
         </div>
         <RecentlyCollections />
         <Marketplace />
-        <div className={styles.mainBanner}>
-          {/* <img src={banner} alt="banner" onClick={() => {navigate("/market/draw")}} className={styles.banner} /> */}
-          <img src={guide} alt="banner" className={styles.guide} />
-        </div>
         <CollectorRanking />
       </Box>
       <SeasonCarousel />
