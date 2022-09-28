@@ -1,15 +1,30 @@
-.mainBanner {
-  text-align: center;
+.mainBody {
+  // display: flex;
+  // justify-content: center;
+  // text-align: center;
+  width: auto;
+
+  .mainBanner {
+    text-align: center;
+    
+    .banner {
+      // position: absolute;
+      width: 100%;
+      margin-top: 3%;
   
-  .banner {
-    position: relative;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+  
+  .guide {
+    // position: absolute;
+    width: 100%;
+    margin-top: 5%;
     
     &:hover {
       cursor: pointer;
     }
   }
-}
-
-.guide {
-  text-align: center;
 }

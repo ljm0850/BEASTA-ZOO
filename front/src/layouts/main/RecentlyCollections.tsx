@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { recentCollection } from "../../api/collections";
-import dragon from "../../image/mainPage/dragon.png"
+import styles from "./RecentlyCollections.module.scss";
 
 const RecentlyCollections = () => {
   interface recentJAV {
@@ -23,15 +23,10 @@ const RecentlyCollections = () => {
 
   return (
     <div>
-      <h2>Recently added collections</h2>
-      <p>방금 도감에 추가된 JAV를 구경하세요.</p>
-      <img src={dragon} alt="dragon" />
-      <img src={dragon} alt="dragon" />
-      <img src={dragon} alt="dragon" />
-      <img src={dragon} alt="dragon" />
-      <img src={dragon} alt="dragon" />
+      <p className={styles.RCTitle}>Recently added collections</p>
+      <p className={styles.RCDetail}>방금 도감에 추가된 JAV를 구경하세요.</p>
       {collectionsUrl.map((item, idx) => {
-        return (item.jav_img_path)
+        return <img src={item.jav_img_path} alt="" className={styles.recentColl}/>
       })}
     </div>
   );

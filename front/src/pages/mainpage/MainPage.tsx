@@ -40,17 +40,19 @@ const MainPage = () => {
 
 
   return (
-    <div>
-      <Box sx={{ margin: "72px" }}>
-          <p>Welcome, {userNickname}</p>
+    <div className={styles.mainBody}>
+      <Box sx={{ width: "75%", margin: "5% 15% 0 15%" }}>
+        { sessionStorage.getItem("isLogined") && <p>Welcome, {userNickname}</p>}
         <div className={styles.mainBanner}>
-          <div className={styles.banner}>
-            <img src={banner} alt="banner" onClick={() => {navigate("/market/draw")}} />
-          </div>
-          <img src={guide} alt="banner" className={styles.guide} />
+          <img src={banner} alt="banner" onClick={() => {navigate("/market/draw")}} className={styles.banner} />
+          {/* <img src={guide} alt="banner" className={styles.guide} /> */}
         </div>
         <RecentlyCollections />
         <Marketplace />
+        <div className={styles.mainBanner}>
+          {/* <img src={banner} alt="banner" onClick={() => {navigate("/market/draw")}} className={styles.banner} /> */}
+          <img src={guide} alt="banner" className={styles.guide} />
+        </div>
         <CollectorRanking />
       </Box>
       <SeasonCarousel />
