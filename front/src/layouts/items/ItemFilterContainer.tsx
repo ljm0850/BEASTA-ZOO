@@ -1,4 +1,4 @@
-//static files
+// static files
 import ears1 from "../../image/parts/ears/1.svg";
 import ears2 from "../../image/parts/ears/2.svg";
 import ears3 from "../../image/parts/ears/3.svg";
@@ -46,7 +46,7 @@ import {
 import { Dispatch, SetStateAction, useState } from "react";
 import FetchAnimal from "../../utils/FetchAnimal";
 
-interface ImageFilter {
+interface Parts {
   id: number;
   title: string;
   images: string[];
@@ -89,7 +89,7 @@ const ItemFilterContainer = ({
 }: Props) => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
-  const filters: ImageFilter[] = [
+  const filters: Parts[] = [
     {
       id: 1,
       title: "머리",
@@ -155,7 +155,7 @@ const ItemFilterContainer = ({
 
   return (
     <div>
-      {filters.map((filter: ImageFilter, index: number) => {
+      {filters.map((filter: Parts, index: number) => {
         return (
           <Accordion
             expanded={expanded === String(filter.id)}
