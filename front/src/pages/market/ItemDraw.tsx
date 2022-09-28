@@ -179,8 +179,7 @@ const ItemDraw = () => {
         >
           <button onClick={getJavToken}> 10000 JavToken 받기</button>
           <button onClick={pickup}> JAV NFT 발급</button>
-          <button onClick={fusionjavs}> JAV NFT 조합하기</button>
-          <button onClick={createsale}> JAV NFT 판매하기</button>
+          
           <img src={b64} alt="" />
           <img src={test}/>
           <Box
