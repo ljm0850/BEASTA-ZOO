@@ -10,9 +10,11 @@ interface Props {
   page: number;
   size: number;
   search: string;
+  haveCompleted: number;
+  sort: number;
 }
 
-const Items = ({ page, size, search }: Props) => {
+const Items = ({ page, size, search, haveCompleted, sort }: Props) => {
   const [item, setItem] = useState<Product[]>([]);
   const [isCollection, setIsCollection] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,15 +30,18 @@ const Items = ({ page, size, search }: Props) => {
     // TODO
     setLoading(true);
 
-    fetchItems(page, size, search).then((res) => {
+    fetchItems(page, size, search, haveCompleted, sort).then((res) => {
       const resultList = [] as Product[];
       res.map((item: any) =>
         resultList.push({
           saleId: item.sale_id,
           url: item.img_address,
           nftId: item.nft_id,
+          javCode: item.jav_code,
           sellerWallet: item.seller_wallet,
+          sellerNickname: item.seller_nickname,
           buyerWallet: item.buyer_wallet,
+          buyerNickname: item.buyer_nickname,
           price: item.price,
           saleStartDate: item.sale_start_date,
           saleCompleteDate: item.sale_complete_date,
@@ -52,7 +57,7 @@ const Items = ({ page, size, search }: Props) => {
 
   useEffect(() => {
     getItem();
-  }, [search]);
+  }, [search, haveCompleted, sort]);
 
   return (
     <div>

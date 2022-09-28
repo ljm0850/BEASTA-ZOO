@@ -32,8 +32,18 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Button, Grid } from "@mui/material";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
+import { Dispatch, SetStateAction, useState } from "react";
 
 interface ImageFilter {
   id: number;
@@ -63,9 +73,20 @@ String.prototype.changeIndex = function (
 interface Props {
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
+  haveCompleted: number;
+  setHaveCompleted: Dispatch<SetStateAction<number>>;
+  sort: number;
+  setSort: Dispatch<SetStateAction<number>>;
 }
 
-const ItemFilterContainer = ({ search, setSearch }: Props) => {
+const ItemFilterContainer = ({
+  search,
+  setSearch,
+  haveCompleted,
+  setHaveCompleted,
+  sort,
+  setSort,
+}: Props) => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const filters: ImageFilter[] = [
@@ -123,6 +144,10 @@ const ItemFilterContainer = ({ search, setSearch }: Props) => {
     }
   };
 
+  const clearFilter = () => {
+    setSearch("0000000");
+  };
+
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -170,6 +195,52 @@ const ItemFilterContainer = ({ search, setSearch }: Props) => {
           </Accordion>
         );
       })}
+      <Button
+        onClick={() => clearFilter()}
+        size="large"
+        variant="contained"
+        color="warning"
+      >
+        초기화
+      </Button>
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Checkbox
+              onClick={() => setHaveCompleted(1 - haveCompleted)}
+              checked={!!haveCompleted}
+            />
+          }
+          label="판매완료NFT"
+        />
+      </FormGroup>
+      <FormControl>
+        <FormLabel id="demo-radio-buttons-group-label">정렬</FormLabel>
+        <RadioGroup
+          aria-labelledby="demo-radio-buttons-group-label"
+          defaultValue="recent"
+          name="radio-buttons-group"
+        >
+          <FormControlLabel
+            value="recent"
+            control={<Radio />}
+            label="최신순"
+            onClick={() => setSort(0)}
+          />
+          <FormControlLabel
+            value="priceLow"
+            control={<Radio />}
+            label="가격낮은순"
+            onClick={() => setSort(1)}
+          />
+          <FormControlLabel
+            value="priceHigh"
+            control={<Radio />}
+            label="가격높은순"
+            onClick={() => setSort(2)}
+          />
+        </RadioGroup>
+      </FormControl>
       <p>{search}</p>
     </div>
   );
