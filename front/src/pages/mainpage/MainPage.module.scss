@@ -1,0 +1,15 @@
+.mainBanner {
+  text-align: center;
+  
+  .banner {
+    position: relative;
+    
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.guide {
+  text-align: center;
+}

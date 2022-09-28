@@ -1,16 +1,25 @@
-import dragon from "../../image/mainPage/dragon.png"
+import { Navigate, useNavigate } from "react-router-dom";
+
+import Items from "../../pages/market/Items";
+import { Button } from "@mui/material";
 
 const Marketplace = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
       <h3>Marketplace</h3>
       <p>Jav를 자유롭게 거래해보세요</p>
-      <button>View all</button>
-      <img src={dragon} alt="dragon" />
-      <img src={dragon} alt="dragon" />
-      <img src={dragon} alt="dragon" />
-      <img src={dragon} alt="dragon" />
-      <img src={dragon} alt="dragon" />
+      <Button
+          onClick={() => {
+            navigate("/market");
+          }}
+          variant="contained"
+          size="large"
+        >
+          View all
+        </Button>
+      <Items page={0} size={4} search={"0000000"} />
     </div>
   );
 };

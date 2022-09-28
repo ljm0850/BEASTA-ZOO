@@ -1,57 +1,45 @@
+import { useEffect, useState } from "react";
+import { userRank } from "../../api/collections";
+import "./CollectorRanking.module.scss";
+
 const Marketplace = () => {
+  interface Ranking {
+    user_id: number;
+    nickname: string;
+    grade: number;
+  }
+
+  const [rankList, setRankList] = useState<Ranking[]>([]);
+
+  useEffect(() => {
+    userRank().then((res :Ranking[]) => {
+      setRankList(res)
+    })
+  }, [])
+
   return (
     <div>
-      <h3>Collector Ranking</h3>
+      <h1>Collector Ranking</h1>
       <table>
-        <th>Collector</th>
-        <th>Own Javs</th>
-        <th>Collections</th>
+      <thead>
         <tr>
-          <td>1. Inho</td>
-          <td>32,321</td>
-          <td>132,321</td>
+          <th>rank</th>
+          <th>user_id</th>
+          <th>grade</th>
         </tr>
-        <tr>
-          <td>2. Inho</td>
-          <td>32,321</td>
-          <td>132,321</td>
-        </tr>
-        <tr>
-          <td>3. Inho</td>
-          <td>32,321</td>
-          <td>132,321</td>
-        </tr>
-        <tr>
-          <td>4. Inho</td>
-          <td>32,321</td>
-          <td>132,321</td>
-        </tr>
-        <tr>
-          <td>5. Inho</td>
-          <td>32,321</td>
-          <td>132,321</td>
-        </tr>
-        <tr>
-          <td>6. Inho</td>
-          <td>32,321</td>
-          <td>132,321</td>
-        </tr>
-        <tr>
-          <td>7. Inho</td>
-          <td>32,321</td>
-          <td>132,321</td>
-        </tr>
-        <tr>
-          <td>8. Inho</td>
-          <td>32,321</td>
-          <td>132,321</td>
-        </tr>
-        <tr>
-          <td>9. Inho</td>
-          <td>32,321</td>
-          <td>132,321</td>
-        </tr>
-      </table>
+      </thead>
+      <tbody>
+        {rankList.map((item, idx) => {
+          return (
+            <tr>
+              <td>{idx + 1}</td>
+              <td>{item.user_id}</td>
+              <td>{item.grade}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
     </div>
   );
 };

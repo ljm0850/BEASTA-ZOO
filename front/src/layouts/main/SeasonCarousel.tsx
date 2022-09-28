@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Slider from "react-slick";
+import styles from './SeasonCarousel.module.scss';
 
 // static files
 import cat from "../../image/mainPage/cat.png"
@@ -13,11 +14,12 @@ import sheep from "../../image/mainPage/sheep.png"
 import tiger from "../../image/mainPage/tiger.png"
 
 export default class SeasonCarousel extends Component {
+  
   render() {
+    const jav = [cat, chicken, deer, dragon, hawk, pig, rabbit, sheep, tiger]
     const settings = {
-      dots: true,
       infinite: true,
-      slidesToShow: 7,
+      slidesToShow: 5,
       slidesToScroll: 1,
       autoplay: true,
       speed: 2000,
@@ -25,36 +27,16 @@ export default class SeasonCarousel extends Component {
       cssEase: "linear"
     };
     return (
-      <div>
-        <h2>Auto Play</h2>
+      <div className={styles.seasonCarousel}>
+        <h1>Season 1 - OOZ Project</h1>
         <Slider {...settings}>
-          <div>
-            <img src={cat} alt="" />
-          </div>
-          <div>
-            <img src={chicken} alt="" />
-          </div>
-          <div>
-            <img src={deer} alt="" />
-          </div>
-          <div>
-            <img src={dragon} alt="" />
-          </div>
-          <div>
-            <img src={hawk} alt="" />
-          </div>
-          <div>
-            <img src={pig} alt="" />
-          </div>
-          <div>
-            <img src={rabbit} alt="" />
-          </div>
-          <div>
-            <img src={sheep} alt="" />
-          </div>
-          <div>
-            <img src={tiger} alt="" />
-          </div>
+          {jav.map((item, idx) => {
+            return (
+              <div className={styles.carouselCard}>
+                <img className={styles.carouselImg} src={item} alt="" />
+              </div>
+            );
+          })}
         </Slider>
       </div>
     );
