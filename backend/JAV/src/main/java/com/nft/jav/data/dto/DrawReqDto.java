@@ -12,13 +12,15 @@ public class DrawReqDto {
     private long user_id;
     private String nft_address;
     private String jav_code;
+    private int tier;
     private String img_address;
 
     @Builder
-    public DrawReqDto(long user_id, String nft_address, String jav_code, String img_address) {
+    public DrawReqDto(long user_id, String nft_address, String jav_code, int tier, String img_address) {
         this.user_id = user_id;
         this.nft_address = nft_address;
         this.jav_code = jav_code;
+        this.tier = tier;
         this.img_address = img_address;
     }
 }

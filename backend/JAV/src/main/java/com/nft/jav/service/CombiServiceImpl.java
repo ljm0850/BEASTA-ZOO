@@ -35,8 +35,25 @@ public class CombiServiceImpl implements CombiService{
 
         User targetUser = userRepository.findById(combiReqDto.getUser_id())
                 .orElseThrow(IllegalArgumentException::new);
+
+        // 전체 도감에 있는 자브종이 아닐 때 전체 도감에 자브종 저장
+        if(!serviceCollectionRepository.existsByJav_code(combiReqDto.getJav_code())){
+            serviceCollectionRepository.save(ServiceCollection.builder()
+                    .discover_user_count(1)
+                    .jav_code(combiReqDto.getJav_code())
+                    .jav_img_path(combiReqDto.getImg_address())
+                    .level(combiReqDto.getTier())
+                    .user(targetUser)
+                    .build());
+
+            // user정보에 최초 발견 추가
+            long userCount = targetUser.getFirst_discover_count();
+            targetUser.updateFirstDiscoverCount(userCount+1);
+        }
+
         ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(combiReqDto.getJav_code());
 
+        // 뽑은 NFT 저장
         NFT savedNFT = nftRepository.save(NFT.builder()
                 .user(targetUser)
                 .nft_address(combiReqDto.getNft_address())
@@ -54,23 +71,8 @@ public class CombiServiceImpl implements CombiService{
                 .orElseThrow(IllegalArgumentException::new);
         nftRepository.delete(targetNft2);
 
-        // 서비스 전체 도감에서 최초 발견자인지 확인
-        long userCount = targetUser.getFirst_discover_count();
-        int serviceCount = serviceTarget.getDiscover_user_count();
-
-        if(serviceCount==0){
-
-            // user정보에 최초 발견 추가
-            targetUser.updateFirstDiscoverCount(userCount+1);
-
-            // serviceTarget에 최초 발견자 추가
-            serviceTarget.updateUser(targetUser);
-
-            // 최초 발견시간 저장
-            serviceTarget.updateDiscoverTime(LocalDateTime.now());
-        }
-
         // 전체 도감 발견자 수 추가
+        int serviceCount = serviceTarget.getDiscover_user_count();
         serviceTarget.updateDiscoverUserCount(serviceCount+1);
 
         // 유저 도감에 추가
