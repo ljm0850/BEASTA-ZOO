@@ -1,10 +1,12 @@
 import { Box, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ItemFilterContainer from "../../layouts/items/ItemFilterContainer";
 import Items from "./Items";
 
 const MarketMain = () => {
   const [search, setSearch] = useState<string>("0000000");
+  const [haveCompleted, setHaveCompleted] = useState(0);
+  const [sort, setSort] = useState(0);
 
   /**
    * 프로젝트 구현
@@ -17,10 +19,23 @@ const MarketMain = () => {
     <Box sx={{ mx: 5 }}>
       <Grid container spacing={6}>
         <Grid item xs={12} sm={3}>
-          <ItemFilterContainer setSearch={setSearch} search={search} />
+          <ItemFilterContainer
+            setSearch={setSearch}
+            search={search}
+            setHaveCompleted={setHaveCompleted}
+            haveCompleted={haveCompleted}
+            sort={sort}
+            setSort={setSort}
+          />
         </Grid>
         <Grid item xs={12} sm={9}>
-          <Items page={0} size={10} search={search} />
+          <Items
+            page={0}
+            size={10}
+            search={search}
+            haveCompleted={haveCompleted}
+            sort={sort}
+          />
         </Grid>
       </Grid>
     </Box>

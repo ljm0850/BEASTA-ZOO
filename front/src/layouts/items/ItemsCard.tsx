@@ -6,8 +6,11 @@ export interface Product {
   url: string;
   price: number;
   nftId: number;
+  javCode: string;
   buyerWallet: string;
+  buyerNickname: string;
   sellerWallet: string;
+  sellerNickname: string;
   saleId: number;
   saleStartDate: string;
   saleCompleteDate: string;
@@ -24,7 +27,7 @@ const ImgStyle = styled("img")({
 });
 
 const ItemsCard = ({ product }: { product: Product }) => {
-  const { url, price, state, saleId, sellerWallet } = product;
+  const { url, price, state, saleId, sellerNickname } = product;
   const symbol = "JAV";
 
   return (
@@ -35,7 +38,7 @@ const ItemsCard = ({ product }: { product: Product }) => {
 
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link
-          to={`/items/buy/${saleId}`}
+          to={`/market/buy/${saleId}`}
           color="inherit"
           underline="hover"
           component={RouterLink}
@@ -44,7 +47,7 @@ const ItemsCard = ({ product }: { product: Product }) => {
             {state === 0 ? "판매중" : "판매완료"}
           </Typography>
           <Typography variant="subtitle1" noWrap>
-            판매자 : {sellerWallet}
+            판매자 : {sellerNickname}
           </Typography>
         </Link>
 
