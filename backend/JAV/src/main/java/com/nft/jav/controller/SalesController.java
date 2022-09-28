@@ -53,11 +53,13 @@ public class SalesController {
     }
 
     @GetMapping("")
-    @ApiOperation(value = "판매 테이블 목록 조회", notes = "type이 0일 때 판매중인 목록만 반환, 1일때 전체 판매목록 반환")
+    @ApiOperation(value = "판매 테이블 목록 조회", notes ="sort가 0: 최신순, 1: 가격낮은순, 2: 가격높은순 \n"+
+            "type이 0: 판매중인 목록만 반환, 1: 전체 판매목록 반환")
     public ResponseEntity<List<SalesResPageDto>> getSales(@RequestParam String search, @RequestParam int page,
-                                                          @RequestParam int size, @RequestParam int type) {
+                                                          @RequestParam int size, @RequestParam int type,
+                                                          @RequestParam int sort) {
         logger.info("전체 판매 목록 - 호출");
-        List<SalesResPageDto> salesResDtoList = salesService.getSales(search, page,size, type);
+        List<SalesResPageDto> salesResDtoList = salesService.getSales(search, page,size, type, sort);
         return new ResponseEntity<>(salesResDtoList,HttpStatus.OK);
     }
 

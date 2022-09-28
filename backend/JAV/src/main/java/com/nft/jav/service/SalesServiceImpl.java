@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,30 +31,38 @@ public class SalesServiceImpl implements SalesService {
     private final Logger logger = LoggerFactory.getLogger(SalesServiceImpl.class);
 
     @Override
-    public List<SalesResPageDto> getSales(String search, int page, int size, int type) {
+    public List<SalesResPageDto> getSales(String search, int page, int size, int type, int sort) {
         logger.info("getSales - 호출");
-        PageRequest pageRequest = PageRequest.of(page, size);
+        Pageable sortPage;
 
-        Page<Sales> findAll;
-
-        if(search.equals("0000000")){
-            if(type==0){
-                findAll = salesRepository.findAllSale(pageRequest);
-            } else {
-                findAll = salesRepository.findAll(pageRequest);
-            }
-
+        if(sort==0){
+            sortPage= PageRequest.of(page, size, Sort.by("sale_start_date").descending());
+        }else if(sort==1){
+            sortPage= PageRequest.of(page, size, Sort.by("price").descending());
         } else {
-            findAll = salesRepository.findAll(searchParts(search, type), pageRequest);
+            sortPage= PageRequest.of(page, size, Sort.by("price").descending());
         }
 
+        Page<Sales> findAll;
+        if(search.equals("0000000")){
+            if(type==0){
+                findAll = salesRepository.findAllDoSale(sortPage);
+            } else {
+                findAll = salesRepository.findAllSale(sortPage);
+            }
+        } else {
+            PageRequest pageRequest = PageRequest.of(page, size);
+            findAll = salesRepository.findAll(searchParts(search, type, sort), pageRequest);
+        }
 
         List<SalesResPageDto> findAllDto = new ArrayList<>();
         for(Sales targetSale : findAll){
+
             SalesResPageDto salesResDto = SalesResPageDto.builder()
                     .total_page(findAll.getTotalPages())
                     .sale_id(targetSale.getSale_id())
                     .nft_id(targetSale.getNft().getNft_id())
+                    .jav_code(targetSale.getNft().getJav_code())
                     .img_address(targetSale.getNft().getImg_address())
                     .price(targetSale.getPrice())
                     .state(targetSale.getState())
@@ -61,7 +71,10 @@ public class SalesServiceImpl implements SalesService {
                     .buyer_wallet(targetSale.getBuyer_wallet())
                     .contract_address(targetSale.getContract_address())
                     .seller_wallet(targetSale.getSeller_wallet())
+                    .seller_nickname(targetSale.getUser().getNickname())
                     .build();
+            User buyer = userRepository.findByWalletAddress(targetSale.getBuyer_wallet());
+            if(buyer!=null) salesResDto.setBuyer_nickname(buyer.getNickname());
 
             findAllDto.add(salesResDto);
         }
@@ -69,7 +82,7 @@ public class SalesServiceImpl implements SalesService {
         return findAllDto;
     }
 
-    public Specification<Sales> searchParts(String search, int type){
+    public Specification<Sales> searchParts(String search, int type, int sort){
         return ((cl, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -125,6 +138,14 @@ public class SalesServiceImpl implements SalesService {
                 logger.info(background);
                 Predicate backgroundSearch = criteriaBuilder.like(cl.get("nft").get("jav_code"), background);
                 predicates.add(backgroundSearch);
+            }
+
+            if(sort == 0){
+                criteriaQuery.orderBy(criteriaBuilder.desc(cl.get("sale_start_date")));  // 최신순정렬
+            }else if(sort == 1){
+                criteriaQuery.orderBy(criteriaBuilder.asc(cl.get("price")));  // 낮은가격순
+            } else {
+                criteriaQuery.orderBy(criteriaBuilder.desc(cl.get("price"))); // 높은가격순
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
