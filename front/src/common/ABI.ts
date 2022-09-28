@@ -1563,24 +1563,29 @@ export const BalanceOfJavToken = async () => {
   return balance;
 };
 
-export const PickUp = async (address: string) => {
+export const randomGene = () =>{
+  const genes = JAV_NFT_Contract.methods.gacha(randomNums(15)).call();
+  return genes;
+}
+
+export const randomAcce = () =>{
+  const acces = JAV_NFT_Contract.methods.getAcce(randomNums(4)).call();
+  return acces;
+}
+
+export const PickUp = async (address: string, imageURI: string ,genes:number[], acces:number[]) => {
   JavToken_Contract.methods
     .transfer(ABI.CONTRACT_ADDRESS.NFT_ADDRESS, 100)
     .send({ from: address });
-
-  const genes = await JAV_NFT_Contract.methods.gacha(randomNums(15)).call();
-  const acces = await JAV_NFT_Contract.methods.getAcce(randomNums(4)).call();
-  // await console.log(BigInt(genes[0]).toString(16));
-  // await console.log(BigInt(genes[1]).toString(16));
-  // await console.log(BigInt(genes[2]).toString(16));
-
+  
+  await console.log(BigInt(genes[0]).toString(16));
   //유전정보 + 악세사리 통해서 이미지 만들고
   
   //ipfs경로에 등록 한 후 아래 과정 수행
 
   JAV_NFT_Contract.methods
     .pickup(
-      "www.naver.com",
+      imageURI,
       [BigInt(genes[0]), BigInt(genes[1]), BigInt(genes[2])],
       [Number(acces[0]), Number(acces[1]), Number(acces[2]), Number(acces[3])]
     )
