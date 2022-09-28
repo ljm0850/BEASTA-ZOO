@@ -6,6 +6,8 @@ import Items from "./Items";
 const MarketMain = () => {
   const [search, setSearch] = useState<string>("0000000");
   const [haveCompleted, setHaveCompleted] = useState(0);
+  const [sort, setSort] = useState(0);
+
   /**
    * 프로젝트 구현
    * 1. API를 호출하고 응답 데이터를 화면에 표시합니다.
@@ -22,6 +24,8 @@ const MarketMain = () => {
             search={search}
             setHaveCompleted={setHaveCompleted}
             haveCompleted={haveCompleted}
+            sort={sort}
+            setSort={setSort}
           />
         </Grid>
         <Grid item xs={12} sm={9}>
@@ -30,6 +34,7 @@ const MarketMain = () => {
             size={10}
             search={search}
             haveCompleted={haveCompleted}
+            sort={sort}
           />
         </Grid>
       </Grid>

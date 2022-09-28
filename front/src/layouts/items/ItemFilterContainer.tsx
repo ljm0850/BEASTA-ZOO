@@ -32,8 +32,18 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Button, Grid } from "@mui/material";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
+import { Dispatch, SetStateAction, useState } from "react";
 
 interface ImageFilter {
   id: number;
@@ -63,15 +73,19 @@ String.prototype.changeIndex = function (
 interface Props {
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
-  setHaveCompleted: Dispatch<SetStateAction<number>>;
   haveCompleted: number;
+  setHaveCompleted: Dispatch<SetStateAction<number>>;
+  sort: number;
+  setSort: Dispatch<SetStateAction<number>>;
 }
 
 const ItemFilterContainer = ({
   search,
   setSearch,
-  setHaveCompleted,
   haveCompleted,
+  setHaveCompleted,
+  sort,
+  setSort,
 }: Props) => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
@@ -189,14 +203,44 @@ const ItemFilterContainer = ({
       >
         초기화
       </Button>
-      <Button
-        onClick={() => setHaveCompleted(1 - haveCompleted)}
-        size="large"
-        variant="contained"
-        color="warning"
-      >
-        {haveCompleted === 0 ? "판매완료된 NFT도 조회" : "판매중인 NFT만"}
-      </Button>
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Checkbox
+              onClick={() => setHaveCompleted(1 - haveCompleted)}
+              checked={!!haveCompleted}
+            />
+          }
+          label="판매완료NFT"
+        />
+      </FormGroup>
+      <FormControl>
+        <FormLabel id="demo-radio-buttons-group-label">정렬</FormLabel>
+        <RadioGroup
+          aria-labelledby="demo-radio-buttons-group-label"
+          defaultValue="recent"
+          name="radio-buttons-group"
+        >
+          <FormControlLabel
+            value="recent"
+            control={<Radio />}
+            label="최신순"
+            onClick={() => setSort(0)}
+          />
+          <FormControlLabel
+            value="priceLow"
+            control={<Radio />}
+            label="가격낮은순"
+            onClick={() => setSort(1)}
+          />
+          <FormControlLabel
+            value="priceHigh"
+            control={<Radio />}
+            label="가격높은순"
+            onClick={() => setSort(2)}
+          />
+        </RadioGroup>
+      </FormControl>
       <p>{search}</p>
     </div>
   );
