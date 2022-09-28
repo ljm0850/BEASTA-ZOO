@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 
 @Service
 @Transactional
@@ -32,13 +30,27 @@ public class DrawServiceImpl implements DrawService{
     @Override
     public boolean saveDrawNft(DrawReqDto drawReqDto) {
         logger.info("saveDrawNft serviceImpl - 호출");
-
-        // 뽑은 NFT 저장
         User targetUser = userRepository.findById(drawReqDto.getUser_id())
                 .orElseThrow(IllegalArgumentException::new);
 
+        // 전체 도감에 있는 자브종이 아닐 때 전체 도감에 자브종 저장
+        if(!serviceCollectionRepository.existsByJav_code(drawReqDto.getJav_code())){
+            serviceCollectionRepository.save(ServiceCollection.builder()
+                            .discover_user_count(1)
+                            .jav_code(drawReqDto.getJav_code())
+                            .jav_img_path(drawReqDto.getImg_address())
+                            .level(drawReqDto.getTier())
+                            .user(targetUser)
+                            .build());
+
+            // user정보에 최초 발견 추가
+            long userCount = targetUser.getFirst_discover_count();
+            targetUser.updateFirstDiscoverCount(userCount+1);
+        }
+
         ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(drawReqDto.getJav_code());
 
+        // 뽑은 NFT 저장
         NFT savedNFT = nftRepository.save(NFT.builder()
                 .user(targetUser)
                 .nft_address(drawReqDto.getNft_address())
@@ -47,23 +59,8 @@ public class DrawServiceImpl implements DrawService{
                 .img_address(drawReqDto.getImg_address())
                 .build());
 
-        // 서비스 전체 도감에서 최초 발견자인지 확인
-        long userCount = targetUser.getFirst_discover_count();
-        int serviceCount = serviceTarget.getDiscover_user_count();
-
-        if(serviceCount==0){
-
-            // user정보에 최초 발견 추가
-            targetUser.updateFirstDiscoverCount(userCount+1);
-
-            // serviceTarget에 최초 발견자 추가
-            serviceTarget.updateUser(targetUser);
-
-            // 최초 발견시간 저장
-            serviceTarget.updateDiscoverTime(LocalDateTime.now());
-        }
-
         // 전체 도감 발견자 수 추가
+        int serviceCount = serviceTarget.getDiscover_user_count();
         serviceTarget.updateDiscoverUserCount(serviceCount+1);
 
         // 유저 도감에 추가

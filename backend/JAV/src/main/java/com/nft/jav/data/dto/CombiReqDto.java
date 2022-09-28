@@ -14,15 +14,17 @@ public class CombiReqDto {
     private String nft_address;
     private String img_address;
     private String jav_code;
+    private int tier;
     private long nft_id_1;
     private long nft_id_2;
 
     @Builder
-    public CombiReqDto(long user_id, String nft_address, String img_address, String jav_code, long nft_id_1, long nft_id_2) {
+    public CombiReqDto(long user_id, String nft_address, String img_address, String jav_code, int tier, long nft_id_1, long nft_id_2) {
         this.user_id = user_id;
         this.nft_address = nft_address;
         this.img_address = img_address;
         this.jav_code = jav_code;
+        this.tier = tier;
         this.nft_id_1 = nft_id_1;
         this.nft_id_2 = nft_id_2;
     }
