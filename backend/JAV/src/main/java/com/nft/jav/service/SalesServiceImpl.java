@@ -286,6 +286,7 @@ public class SalesServiceImpl implements SalesService {
         SalesResDto salesResDto = SalesResDto.builder()
                 .nft_id(sales.getNft().getNft_id())
                 .img_address(sales.getNft().getImg_address())
+                .jav_code(sales.getNft().getJav_code())
                 .buyer_wallet(sales.getBuyer_wallet())
                 .contract_address(sales.getContract_address())
                 .sale_completed_date(sales.getSale_completed_date())
@@ -294,7 +295,11 @@ public class SalesServiceImpl implements SalesService {
                 .price(sales.getPrice())
                 .sale_id(sales.getSale_id())
                 .seller_wallet(sales.getSeller_wallet())
+                .seller_nickname(sales.getUser().getNickname())
                 .build();
+
+        User buyer = userRepository.findByWalletAddress(sales.getBuyer_wallet());
+        if(buyer!=null) salesResDto.setBuyer_nickname(buyer.getNickname());
 
         return salesResDto;
     }
