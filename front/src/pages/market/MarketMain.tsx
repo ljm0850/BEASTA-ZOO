@@ -5,7 +5,7 @@ import Items from "./Items";
 
 const MarketMain = () => {
   const [search, setSearch] = useState<string>("0000000");
-
+  const [haveCompleted, setHaveCompleted] = useState(0);
   /**
    * 프로젝트 구현
    * 1. API를 호출하고 응답 데이터를 화면에 표시합니다.
@@ -17,10 +17,20 @@ const MarketMain = () => {
     <Box sx={{ mx: 5 }}>
       <Grid container spacing={6}>
         <Grid item xs={12} sm={3}>
-          <ItemFilterContainer setSearch={setSearch} search={search} />
+          <ItemFilterContainer
+            setSearch={setSearch}
+            search={search}
+            setHaveCompleted={setHaveCompleted}
+            haveCompleted={haveCompleted}
+          />
         </Grid>
         <Grid item xs={12} sm={9}>
-          <Items page={0} size={10} search={search} />
+          <Items
+            page={0}
+            size={10}
+            search={search}
+            haveCompleted={haveCompleted}
+          />
         </Grid>
       </Grid>
     </Box>

@@ -35,7 +35,7 @@ const ItemsCard = ({ product }: { product: Product }) => {
 
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link
-          to={`/items/buy/${saleId}`}
+          to={`/market/buy/${saleId}`}
           color="inherit"
           underline="hover"
           component={RouterLink}

@@ -63,9 +63,16 @@ String.prototype.changeIndex = function (
 interface Props {
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
+  setHaveCompleted: Dispatch<SetStateAction<number>>;
+  haveCompleted: number;
 }
 
-const ItemFilterContainer = ({ search, setSearch }: Props) => {
+const ItemFilterContainer = ({
+  search,
+  setSearch,
+  setHaveCompleted,
+  haveCompleted,
+}: Props) => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const filters: ImageFilter[] = [
@@ -181,6 +188,14 @@ const ItemFilterContainer = ({ search, setSearch }: Props) => {
         color="warning"
       >
         초기화
+      </Button>
+      <Button
+        onClick={() => setHaveCompleted(1 - haveCompleted)}
+        size="large"
+        variant="contained"
+        color="warning"
+      >
+        {haveCompleted === 0 ? "판매완료된 NFT도 조회" : "판매중인 NFT만"}
       </Button>
       <p>{search}</p>
     </div>

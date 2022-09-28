@@ -10,9 +10,10 @@ interface Props {
   page: number;
   size: number;
   search: string;
+  haveCompleted: number;
 }
 
-const Items = ({ page, size, search }: Props) => {
+const Items = ({ page, size, search, haveCompleted }: Props) => {
   const [item, setItem] = useState<Product[]>([]);
   const [isCollection, setIsCollection] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,7 +29,7 @@ const Items = ({ page, size, search }: Props) => {
     // TODO
     setLoading(true);
 
-    fetchItems(page, size, search).then((res) => {
+    fetchItems(page, size, search, haveCompleted).then((res) => {
       const resultList = [] as Product[];
       res.map((item: any) =>
         resultList.push({
@@ -52,7 +53,7 @@ const Items = ({ page, size, search }: Props) => {
 
   useEffect(() => {
     getItem();
-  }, [search]);
+  }, [search, haveCompleted]);
 
   return (
     <div>
