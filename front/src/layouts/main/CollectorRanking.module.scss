@@ -1,0 +1,29 @@
+.CRBody {
+  margin-top: 5%;
+
+  .CRTitle {
+    text-align: center;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 56px;
+    margin-bottom: 2%;
+  }
+  
+  table {
+    width: 100%;
+    border-top: 1px solid #AAAAAA;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border-bottom: 1px solid #AAAAAA;
+    padding: 25px;
+    text-align: center;
+  }
+
+  .discription {
+    color: rgb(185, 185, 185);
+    font-size: 1rem;
+    text-align: end;
+  }
+}
