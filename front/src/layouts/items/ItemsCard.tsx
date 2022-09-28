@@ -35,7 +35,6 @@ const ItemsCard = ({ product }: { product: Product }) => {
       <Box sx={{ pt: "100%", position: "relative" }}>
         <ImgStyle src={url} />
       </Box>
-
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link
           to={`/market/buy/${saleId}`}
@@ -43,7 +42,11 @@ const ItemsCard = ({ product }: { product: Product }) => {
           underline="hover"
           component={RouterLink}
         >
-          <Typography variant="subtitle1" noWrap>
+          <Typography
+            variant="h6"
+            noWrap
+            sx={state === 0 ? { color: "blue" } : { color: "red" }}
+          >
             {state === 0 ? "판매중" : "판매완료"}
           </Typography>
           <Typography variant="subtitle1" noWrap>

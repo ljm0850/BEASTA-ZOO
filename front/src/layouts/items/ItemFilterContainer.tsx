@@ -44,6 +44,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
+import FetchAnimal from "../../utils/FetchAnimal";
 
 interface ImageFilter {
   id: number;
@@ -84,7 +85,6 @@ const ItemFilterContainer = ({
   setSearch,
   haveCompleted,
   setHaveCompleted,
-  sort,
   setSort,
 }: Props) => {
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -168,6 +168,9 @@ const ItemFilterContainer = ({
             >
               <Typography sx={{ width: "33%", flexShrink: 0 }}>
                 {filter.title}
+              </Typography>
+              <Typography align="left" sx={{ width: "33%", flexShrink: 0 }}>
+                {FetchAnimal(Number(search[filter.id - 1]))["name"]}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
