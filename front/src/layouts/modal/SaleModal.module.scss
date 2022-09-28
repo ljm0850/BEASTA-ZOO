@@ -1,0 +1,17 @@
+.saleModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  // min-width: 450px;
+  // width: 400px;
+  overflow-y: auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 2;
+  padding: 50px;
+
+  &:focus {
+    outline: 0,
+  }
+}

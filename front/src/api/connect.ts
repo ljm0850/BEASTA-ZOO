@@ -53,8 +53,15 @@ export function connectAPI(account: string, balance: string, chain: string) {
   }
 
   // 내 NFT 목록
-  export const getMyNFTs = async (account: string | undefined) => {
-    const { data } = await axios.get(`${ENDPOINT_URL}/user/nft/${account}`)
+  export const getMyNFTs = async (account: string | undefined, page: number, size: number, sort: number) => {
+    const option = {
+      params: {
+        page: page,
+        size: size,
+        sort: sort,
+      }
+    }
+    const { data } = await axios.get(`${ENDPOINT_URL}/user/nft/${account}`, option)
     return data
   }
 
