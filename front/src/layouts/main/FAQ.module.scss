@@ -1,6 +1,10 @@
 @charset "UTF-8";
-* {
-  margin: 0;
+.FAQTitle {
+  margin-top: 5%;
+  margin-bottom: 0%;
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 4rem;
 }
 
 #mobile-nav {
@@ -11,7 +15,7 @@
 }
 
 .accordion {
-  background: #f7f8f8;
+  background: white;
   width: 100%;
   border: none;
   transition: 0.4s;
@@ -21,7 +25,7 @@
   margin-top: 15px;
 }
 .accordion:hover {
-  background: #ccc;
+  background: #ffd260;
 }
 // .accordion:after {
 //   content: "❯";

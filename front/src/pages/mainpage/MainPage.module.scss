@@ -3,6 +3,13 @@
   // justify-content: center;
   // text-align: center;
   width: auto;
+  margin-bottom: 3%;
+
+  .welcome {
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
 
   .mainBanner {
     text-align: center;
@@ -10,7 +17,7 @@
     .banner {
       // position: absolute;
       width: 100%;
-      margin-top: 3%;
+      margin-top: 1%;
   
       &:hover {
         cursor: pointer;

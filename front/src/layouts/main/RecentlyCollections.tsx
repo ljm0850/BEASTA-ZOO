@@ -22,12 +22,14 @@ const RecentlyCollections = () => {
   }, [])
 
   return (
-    <div>
+    <div className={styles.RCBody}>
       <p className={styles.RCTitle}>Recently added collections</p>
       <p className={styles.RCDetail}>방금 도감에 추가된 JAV를 구경하세요.</p>
-      {collectionsUrl.map((item, idx) => {
-        return <img src={item.jav_img_path} alt="" className={styles.recentColl}/>
-      })}
+      <div className={styles.RCContainer}>
+        {collectionsUrl.map((item, idx) => {
+          return <img src={item.jav_img_path} alt="" className={styles.recentColl}/>
+        })}
+      </div>
     </div>
   );
 };

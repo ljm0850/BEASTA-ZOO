@@ -28,7 +28,7 @@ export default class SeasonCarousel extends Component {
     };
     return (
       <div className={styles.seasonCarousel}>
-        <h1>Season 1 - OOZ Project</h1>
+        <p className={styles.SCTitle}>Season 1 - OOZ Project</p>
         <Slider {...settings}>
           {jav.map((item, idx) => {
             return (

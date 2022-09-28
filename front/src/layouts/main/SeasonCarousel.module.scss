@@ -1,14 +1,22 @@
-img {
-  border-radius: 10px;
-  width: 100%;
-}
-
 .seasonCarousel {
   text-align: center;
-  width: 98%;
-}
+  width: auto;
+  margin-top: 5%;
 
-.carouselCard {
-  width: 20%;
-  margin-left: 20%;
+  .SCTitle {
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 4rem;
+    margin-bottom: 1%;
+  }
+
+  .carouselImg {
+    border-radius: 10px;
+    // width: 80%;
+  }
+    
+  .carouselCard {
+    width: 20%;
+    margin-left: 20%;
+  }
 }

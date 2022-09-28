@@ -5,18 +5,21 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import styles from './FAQ.module.scss';
+import Qmark from '../../image/mainPage/Qmark.png';
 
 export default function FAQ() {
   return (
     <div>
-      <h2>FAQ</h2>
+      <p className={styles.FAQTitle}>FAQ</p>
       <Accordion className={styles.accordion}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
-        >
-          <Typography>NFT란 무엇인가요?</Typography>
+          sx={{ height: "5rem" }}
+          >
+          <img src={Qmark} alt="" />
+          <Typography sx={{ marginLeft: "1rem", display: "flex", justifyContent: "start", alignItems: "center"}}>NFT란 무엇인가요?</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -30,8 +33,10 @@ export default function FAQ() {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
           id="panel2a-header"
-        >
-          <Typography>JAV NFT는 어떤 블록체인을 사용하나요?</Typography>
+          sx={{ height: "5rem" }}
+          >
+          <img src={Qmark} alt="" />
+          <Typography sx={{ marginLeft: "1rem", display: "flex", justifyContent: "start", alignItems: "center"}}>JAV NFT는 어떤 블록체인을 사용하나요?</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -45,8 +50,10 @@ export default function FAQ() {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
           id="panel2a-header"
-        >
-          <Typography>JAV NFT는 어떤 프로젝트인가요?</Typography>
+          sx={{ height: "5rem" }}
+          >
+          <img src={Qmark} alt="" />
+          <Typography sx={{ marginLeft: "1rem", display: "flex", justifyContent: "start", alignItems: "center"}}>JAV NFT는 어떤 프로젝트인가요?</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -60,8 +67,10 @@ export default function FAQ() {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
           id="panel2a-header"
-        >
-          <Typography>JAV는 무엇인가요?</Typography>
+          sx={{ height: "5rem" }}
+          >
+          <img src={Qmark} alt="" />
+          <Typography sx={{ marginLeft: "1rem", display: "flex", justifyContent: "start", alignItems: "center"}}>JAV는 무엇인가요?</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>

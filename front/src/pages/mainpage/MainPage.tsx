@@ -42,7 +42,7 @@ const MainPage = () => {
   return (
     <div className={styles.mainBody}>
       <Box sx={{ width: "75%", margin: "5% 15% 0 15%" }}>
-        { sessionStorage.getItem("isLogined") && <p>Welcome, {userNickname}</p>}
+        { sessionStorage.getItem("isLogined") && <p className={styles.welcome}>Welcome, {userNickname}</p>}
         <div className={styles.mainBanner}>
           <img src={banner} alt="banner" onClick={() => {navigate("/market/draw")}} className={styles.banner} />
           <img src={guide} alt="banner" className={styles.guide} />
@@ -50,13 +50,9 @@ const MainPage = () => {
         <RecentlyCollections />
         <Marketplace />
         <CollectorRanking />
-      </Box>
-      <SeasonCarousel />
-      <Box sx={{ margin: "72px" }}>
+        <SeasonCarousel />
         <FAQ />
       </Box>
-      <Login></Login>
-      { sessionStorage.getItem("isLogined") && <Button variant="contained" onClick={profileMoveHandler}>마이프로필로 이동</Button>}
     </div>
   );
 };
