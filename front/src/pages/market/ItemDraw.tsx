@@ -83,14 +83,19 @@ const ItemDraw = () => {
   }
   // base64 -> 파일 변경
   function dataURLtoFile(dataurl:string, filename:string) {
-    var arr :any = dataurl.split(','),
-    mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
+
+    var arr:any = dataurl.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+
     while(n--){
         u8arr[n] = bstr.charCodeAt(n);
     }
+
+
+
     return new File([u8arr], filename, {type:mime});
 }
   
@@ -119,8 +124,12 @@ const ItemDraw = () => {
       const num = Number(acce).toString(16);
       myAcces.push(parseInt(num.slice(1,3),16));
     })
+    await console.log(myGenes)
+    await console.log(myAcces)
     await mergeImage(myGenes,myAcces)
+    await console.log(b64)
     const imageFile = await dataURLtoFile(b64,"JavNFT")
+    await console.log(imageFile)
     const NFT_URI = await imagePushIPFS(imageFile)
     await PickUp(address,NFT_URI,genes,acces)
   };
