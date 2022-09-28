@@ -4,6 +4,7 @@ import com.nft.jav.data.dto.*;
 import com.nft.jav.data.entity.Community;
 import com.nft.jav.data.entity.User;
 import com.nft.jav.data.repository.CommunityRepository;
+import com.nft.jav.data.repository.NFTRepository;
 import com.nft.jav.data.repository.UserCollectionRepository;
 import com.nft.jav.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class CommunityServiceImpl implements CommunityService{
     private final CommunityRepository communityRepository;
     private final UserCollectionRepository userCollectionRepository;
     private final UserRepository userRepository;
+    private final NFTRepository nftRepository;
 
     @Override
     public List<CommunityResDto> communityList() {
@@ -150,6 +152,7 @@ public class CommunityServiceImpl implements CommunityService{
                     .nickname(rankRes.getUser().getNickname())
                     .user_id(rankRes.getUser().getUser_id())
                     .grade(rankRes.getCount())
+                    .countNFT(nftRepository.countNFTByUser(rankRes.getUser()))
                     .build();
             logger.info(rankResDto.toString());
             rankDtoList.add(rankResDto);

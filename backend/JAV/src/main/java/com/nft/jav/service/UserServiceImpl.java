@@ -5,6 +5,7 @@ import com.nft.jav.data.dto.UserRankResDto;
 import com.nft.jav.data.dto.UserReqDto;
 import com.nft.jav.data.dto.UserResDto;
 import com.nft.jav.data.entity.User;
+import com.nft.jav.data.repository.NFTRepository;
 import com.nft.jav.data.repository.UserCollectionRepository;
 import com.nft.jav.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final Logger logger = LoggerFactory.getLogger(CommunityServiceImpl.class);
 
     private final UserRepository userRepository;
+    private final NFTRepository nftRepository;
     private final UserCollectionRepository userCollectionRepository;
 
     @Override
@@ -114,6 +116,7 @@ public class UserServiceImpl implements UserService {
         UserRankResDto userRankResDto = UserRankResDto.builder()
                 .rank(targetUser.getTier())
                 .grade(userCollectionRepository.countByWallet(wallet_address))
+                .countNFT(nftRepository.countNFTByUser(targetUser))
                 .build();
 
         return userRankResDto;
