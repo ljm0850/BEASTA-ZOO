@@ -47,6 +47,12 @@ public class UserController {
         return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/nickname/{wallet_address}")
+    public ResponseEntity<NicknameResDto> getNickname(@PathVariable String wallet_address) {
+        logger.info("getNickname - 호출");
+        return new ResponseEntity<>(userService.getNickname(wallet_address),HttpStatus.OK);
+    }
+
     @GetMapping("/liked/{wallet_address}")
     public ResponseEntity<List<LikedResDto>> likedList(@PathVariable String wallet_address) {
         logger.info("likedList - 호출");

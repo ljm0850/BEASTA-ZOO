@@ -29,16 +29,21 @@ public class SalesServiceImpl implements SalesService {
     private final Logger logger = LoggerFactory.getLogger(SalesServiceImpl.class);
 
     @Override
-    public List<SalesResPageDto> getSales(String search, int page, int size) {
+    public List<SalesResPageDto> getSales(String search, int page, int size, int type) {
         logger.info("getSales - 호출");
         PageRequest pageRequest = PageRequest.of(page, size);
 
         Page<Sales> findAll;
 
         if(search.equals("0000000")){
-            findAll = salesRepository.findAllSale(pageRequest);
+            if(type==0){
+                findAll = salesRepository.findAllSale(pageRequest);
+            } else {
+                findAll = salesRepository.findAll(pageRequest);
+            }
+
         } else {
-            findAll = salesRepository.findAll(searchParts(search), pageRequest);
+            findAll = salesRepository.findAll(searchParts(search, type), pageRequest);
         }
 
 
@@ -64,12 +69,14 @@ public class SalesServiceImpl implements SalesService {
         return findAllDto;
     }
 
-    public Specification<Sales> searchParts(String search){
+    public Specification<Sales> searchParts(String search, int type){
         return ((cl, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            Predicate isSale = criteriaBuilder.equal(cl.get("state"), 0);
-            predicates.add(isSale);
+            if(type==0){
+                Predicate isSale = criteriaBuilder.equal(cl.get("state"), 0);
+                predicates.add(isSale);
+            }
 
             if(search.charAt(0) != '0'){
                 String head = search.charAt(0)+"%";
