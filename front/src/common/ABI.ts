@@ -8,7 +8,7 @@ import Web3 from "web3";
 - SALE_ABI: SALE 컨트랙트 ABI
 - TOKEN_ABI : JavToken 컨트랙트 ABI
 */
-const ABI = {
+export const ABI = {
   CONTRACT_ABI: {
     NFT_ABI: [
       {

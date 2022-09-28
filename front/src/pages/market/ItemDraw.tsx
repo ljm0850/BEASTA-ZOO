@@ -10,8 +10,11 @@ import { useState } from "react";
 import JavModal from "../../layouts/modal/JavModal";
 import AlertDialog from "../../layouts/dialog/AlertDialog";
 import _ from "lodash";
+// 백엔드
+import { draw } from "../../api/market";
 // SC import
 import {
+  ABI,
   web3,
   JAV_NFT_Contract,
   JavToken_Contract,
@@ -106,6 +109,7 @@ const ItemDraw = () => {
   // 뽑기 함수
   const [test,setTest] = useState("")
   const pickup = async () => {
+    // SC
     const address = await getWalletAddress();
     const genes = await randomGene()
     const acces = await randomAcce();
@@ -123,6 +127,28 @@ const ItemDraw = () => {
     const imageFile = await dataURLtoFile(b64,"JavNFT")
     const NFT_URI = await imagePushIPFS(imageFile)
     await PickUp(address,NFT_URI,genes,acces)
+
+    // 백엔드
+    let javCode = ""
+    await myGenes.forEach((myGene:number,idx:number) => {
+      javCode += myGene.toString() + ","
+    })
+    await myAcces.forEach((myAcce:number,idx:number) => {
+      if (idx != 3){
+        javCode += myAcce.toString() + ","
+      }
+      else{
+        javCode += myAcce.toString()
+      }
+    })
+    let tier;
+
+    // await draw(NFT_URI, javCode, ABI.CONTRACT_ADDRESS.NFT_ADDRESS,)
+
+
+
+
+
   };
 
   const payDraw = async () => {
