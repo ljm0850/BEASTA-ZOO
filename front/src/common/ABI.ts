@@ -1508,9 +1508,9 @@ export const ABI = {
   },
 
   CONTRACT_ADDRESS: {
-    NFT_ADDRESS: "0x7DB7C61C261f5912E5Ca3B68ABE67dB572b8CA93",
+    NFT_ADDRESS: "0xb3081A1979B7DF916e459B06333Dff9647e5Bf8d",
     SALE_FACTORY_ADDRESS: "0x72506A94cd0F3D12b52C3EA6d0b20F9510Ade7fB",
-    TOKEN_ADDRESS: "0x0941973A84b2f39c2D1DAD577212188cF0cFA051",
+    TOKEN_ADDRESS: "0x66464C83F8C68B6a8DfE404Ad99966a85a45E74b",
   },
 };
 // 랜덤
@@ -1594,22 +1594,22 @@ export const PickUp = async (address: string, imageURI: string ,genes:number[], 
 
 export const FusionJavs = async (address:string, NFTID_1:Number, NFTID_2:Number) => {
   const body0 = await JAV_NFT_Contract.methods.fusion(
-    0, //NFTID_1
-    1, //NFTID_2
+    NFTID_1,
+    NFTID_2,
     randomNums(4),
     0
   ).call();
 
   const body1 = await JAV_NFT_Contract.methods.fusion(
-    0, //NFTID_1
-    1, //NFTID_2
+    NFTID_1,
+    NFTID_2,
     randomNums(4),
     1
   ).call();
 
   const body2 = await JAV_NFT_Contract.methods.fusion(
-    0, //NFTID_1
-    1, //NFTID_2
+    NFTID_1,
+    NFTID_2,
     randomNums(4),
     2
   ).call();
@@ -1618,8 +1618,8 @@ export const FusionJavs = async (address:string, NFTID_1:Number, NFTID_2:Number)
   
   const result = await JAV_NFT_Contract.methods.fusionJavs(
     "www.daum.com",
-    0, //NFTID_1
-    1, //NFTID_2
+    NFTID_1,
+    NFTID_2,
     [BigInt(body0),BigInt(body1),BigInt(body2)],
     [Number(acces[0]), Number(acces[1]), Number(acces[2]), Number(acces[3])]
   ).send({from:address});

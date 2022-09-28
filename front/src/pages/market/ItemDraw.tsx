@@ -23,7 +23,9 @@ import {
   getWalletAddress,
   PickUp,
   randomAcce,
-  randomGene
+  randomGene,
+  FusionJavs,
+  CreateSale
   
 } from "../../common/ABI";
 // 이미지 처리
@@ -150,12 +152,35 @@ const ItemDraw = () => {
 
 
   };
+  
+  //조합 함수
+  const fusionjavs = async () => {
+    const address = await getWalletAddress();
+    const targetNFT1 = 1; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
+    const targetNFT2 = 2; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
 
+    await FusionJavs(address,targetNFT1, targetNFT2);
+  }
   const payDraw = async () => {
     const accounts = await web3.eth.getAccounts();
     // const drawContract = new web3.eth.Contract(drawABI, drawAddress);
     const nonce = await web3.eth.getTransactionCount(accounts[0]);
   };
+
+  //판매함수
+  const createsale = async () => {
+    const address = await getWalletAddress();
+
+    const targetNFT = 2; //판매할 NFT의 tokenID 백에서 받아와 선언
+    const price = 100; //판매할 가격
+
+    const saleAddress = await CreateSale(address, targetNFT, price);
+    console.log(saleAddress);
+    
+    //판매Contract 주소 반환
+    return saleAddress;
+  }
+
 
   return (
     <div
@@ -180,6 +205,8 @@ const ItemDraw = () => {
         >
           <button onClick={getJavToken}> 10000 JavToken 받기</button>
           <button onClick={pickup}> JAV NFT 발급</button>
+          <button onClick={fusionjavs}> JAV NFT 조합하기</button>
+          <button onClick={createsale}> JAV NFT 판매하기</button>
           <img src={b64} alt="" />
           <img src={test}/>
           <Box

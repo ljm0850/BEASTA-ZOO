@@ -78,7 +78,7 @@ const MyJavs = (props: Props) => {
   const getPost = useCallback(async () => {
     //글 불러오기
     setLoad(true); //로딩 시작
-    getMyNFTs(account, page, 12, Number(sortOption))
+    getMyNFTs(account, page, 6, Number(sortOption))
       .then((res) => {
         console.log(res)
         setItemCount(res[0].count)
