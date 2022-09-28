@@ -174,8 +174,10 @@ const Login = () => {
 
   return (
     <div>
-      <Button variant="contained" onClick={onClickLoginButton}>
-        Login
+      <Button variant="contained" onClick={onClickLoginButton} sx={{background: "#FFC42E", "&:hover": {
+        background: "#FDB909"
+      }}}>
+        로그인
       </Button>
     </div>
   );

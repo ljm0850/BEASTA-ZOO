@@ -10,21 +10,30 @@ import { useState } from "react";
 import JavModal from "../../layouts/modal/JavModal";
 import AlertDialog from "../../layouts/dialog/AlertDialog";
 import _ from "lodash";
+// 백엔드
+import { draw } from "../../api/market";
 // SC import
 import {
+  ABI,
   web3,
   JAV_NFT_Contract,
   JavToken_Contract,
   CreateJavToken,
   BalanceOfJavToken,
   getWalletAddress,
-  PickUp
+  PickUp,
+  randomAcce,
+  randomGene,
+  FusionJavs,
+  CreateSale
+  
 } from "../../common/ABI";
-// 이미지 합성
-// import mergeImages from 'merge-images';
-
+// 이미지 처리
+import mergeImages from 'merge-images';
+import * as IPFS from "ipfs-core"
 // 테스트
 import { ethers } from "ethers";
+import { number } from "yup/lib/locale";
 
 const ItemDraw = () => {
   /**
@@ -50,45 +59,128 @@ const ItemDraw = () => {
   const handleCloseAlert = () => setOpenAlert(false);
 
 
+  const [b64, setB64] = useState(""); 
+  function mergeImage(genes: number[], acces: number[]) {
+    const head = require(`../../image/asset/head/${genes[0]}.svg`);
+    const ears = require(`../../image/asset/ears/${genes[1]}.svg`);
+    const face = require(`../../image/asset/face/${genes[2]}.svg`);
+    const eyes = require(`../../image/asset/eyes/${acces[0]}.svg`);
+    const body = require(`../../image/asset/body/${acces[1]}.svg`);
+    const background = require(`../../image/asset/background/${acces[2]}.svg`);
+    const acc = require(`../../image/asset/acc/${acces[3]}.svg`);
+    mergeImages([
+      { src: background },
+      { src: body },
+      { src: ears },
+      { src: head },
+      { src: eyes },
+      { src: face },
+      { src: acc }
+    ]).then((res:any) => { setB64(res)})
+  }
 
-  // function createImage(genes,acces) {
-  //   // const [b64, setB64] = useState("");
-  //   // const reload = () => {
-  //   const ears = require(`./asset/ears/${_.random(1, 9)}.svg`);
-  //   const head = require(`./asset/head/${_.random(1, 7)}.svg`);
-  //   const eyes = require(`./asset/eyes/${_.random(1, 16)}.svg`);
-  //   const body = require(`./asset/body/${_.random(1, 12)}.svg`);
-  //   const background = require(`./asset/background/${_.random(1, 12)}.svg`);
-  //   const face = require(`./asset/face/${_.random(1, 9)}.svg`);
-  //   const acc = require(`./asset/acc/${_.random(1, 12)}.svg`);
-  //   // }
-  // }
-  // 테스트중
-
-  const test = async () => {
+  const imagePushIPFS = async (image:any)=>{
+    const ipfs = await IPFS.create({ repo: "ok" + Math.random()});
+    const added = await ipfs.add(image);
+    const url = `https://ipfs.io/ipfs/${added.path}`;
+    console.log(url)
+    return url
+  }
+  // base64 -> 파일 변경
+  function dataURLtoFile(dataurl:string, filename:string) {
+    var arr :any = dataurl.split(','),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type:mime});
+}
+  
+  // 자브토큰 1000개 발행
+  const getJavToken = async () => {
     const address = await getWalletAddress();
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const signature = await signer.signMessage(address);
-    console.log(signer);
     CreateJavToken(address);
-    console.log(BalanceOfJavToken());
   };
 
   // 뽑기 함수
+  const [test,setTest] = useState("")
   const pickup = async () => {
+    // SC
     const address = await getWalletAddress();
-    // 유전 획득
-    // await console.log(BigInt(genes[0]).toString(16));
-    await PickUp(address);
-   
-  };
+    const genes = await randomGene()
+    const acces = await randomAcce();
+    const myGenes :number[] = []; // 이미지에서 본인 유전자만 쓰기 위해 사용
+    const myAcces : number[] = [];
+    
+    await genes.forEach((gene:string,idx:number) => {
+      myGenes.push(parseInt(BigInt(gene).toString(16).slice(3,4),16))
+    })
+    await acces.forEach((acce:any, idx:number)=>{
+      const num = Number(acce).toString(16);
+      myAcces.push(parseInt(num.slice(1,3),16));
+    })
+    await mergeImage(myGenes,myAcces)
+    const imageFile = await dataURLtoFile(b64,"JavNFT")
+    const NFT_URI = await imagePushIPFS(imageFile)
+    await PickUp(address,NFT_URI,genes,acces)
 
+    // 백엔드
+    let javCode = ""
+    await myGenes.forEach((myGene:number,idx:number) => {
+      javCode += myGene.toString() + ","
+    })
+    await myAcces.forEach((myAcce:number,idx:number) => {
+      if (idx != 3){
+        javCode += myAcce.toString() + ","
+      }
+      else{
+        javCode += myAcce.toString()
+      }
+    })
+    let tier;
+
+    // await draw(NFT_URI, javCode, ABI.CONTRACT_ADDRESS.NFT_ADDRESS,)
+
+
+
+
+
+  };
+  
+  //조합 함수
+  const fusionjavs = async () => {
+    const address = await getWalletAddress();
+    const targetNFT1 = 1; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
+    const targetNFT2 = 2; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
+
+    await FusionJavs(address,targetNFT1, targetNFT2);
+  }
   const payDraw = async () => {
     const accounts = await web3.eth.getAccounts();
     // const drawContract = new web3.eth.Contract(drawABI, drawAddress);
     const nonce = await web3.eth.getTransactionCount(accounts[0]);
   };
+
+  //판매함수
+  const createsale = async () => {
+    const address = await getWalletAddress();
+
+    const targetNFT = 2; //판매할 NFT의 tokenID 백에서 받아와 선언
+    const price = 100; //판매할 가격
+
+    const saleAddress = await CreateSale(address, targetNFT, price);
+    console.log(saleAddress);
+    
+    //판매Contract 주소 반환
+    return saleAddress;
+  }
+
 
   return (
     <div
@@ -111,8 +203,12 @@ const ItemDraw = () => {
             alignItems: "center",
           }}
         >
-          <button onClick={test}> 10000 JavToken 받기</button>
+          <button onClick={getJavToken}> 10000 JavToken 받기</button>
           <button onClick={pickup}> JAV NFT 발급</button>
+          <button onClick={fusionjavs}> JAV NFT 조합하기</button>
+          <button onClick={createsale}> JAV NFT 판매하기</button>
+          <img src={b64} alt="" />
+          <img src={test}/>
           <Box
             component="form"
             sx={{

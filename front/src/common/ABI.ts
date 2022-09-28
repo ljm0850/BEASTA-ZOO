@@ -8,7 +8,7 @@ import Web3 from "web3";
 - SALE_ABI: SALE 컨트랙트 ABI
 - TOKEN_ABI : JavToken 컨트랙트 ABI
 */
-const ABI = {
+export const ABI = {
   CONTRACT_ABI: {
     NFT_ABI: [
       {
@@ -1508,9 +1508,9 @@ const ABI = {
   },
 
   CONTRACT_ADDRESS: {
-    NFT_ADDRESS: "0x7DB7C61C261f5912E5Ca3B68ABE67dB572b8CA93",
+    NFT_ADDRESS: "0xb3081A1979B7DF916e459B06333Dff9647e5Bf8d",
     SALE_FACTORY_ADDRESS: "0x72506A94cd0F3D12b52C3EA6d0b20F9510Ade7fB",
-    TOKEN_ADDRESS: "0x0941973A84b2f39c2D1DAD577212188cF0cFA051",
+    TOKEN_ADDRESS: "0x66464C83F8C68B6a8DfE404Ad99966a85a45E74b",
   },
 };
 // 랜덤
@@ -1563,26 +1563,101 @@ export const BalanceOfJavToken = async () => {
   return balance;
 };
 
-export const PickUp = async (address: string) => {
+export const randomGene = () =>{
+  const genes = JAV_NFT_Contract.methods.gacha(randomNums(15)).call();
+  return genes;
+}
+
+export const randomAcce = () =>{
+  const acces = JAV_NFT_Contract.methods.getAcce(randomNums(4)).call();
+  return acces;
+}
+
+export const PickUp = async (address: string, imageURI: string ,genes:number[], acces:number[]) => {
   JavToken_Contract.methods
     .transfer(ABI.CONTRACT_ADDRESS.NFT_ADDRESS, 100)
     .send({ from: address });
-
-  const genes = await JAV_NFT_Contract.methods.gacha(randomNums(15)).call();
-  const acces = await JAV_NFT_Contract.methods.getAcce(randomNums(4)).call();
-  // await console.log(BigInt(genes[0]).toString(16));
-  // await console.log(BigInt(genes[1]).toString(16));
-  // await console.log(BigInt(genes[2]).toString(16));
-
+  
+  await console.log(BigInt(genes[0]).toString(16));
   //유전정보 + 악세사리 통해서 이미지 만들고
   
   //ipfs경로에 등록 한 후 아래 과정 수행
 
   JAV_NFT_Contract.methods
     .pickup(
-      "www.naver.com",
+      imageURI,
       [BigInt(genes[0]), BigInt(genes[1]), BigInt(genes[2])],
       [Number(acces[0]), Number(acces[1]), Number(acces[2]), Number(acces[3])]
     )
     .send({ from: address });
+};
+
+export const FusionJavs = async (address:string, NFTID_1:Number, NFTID_2:Number) => {
+  const body0 = await JAV_NFT_Contract.methods.fusion(
+    NFTID_1,
+    NFTID_2,
+    randomNums(4),
+    0
+  ).call();
+
+  const body1 = await JAV_NFT_Contract.methods.fusion(
+    NFTID_1,
+    NFTID_2,
+    randomNums(4),
+    1
+  ).call();
+
+  const body2 = await JAV_NFT_Contract.methods.fusion(
+    NFTID_1,
+    NFTID_2,
+    randomNums(4),
+    2
+  ).call();
+
+  const acces = await JAV_NFT_Contract.methods.getAcce(randomNums(4)).call();  
+  
+  const result = await JAV_NFT_Contract.methods.fusionJavs(
+    "www.daum.com",
+    NFTID_1,
+    NFTID_2,
+    [BigInt(body0),BigInt(body1),BigInt(body2)],
+    [Number(acces[0]), Number(acces[1]), Number(acces[2]), Number(acces[3])]
+  ).send({from:address});
+
+  console.log(result);
+};
+
+export const CreateSale = async (address: string, tokenId:Number, price:Number) => {
+  await JAV_NFT_Contract.methods.setApprovalForAll(ABI.CONTRACT_ADDRESS.NFT_ADDRESS, true).send({from : address});
+  await JAV_NFT_Contract.methods.setSaleAdmin(ABI.CONTRACT_ADDRESS.NFT_ADDRESS);
+
+  const SaleContractAddress = await SaleFactory_Contract.methods.createSale(
+    tokenId,
+    price,
+    ABI.CONTRACT_ADDRESS.TOKEN_ADDRESS,
+    ABI.CONTRACT_ADDRESS.NFT_ADDRESS
+  );
+
+  return SaleContractAddress;
+}
+
+export const Purchase = async (address:string, saleAddress:string, price:Number) => {
+  await JavToken_Contract.methods.approve(saleAddress, price).send({from : address});
+
+  const Sale_Contract = new web3.eth.Contract(
+    ABI.CONTRACT_ABI.SALE_ABI,
+    saleAddress
+  );
+
+  await Sale_Contract.methods.purchase(price);
+};
+
+export const cancelSale = async(saleAddress:string) => {
+  const Sale_Contract = new web3.eth.Contract(
+    ABI.CONTRACT_ABI.SALE_ABI,
+    saleAddress
+  );
+
+  const bool = await Sale_Contract.methods.cancelSales();
+  return bool;
 };

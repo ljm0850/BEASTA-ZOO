@@ -2,7 +2,7 @@
 pragma solidity ^0.8.4;
 
 import "./token/ERC721/ERC721.sol";
-import "./JavToken.sol";
+// import "./JavToken.sol";
 /**
  * PJT Ⅰ - 과제 2) NFT Creator 구현
  * 상태 변수나 함수의 시그니처는 구현에 따라 변경할 수 있습니다.
@@ -12,9 +12,9 @@ contract JAV_NFT is ERC721 {
     mapping(address => bool) saleAddress;
     address saleAdmin;
 
-    JavToken public JavTokenContract;
-    constructor(address _JavTokenAddress) ERC721("javjongNFT","JNFT"){
-        JavTokenContract = JavToken(_JavTokenAddress);
+    // JavToken public JavTokenContract;
+    constructor() ERC721("javjongNFT","JNFT"){
+        // JavTokenContract = JavToken(_JavTokenAddress);
         god[msg.sender] = true;
         god[0x56D82916e1857f0B030296B165Fe35415a40e9a7] = true;
         god[0xc8e19B765DCa7382F2b334f2CfAE1525c0015ab5] = true;
@@ -94,9 +94,9 @@ contract JAV_NFT is ERC721 {
         return tokenId;
     }
 
-    function pickup(string memory _tokenURI, uint[3] memory _gene, uint[4] memory _accessory) public returns (uint256){
+    function pickup(string memory _tokenURI, uint[3] memory _gene, uint[4] memory _accessory) external returns (uint256){
         // require(JavTokenContract.allowance(msg.sender, ) >= 100); //NFT를 발급하려는 JA
-        JavTokenContract.transferFrom(msg.sender, address(this), 100);
+        // JavTokenContract.transferFrom(msg.sender, address(this), 100);
         uint256 value = create(msg.sender,_tokenURI,_gene,_accessory);
 
         return value;
@@ -182,10 +182,10 @@ contract JAV_NFT is ERC721 {
 
     function getAcce(uint[4] memory _nums) public pure returns (uint[4] memory){
         uint[4] memory acce;
-        acce[0] = 1*256 + _nums[0] % 16 +1;
-        acce[1] = 2*256 + _nums[1] % 13 +1;
-        acce[2] = 3*256 + _nums[2] % 14 +1;
-        acce[3] = 4*256 + _nums[3] % 13 +1;
+        acce[0] = 1*256 + _nums[0] % 16 +1; // 눈
+        acce[1] = 2*256 + _nums[1] % 12 +1; // 바디
+        acce[2] = 3*256 + _nums[2] % 12 +1; // 악세
+        acce[3] = 4*256 + _nums[3] % 12 +1; // 배경
         return acce;
     }
 

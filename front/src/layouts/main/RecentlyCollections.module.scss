@@ -1,0 +1,25 @@
+.RCBody {
+  margin-top: 5%;
+  
+  .RCTitle {
+    margin: 0%;
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 4rem;
+  }
+  
+  .RCDetail {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  
+  .RCContainer {
+    display: flex;
+    justify-content: space-between;
+  
+    .recentColl {
+      width: 18%;
+    }
+  }
+}
