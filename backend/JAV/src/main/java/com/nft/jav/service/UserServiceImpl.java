@@ -1,5 +1,6 @@
 package com.nft.jav.service;
 
+import com.nft.jav.data.dto.NicknameResDto;
 import com.nft.jav.data.dto.UserRankResDto;
 import com.nft.jav.data.dto.UserReqDto;
 import com.nft.jav.data.dto.UserResDto;
@@ -64,6 +65,14 @@ public class UserServiceImpl implements UserService {
                 .token(targetUser.getToken())
                 .build();
         return userResDto;
+    }
+
+    @Override
+    public NicknameResDto getNickname(String wallet_address) {
+        NicknameResDto nicknameResDto = NicknameResDto.builder()
+                .nickname(userRepository.findNicknameByWalletAddress(wallet_address))
+                .build();
+        return nicknameResDto;
     }
 
     @Override
