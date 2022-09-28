@@ -33,8 +33,7 @@ public class CombiServiceImpl implements CombiService{
     public boolean saveCombiNft(CombiReqDto combiReqDto) {
         logger.info("saveCombiNft serviceImpl - 호출");
 
-        User targetUser = userRepository.findById(combiReqDto.getUser_id())
-                .orElseThrow(IllegalArgumentException::new);
+        User targetUser = userRepository.findByWalletAddress(combiReqDto.getWallet_address());
 
         // 전체 도감에 있는 자브종이 아닐 때 전체 도감에 자브종 저장
         if(!serviceCollectionRepository.existsByJav_code(combiReqDto.getJav_code())){
