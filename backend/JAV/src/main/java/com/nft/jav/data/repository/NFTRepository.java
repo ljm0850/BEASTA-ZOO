@@ -18,6 +18,9 @@ public interface NFTRepository extends JpaRepository<NFT, Long> {
     @Query("select N from NFT N where N.user=:user")
     List<NFT> findAllByUserId(@Param("user") User user);
 
+    @Query("select count(N) from NFT N where N.user=:user")
+    Long countNFTByUser(@Param("user") User user);
+
     @Query("select N from NFT N where N.user=:user order by N.modified_date desc")
     Page<NFT> findAllByUserSortLatest(@Param("user") User user, PageRequest pageRequest);
 

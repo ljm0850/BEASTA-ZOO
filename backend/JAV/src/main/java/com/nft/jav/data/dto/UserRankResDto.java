@@ -11,10 +11,12 @@ import lombok.ToString;
 public class UserRankResDto {
     double rank;
     long grade;
+    long countNFT;
 
     @Builder
-    public UserRankResDto(double rank, long grade) {
+    public UserRankResDto(double rank, long grade, long countNFT) {
         this.rank = rank;
         this.grade = grade;
+        this.countNFT = countNFT;
     }
 }
