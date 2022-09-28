@@ -30,8 +30,7 @@ public class DrawServiceImpl implements DrawService{
     @Override
     public boolean saveDrawNft(DrawReqDto drawReqDto) {
         logger.info("saveDrawNft serviceImpl - 호출");
-        User targetUser = userRepository.findById(drawReqDto.getUser_id())
-                .orElseThrow(IllegalArgumentException::new);
+        User targetUser = userRepository.findByWalletAddress(drawReqDto.getWallet_address());
 
         // 전체 도감에 있는 자브종이 아닐 때 전체 도감에 자브종 저장
         if(!serviceCollectionRepository.existsByJav_code(drawReqDto.getJav_code())){
