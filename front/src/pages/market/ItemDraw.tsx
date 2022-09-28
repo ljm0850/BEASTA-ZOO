@@ -10,9 +10,9 @@ import { useState } from "react";
 import JavModal from "../../layouts/modal/JavModal";
 import AlertDialog from "../../layouts/dialog/AlertDialog";
 import _ from "lodash";
-// 백엔드
-import { draw } from "../../api/market";
-// SC import
+// 뽑기함수
+import { draw } from "../../api/market"
+
 import {
   ABI,
   web3,
@@ -57,47 +57,6 @@ const ItemDraw = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const handleClickOpenAlert = () => setOpenAlert(true);
   const handleCloseAlert = () => setOpenAlert(false);
-
-
-  const [b64, setB64] = useState(""); 
-  function mergeImage(genes: number[], acces: number[]) {
-    const head = require(`../../image/asset/head/${genes[0]}.svg`);
-    const ears = require(`../../image/asset/ears/${genes[1]}.svg`);
-    const face = require(`../../image/asset/face/${genes[2]}.svg`);
-    const eyes = require(`../../image/asset/eyes/${acces[0]}.svg`);
-    const body = require(`../../image/asset/body/${acces[1]}.svg`);
-    const background = require(`../../image/asset/background/${acces[2]}.svg`);
-    const acc = require(`../../image/asset/acc/${acces[3]}.svg`);
-    mergeImages([
-      { src: background },
-      { src: body },
-      { src: ears },
-      { src: head },
-      { src: eyes },
-      { src: face },
-      { src: acc }
-    ]).then((res:any) => { setB64(res)})
-  }
-
-  const imagePushIPFS = async (image:any)=>{
-    const ipfs = await IPFS.create({ repo: "ok" + Math.random()});
-    const added = await ipfs.add(image);
-    const url = `https://ipfs.io/ipfs/${added.path}`;
-    console.log(url)
-    return url
-  }
-  // base64 -> 파일 변경
-  function dataURLtoFile(dataurl:string, filename:string) {
-    var arr :any = dataurl.split(','),
-    mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, {type:mime});
-}
   
   // 자브토큰 1000개 발행
   const getJavToken = async () => {
@@ -106,51 +65,6 @@ const ItemDraw = () => {
     const signer = provider.getSigner();
     const signature = await signer.signMessage(address);
     CreateJavToken(address);
-  };
-
-  // 뽑기 함수
-  const [test,setTest] = useState("")
-  const pickup = async () => {
-    // SC
-    const address = await getWalletAddress();
-    const genes = await randomGene()
-    const acces = await randomAcce();
-    const myGenes :number[] = []; // 이미지에서 본인 유전자만 쓰기 위해 사용
-    const myAcces : number[] = [];
-    
-    await genes.forEach((gene:string,idx:number) => {
-      myGenes.push(parseInt(BigInt(gene).toString(16).slice(3,4),16))
-    })
-    await acces.forEach((acce:any, idx:number)=>{
-      const num = Number(acce).toString(16);
-      myAcces.push(parseInt(num.slice(1,3),16));
-    })
-    await mergeImage(myGenes,myAcces)
-    const imageFile = await dataURLtoFile(b64,"JavNFT")
-    const NFT_URI = await imagePushIPFS(imageFile)
-    await PickUp(address,NFT_URI,genes,acces)
-
-    // 백엔드
-    let javCode = ""
-    await myGenes.forEach((myGene:number,idx:number) => {
-      javCode += myGene.toString() + ","
-    })
-    await myAcces.forEach((myAcce:number,idx:number) => {
-      if (idx != 3){
-        javCode += myAcce.toString() + ","
-      }
-      else{
-        javCode += myAcce.toString()
-      }
-    })
-    let tier;
-
-    // await draw(NFT_URI, javCode, ABI.CONTRACT_ADDRESS.NFT_ADDRESS,)
-
-
-
-
-
   };
   
   //조합 함수
@@ -180,6 +94,85 @@ const ItemDraw = () => {
     //판매Contract 주소 반환
     return saleAddress;
   }
+  // 테스트중
+  const [b64, setB64] = useState(""); 
+  // base64 -> file
+  function dataURLtoFile(dataurl:string, filename:string) {
+    var arr :any = dataurl.split(','),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type:mime});
+  }
+  const pickup = async () => {
+    // 사전작업
+    const address = await getWalletAddress();
+    const genes = await randomGene()
+    const acces = await randomAcce();
+    const myGenes : number[] = []; // 이미지에서 본인 유전자만 쓰기 위해 사용
+    const myAcces : number[] = [];
+    genes.forEach((gene:string,idx:number) => {
+      myGenes.push(parseInt(BigInt(gene).toString(16).slice(3,4),16))
+    })
+    acces.forEach((acce:any, idx:number)=>{
+      const num = Number(acce).toString(16);
+      myAcces.push(parseInt(num.slice(1,3),16));
+    })
+    
+    // 이미지 생성
+    await console.log(myGenes)
+    await console.log(myAcces)
+    const head = require(`../../image/asset/head/${myGenes[0]}.svg`);
+    const ears = require(`../../image/asset/ears/${myGenes[1]}.svg`);
+    const face = require(`../../image/asset/face/${myGenes[2]}.svg`);
+    const eyes = require(`../../image/asset/eyes/${myAcces[0]}.svg`);
+    const body = require(`../../image/asset/body/${myAcces[1]}.svg`);
+    const background = require(`../../image/asset/background/${myAcces[2]}.svg`);
+    const acc = require(`../../image/asset/acc/${myAcces[3]}.svg`);
+    const image = await mergeImages([
+      { src: background },
+      { src: body },
+      { src: ears },
+      { src: head },
+      { src: eyes },
+      { src: face },
+      { src: acc }
+    ]);
+    await console.log("hi")
+    await setB64(image)
+    const imageFile = await dataURLtoFile(image,"JavNFT")
+    // IPFS 등록
+    const ipfs = await IPFS.create({ repo: "ok" + Math.random()});
+    const added = await ipfs.add(imageFile);
+    const url = `https://ipfs.io/ipfs/${added.path}`;
+    // NFT 발급
+    await console.log(url)
+    await PickUp(address,url,genes,acces)
+  
+    // 백엔드 처리
+    let javCode = ""
+    let tier = 1;
+    await myGenes.forEach((myGene:number,idx:number) => {
+      tier += parseInt((myGene/3).toString())
+      javCode += myGene.toString() + ","
+    })
+    await myAcces.forEach((myAcce:number,idx:number) => {
+      if (idx != 3){
+        javCode += myAcce.toString() + ","
+      }
+      else{
+        javCode += myAcce.toString()
+      }
+    })
+    await draw(url, javCode, ABI.CONTRACT_ADDRESS.NFT_ADDRESS,tier,address)
+    return image
+  }
+
+
 
 
   return (
@@ -208,7 +201,7 @@ const ItemDraw = () => {
           <button onClick={fusionjavs}> JAV NFT 조합하기</button>
           <button onClick={createsale}> JAV NFT 판매하기</button>
           <img src={b64} alt="" />
-          <img src={test}/>
+          {/* <img src={test}/> */}
           <Box
             component="form"
             sx={{
