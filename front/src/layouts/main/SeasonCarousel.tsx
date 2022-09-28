@@ -4,7 +4,7 @@ import styles from './SeasonCarousel.module.scss';
 
 // static files
 import cat from "../../image/mainPage/cat.png"
-import chicken from "../../image/mainPage/chicken.png"
+import rooster from "../../image/mainPage/rooster.png"
 import deer from "../../image/mainPage/deer.png"
 import dragon from "../../image/mainPage/dragon.png"
 import hawk from "../../image/mainPage/hawk.png"
@@ -16,7 +16,7 @@ import tiger from "../../image/mainPage/tiger.png"
 export default class SeasonCarousel extends Component {
   
   render() {
-    const jav = [cat, chicken, deer, dragon, hawk, pig, rabbit, sheep, tiger]
+    const jav = [cat, rooster, deer, dragon, hawk, pig, rabbit, sheep, tiger]
     const settings = {
       infinite: true,
       slidesToShow: 5,
