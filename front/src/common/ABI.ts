@@ -1586,3 +1586,73 @@ export const PickUp = async (address: string) => {
     )
     .send({ from: address });
 };
+
+export const FusionJavs = async (address:string, NFTID_1:Number, NFTID_2:Number) => {
+  const body0 = await JAV_NFT_Contract.methods.fusion(
+    0, //NFTID_1
+    1, //NFTID_2
+    randomNums(4),
+    0
+  ).call();
+
+  const body1 = await JAV_NFT_Contract.methods.fusion(
+    0, //NFTID_1
+    1, //NFTID_2
+    randomNums(4),
+    1
+  ).call();
+
+  const body2 = await JAV_NFT_Contract.methods.fusion(
+    0, //NFTID_1
+    1, //NFTID_2
+    randomNums(4),
+    2
+  ).call();
+
+  const acces = await JAV_NFT_Contract.methods.getAcce(randomNums(4)).call();  
+  
+  const result = await JAV_NFT_Contract.methods.fusionJavs(
+    "www.daum.com",
+    0, //NFTID_1
+    1, //NFTID_2
+    [BigInt(body0),BigInt(body1),BigInt(body2)],
+    [Number(acces[0]), Number(acces[1]), Number(acces[2]), Number(acces[3])]
+  ).send({from:address});
+
+  console.log(result);
+};
+
+export const CreateSale = async (address: string, tokenId:Number, price:Number) => {
+  await JAV_NFT_Contract.methods.setApprovalForAll(ABI.CONTRACT_ADDRESS.NFT_ADDRESS, true).send({from : address});
+  await JAV_NFT_Contract.methods.setSaleAdmin(ABI.CONTRACT_ADDRESS.NFT_ADDRESS);
+
+  const SaleContractAddress = await SaleFactory_Contract.methods.createSale(
+    tokenId,
+    price,
+    ABI.CONTRACT_ADDRESS.TOKEN_ADDRESS,
+    ABI.CONTRACT_ADDRESS.NFT_ADDRESS
+  );
+
+  return SaleContractAddress;
+}
+
+export const Purchase = async (address:string, saleAddress:string, price:Number) {
+  await JavToken_Contract.methods.approve(saleAddress, price).send({from : address});
+
+  export const Sale_Contract = new web3.eth.Contract(
+    ABI.CONTRACT_ABI.SALE_ABI,
+    saleAddress
+  );
+
+  await Sale_Contract.methods.purchase(price);
+}
+
+export const cancelSale = async(saleAddress:string) => {
+  export const Sale_Contract = new web3.eth.Contract(
+    ABI.CONTRACT_ABI.SALE_ABI,
+    saleAddress
+  );
+
+  const bool = await Sale_Contract.methods.cancelSales();
+  return bool;
+}
