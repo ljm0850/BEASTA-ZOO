@@ -25,7 +25,7 @@ export default function Router() {
       children: [
         { path: "", element: <MarketMain /> },
         { path: "draw", element: <ItemDraw /> },
-        { path: "buy/:nftId", element: <ItemPurchase /> },
+        { path: "buy/:saleId", element: <ItemPurchase /> },
       ],
     },
     {
