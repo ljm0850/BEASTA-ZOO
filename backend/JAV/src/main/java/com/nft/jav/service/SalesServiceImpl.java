@@ -38,7 +38,7 @@ public class SalesServiceImpl implements SalesService {
         if(sort==0){
             sortPage= PageRequest.of(page, size, Sort.by("sale_start_date").descending());
         }else if(sort==1){
-            sortPage= PageRequest.of(page, size, Sort.by("price").descending());
+            sortPage= PageRequest.of(page, size, Sort.by("price"));
         } else {
             sortPage= PageRequest.of(page, size, Sort.by("price").descending());
         }
