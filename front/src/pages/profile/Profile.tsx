@@ -120,6 +120,7 @@ const Profile = () => {
         profile_img_path: url,
       };
 
+      console.log(url);
       updateUserInfo(loginedAccount, option)
         .then((res) => {
           setUser({
@@ -200,14 +201,6 @@ const Profile = () => {
           <CircularProgress />
         </div>
       )}
-      <button
-        onClick={handleClick({
-          vertical: "top",
-          horizontal: "center",
-        })}
-      >
-        발생
-      </button>
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={open}
@@ -388,12 +381,12 @@ const Profile = () => {
         )}
       </div>
 
-      <div style={{ marginTop: "80px", marginLeft: "50px" }}>
+      <div style={{ marginTop: "80px", marginLeft: "50px", marginRight: "50px" }}>
         <div style={{ fontSize: "2rem", fontWeight: "bold" }}>
           {!user.nickname ? "unknown Javjong" : user.nickname}
         </div>
 
-        <BootstrapTooltip title={<h2>{copy}</h2>}>
+        <BootstrapTooltip title={<div>{copy}</div>}>
           <div
             className={styles.myAccount}
             onClick={copyHandler}
@@ -404,32 +397,59 @@ const Profile = () => {
               setCopy("copy");
             }}
           >
-            <img style={{ width: "25px" }} src={ethereum_logo} alt="" />
-            {reduceAccount}
+            <div className={styles.account}>
+              <img style={{ width: "20px" }} src={ethereum_logo} alt="" />
+              <div>{reduceAccount}</div>
+            </div>
           </div>
         </BootstrapTooltip>
+        <div className={styles.description}>{user.profile_description}</div>
       </div>
 
       {/* 구분선 */}
 
-      <Divider />
-
-      <div>testing area</div>
-      <div>보고있는 프로필 {account?.toLowerCase()}</div>
-      <div>로그인된 계좌 {loginedAccount}</div>
-
-      <Divider />
-
-      <Box sx={{ typography: "body1", margin: "10px 40px 0 40px" }}>
+      <Box sx={{ margin: "10px 40px 0 40px" }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
-              <Tab label="My Javs" style={{textTransform: "none"}} value="1" />
-              <Tab label="Favorited" disabled style={{textTransform: "none"}} value="2" />
-              <Tab label="Collections" disabled style={{textTransform: "none"}} value="3" />
+            <TabList
+              textColor="inherit"
+              TabIndicatorProps={{ style: { background: "black" } }}
+              onChange={handleChange}
+              aria-label="lab API tabs example"
+            >
+              <Tab
+                label="My Javs"
+                style={{
+                  textTransform: "none",
+                  fontWeight: "600",
+                  fontSize: "1rem",
+                }}
+                value="1"
+              />
+              <Tab
+                label="Favorited"
+                style={{
+                  textTransform: "none",
+                  fontWeight: "600",
+                  fontSize: "1rem",
+                }}
+                value="2"
+              />
+              <Tab
+                label="Collections"
+                disabled
+                style={{
+                  textTransform: "none",
+                  fontWeight: "600",
+                  fontSize: "1rem",
+                }}
+                value="3"
+              />
             </TabList>
           </Box>
-          <TabPanel value="1"><MyJavs account={account}/></TabPanel>
+          <TabPanel value="1">
+            <MyJavs account={account} />
+          </TabPanel>
           <TabPanel value="2">Item Two</TabPanel>
           <TabPanel value="3">Item Three</TabPanel>
         </TabContext>
