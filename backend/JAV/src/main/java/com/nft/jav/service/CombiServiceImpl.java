@@ -66,7 +66,7 @@ public class CombiServiceImpl implements CombiService{
                 .orElseThrow(IllegalArgumentException::new);
         nftRepository.delete(targetNft1);
 
-        NFT targetNft2 = nftRepository.findById(combiReqDto.getNft_id_1())
+        NFT targetNft2 = nftRepository.findById(combiReqDto.getNft_id_2())
                 .orElseThrow(IllegalArgumentException::new);
         nftRepository.delete(targetNft2);
 
@@ -74,17 +74,19 @@ public class CombiServiceImpl implements CombiService{
         int serviceCount = serviceTarget.getDiscover_user_count();
         serviceTarget.updateDiscoverUserCount(serviceCount+1);
 
-        // 유저 도감에 추가
-        UserCollection userCollection = UserCollection.builder()
-                .user(targetUser)
-                .nft_address(combiReqDto.getNft_address())
-                .img_address(savedNFT.getImg_address())
-                .jav(serviceTarget)
-                .build();
+        // 유저 도감에 없는 자브종일 때 추가
+        if(userCollectionRepository.countByWalletAndJav(targetUser.getWallet_address(), serviceTarget.getJav_id())==0){
+            UserCollection userCollection = UserCollection.builder()
+                    .user(targetUser)
+                    .nft_address(combiReqDto.getNft_address())
+                    .img_address(serviceTarget.getJav_img_path())
+                    .jav(serviceTarget)
+                    .build();
 
-        UserCollection savedUserCollection = userCollectionRepository.save(userCollection);
+            userCollectionRepository.save(userCollection);
+        }
 
-        if(savedNFT !=null && savedUserCollection !=null) return true;
+        if(savedNFT !=null) return true;
 
         return false;
     }

@@ -43,14 +43,14 @@ public class SalesController {
         return new ResponseEntity<>(salesResDto,HttpStatus.OK);
     }
 
-    @GetMapping("/info/{user_collection_id}")
-    @ApiOperation(value = "nft 주소 반환")
-    public ResponseEntity<String> infoNFT(@PathVariable long user_collection_id) {
-        logger.info("infoNFT - 호출");
-
-        String nftAddress = userCollectionService.getNFTAddress(user_collection_id);
-        return new ResponseEntity<>(nftAddress,HttpStatus.OK);
-    }
+//    @GetMapping("/info/{user_collection_id}")
+//    @ApiOperation(value = "nft 주소 반환")
+//    public ResponseEntity<String> infoNFT(@PathVariable long user_collection_id) {
+//        logger.info("infoNFT - 호출");
+//
+//        String nftAddress = userCollectionService.getNFTAddress(user_collection_id);
+//        return new ResponseEntity<>(nftAddress,HttpStatus.OK);
+//    }
 
     @GetMapping("")
     @ApiOperation(value = "판매 테이블 목록 조회", notes ="sort가 0: 최신순, 1: 가격낮은순, 2: 가격높은순 \n"+

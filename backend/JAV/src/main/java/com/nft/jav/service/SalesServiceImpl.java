@@ -218,17 +218,20 @@ public class SalesServiceImpl implements SalesService {
         targetNFT.updateUser(targetUser);
 
         // 구매자 유저 컬렉션에 저장
-        ServiceCollection targetServiceCollection = serviceCollectionRepository.findById(purchaseReqDto.getService_collection_id())
+        ServiceCollection serviceTarget = serviceCollectionRepository.findById(purchaseReqDto.getService_collection_id())
                 .orElseThrow(IllegalArgumentException::new);
 
-        UserCollection userCollection = UserCollection.builder()
-                .user(targetUser)
-                .nft_address(targetNFT.getNft_address())
-                .img_address(targetNFT.getImg_address())
-                .jav(targetServiceCollection)
-                .build();
+        // 유저 도감에 없는 자브종일 때 추가
+        if(userCollectionRepository.countByWalletAndJav(targetUser.getWallet_address(), serviceTarget.getJav_id())==0){
+            UserCollection userCollection = UserCollection.builder()
+                    .user(targetUser)
+                    .nft_address(targetNFT.getNft_address())
+                    .img_address(serviceTarget.getJav_img_path())
+                    .jav(serviceTarget)
+                    .build();
 
-        UserCollection savedUserCollection = userCollectionRepository.save(userCollection);
+            userCollectionRepository.save(userCollection);
+        }
 
         // Sales 테이블 정보 변경
         Sales targetSale = salesRepository.findById(purchaseReqDto.getSale_id())
@@ -240,9 +243,8 @@ public class SalesServiceImpl implements SalesService {
         PurchaseResDto purchaseResDto = PurchaseResDto.builder()
                 .nft_id(targetNFT.getNft_id())
                 .nft_address(targetNFT.getNft_address())
-                .jav_id(savedUserCollection.getJav().getJav_id())
-                .user_collection_id(savedUserCollection.getUser_collection_id())
-                .user_id(savedUserCollection.getUser().getUser_id())
+                .jav_id(serviceTarget.getJav_id())
+                .user_id(targetUser.getUser_id())
                 .build();
 
         return purchaseResDto;

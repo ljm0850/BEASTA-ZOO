@@ -28,7 +28,7 @@ public class NFT extends BaseTimeEntity {
     @Column
     private String jav_code;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "jav_id")
     private ServiceCollection serviceCollection;
 
