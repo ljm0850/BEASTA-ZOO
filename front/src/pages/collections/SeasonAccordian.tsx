@@ -24,7 +24,7 @@ const SeasonAccordian = () => {
 
   return (
     <div>
-      <Accordion sx={{ width: "90%" }}>
+      <Accordion className={styles.accordion}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -35,16 +35,16 @@ const SeasonAccordian = () => {
           <Typography sx={{ marginLeft: "1rem", display: "flex", justifyContent: "start", alignItems: "center"}}>Season 1 - OOZ Project</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+          <div className={styles.accordianDiv}>
             {jav.map((item, idx) => {
               return (
-                <div>
+                <div key={item}>
                   <img className={styles.JAV} src={item} alt="" />
                   <p className={styles.JAVName}>{javName[idx]}</p>
                 </div>
               );
             })}
-          </Typography>
+          </div>
         </AccordionDetails>
       </Accordion>
     </div>

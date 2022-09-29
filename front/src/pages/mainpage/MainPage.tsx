@@ -32,7 +32,7 @@ const MainPage = () => {
 
   return (
     <div className={styles.mainBody}>
-      <Box sx={{ width: "75%", margin: "1% 15% 3% 15%" }}>
+      <Box sx={{ width: "75%", margin: "1% 12.5% 3% 12.5%" }}>
         { sessionStorage.getItem("isLogined") && <p className={styles.welcome}>Welcome, {userNickname}</p>}
         <div className={styles.mainBanner}>
           <img src={banner} alt="banner" onClick={() => {navigate("/market/draw")}} className={styles.banner} />

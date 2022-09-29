@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { ENDPOINT_URL } from '.';
 
-export const Collection = async (page: number, size: number) => {
-  const { data } = await axios.get(`${ENDPOINT_URL}/collection`, {params: { page, size }});
+export const Collection = async (page: number, size: number, type: number, wallet_address: string) => {
+  const { data } = await axios.get(`${ENDPOINT_URL}/collection`, {params: { page, size, type, wallet_address }});
   return data
 }
 
