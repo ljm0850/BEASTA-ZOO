@@ -1,5 +1,14 @@
 import axios from "axios";
 import { ENDPOINT_URL } from ".";
+import mergeImages from 'merge-images';
+import * as IPFS from "ipfs-core"
+import {
+  ABI,
+  getWalletAddress,
+  PickUp,
+  randomAcce,
+  randomGene,
+} from "../common/ABI";
 
 export const fetchItems = async (
   page: number,
@@ -28,17 +37,15 @@ export const fetchItemDetail = async (saleId: string) => {
 export const draw = async (
   img_address: string, jav_code: string,
   nft_address: string, tier: number,
-  user_id : number
+  wallet_address : string
   ) => {
-    await axios({
-      url: `${ENDPOINT_URL}/draw`,
-      method: "post",
-      data: {
-        img_address: img_address,
-        jav_code: jav_code,
-        nft_address:nft_address,
-        tier: tier,
-        user_id: user_id
-      },
-    })
+    const data = {
+      img_address: img_address,
+      jav_code: jav_code,
+      nft_address:nft_address,
+      tier: tier,
+      wallet_address: wallet_address
+    }
+    console.log(data)
+    axios.post(`${ENDPOINT_URL}/draw}`,JSON.stringify(data))
   }
