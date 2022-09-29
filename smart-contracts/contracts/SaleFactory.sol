@@ -48,7 +48,7 @@ contract SaleFactory is Ownable {
         // 생성한 인스턴스에게 tokenid에 해당하는 토큰의 소유권 넘겨주기
         // NFTcreatorContract.saleApprovalForAll(seller);
         NFTcreatorContract.approve(address(instance), itemId);
-        NFTcreatorContract.transferFrom(seller, address(instance), itemId);
+        //NFTcreatorContract.transferFrom(seller, address(instance), itemId);
         NFTcreatorContract.setSaleAddress(address(instance));
         // return instance;
         // emit NewSale(_saleContract, _owner, _workId);
@@ -141,15 +141,15 @@ contract Sale {
     // 받는 인자로 address buyer 해두셨는데, buyer = msg.sender입니다.
     function purchase(uint256 purchase_amount) public {
         // TODO 
-        require(msg.sender != seller, "seller can't call this function");
-        // require(block.timestamp < saleEndTime, "Sale time has expired");
-        require(JavTokenContract.balanceOf(msg.sender) >= purchase_amount, "buyer do not have enough ERC20 token");
-        require(JavTokenContract.allowance(msg.sender, address(this)) != 0, "buyer did not approve this contract");
-        require(JavTokenContract.allowance(msg.sender, address(this)) >= purchase_amount, "caller approve less amount of token");
-        require(purchase_amount == purchasePrice, "Wrong price");
+        //require(msg.sender != seller, "seller can't call this function");
+        //require(block.timestamp < saleEndTime, "Sale time has expired");
+        //require(JavTokenContract.balanceOf(msg.sender) >= purchase_amount, "buyer do not have enough ERC20 token");
+        //require(JavTokenContract.allowance(msg.sender, address(this)) != 0, "buyer did not approve this contract");
+        //require(JavTokenContract.allowance(msg.sender, address(this)) >= purchase_amount, "caller approve less amount of token");
+        //require(purchase_amount == purchasePrice, "Wrong price");
         buyer = msg.sender;
-        JavTokenContract.transferFrom(buyer, seller, purchase_amount);
-        NFTcreatorContract.transferFrom(address(this), buyer, tokenId);
+        //JavTokenContract.transferFrom(buyer, seller, purchase_amount);
+        //NFTcreatorContract.transferFrom(address(this), buyer, tokenId);
         NFTcreatorContract.pushSaleData(tokenId,purchase_amount);
         emit SaleEnded(buyer, purchase_amount);
         _end();
@@ -162,7 +162,7 @@ contract Sale {
     function cancelSales() public {
         // TODO
         // require(block.timestamp < saleEndTime, "Sale time has expired");
-        require(msg.sender == seller || msg.sender == admin, "caller is not approved");
+        //require(msg.sender == seller || msg.sender == admin, "caller is not approved");
         // NFT 소유권을 판매자에게 되돌려주기
         NFTcreatorContract.transferFrom(address(this), seller, tokenId);
         _end();
