@@ -26,6 +26,7 @@ import {
   randomGene,
   FusionJavs,
   CreateSale,
+  Purchase
 } from "../../common/ABI";
 // 이미지 처리
 import mergeImages from "merge-images";
@@ -69,10 +70,10 @@ const ItemDraw = () => {
   //조합 함수
   const fusionjavs = async () => {
     const address = await getWalletAddress();
-    const targetNFT1 = 1; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
-    const targetNFT2 = 2; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
+    const targetNFT1 = 4; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
+    const targetNFT2 = 5; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
 
-    await FusionJavs(address, targetNFT1, targetNFT2);
+    await FusionJavs(address, targetNFT1, targetNFT2,"imageURI가 들어가야합니다.");
   };
   const payDraw = async () => {
     const accounts = await web3.eth.getAccounts();
@@ -95,6 +96,15 @@ const ItemDraw = () => {
     NFTSaleAddress = saleAddress;
     return saleAddress;
   };
+
+
+  const purchase = async () => {
+    const address = await getWalletAddress();
+
+    const purchaseTokenId = await Purchase(address, NFTSaleAddress);
+    return purchaseTokenId;
+  }
+
   // 테스트중
   const [b64, setB64] = useState("");
   // base64 -> file
@@ -197,7 +207,7 @@ const ItemDraw = () => {
           <button onClick={pickup}> JAV NFT 발급</button>
           <button onClick={fusionjavs}> JAV NFT 조합하기</button>
           <button onClick={createsale}> JAV NFT 판매하기</button>
-          <button onClick={createsale}> JAV NFT 구매하기</button>
+          <button onClick={purchase}> JAV NFT 구매하기</button>
           <img src={b64} alt="" />
           {/* <img src={test}/> */}
           <Box
