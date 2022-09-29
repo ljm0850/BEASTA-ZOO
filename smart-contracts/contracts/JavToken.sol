@@ -26,7 +26,8 @@ contract JavToken is ERC20, Ownable{
 
     function JavPickup(string memory _tokenURI, uint[3] memory _gene, uint[4] memory _accessory) public {
         super.transfer(address(JAV_NFT_Contract),100);
-        JAV_NFT_Contract.pickup(_tokenURI, _gene, _accessory);
+        uint tokenId = JAV_NFT_Contract.pickup(_tokenURI, _gene, _accessory);
+        JAV_NFT_Contract.transferFrom(address(this),msg.sender,tokenId);
     }
 
     // function sendMoney(address seller, uint pay) internal {
@@ -38,7 +39,6 @@ contract JavToken is ERC20, Ownable{
         super.transfer(recipient,amount);
         return true;
     }
-
 
     function purchase(address saleAddress) public returns(uint){
         Sale SaleContract = Sale(saleAddress);
