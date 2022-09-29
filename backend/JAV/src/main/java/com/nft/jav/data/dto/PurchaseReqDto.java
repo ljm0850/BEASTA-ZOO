@@ -10,19 +10,16 @@ import lombok.ToString;
 @ToString
 public class PurchaseReqDto {
 
-    private long user_id;
+    private String wallet_address;
 
     private long nft_id;
-
-    private long service_collection_id;
 
     private long sale_id;
 
     @Builder
-    public PurchaseReqDto(long user_id, long nft_id, long service_collection_id, long sale_id) {
-        this.user_id = user_id;
+    public PurchaseReqDto(String wallet_address, long nft_id, long sale_id) {
+        this.wallet_address = wallet_address;
         this.nft_id = nft_id;
-        this.service_collection_id = service_collection_id;
         this.sale_id = sale_id;
     }
 }

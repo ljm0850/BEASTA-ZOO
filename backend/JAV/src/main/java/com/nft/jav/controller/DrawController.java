@@ -2,6 +2,7 @@ package com.nft.jav.controller;
 
 import com.nft.jav.data.dto.DrawReqDto;
 import com.nft.jav.service.DrawService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ public class DrawController {
     private final DrawService drawService;
 
     @PostMapping("")
+    @ApiOperation(value = "뽑기")
     public ResponseEntity<String> saveDrawNft(@RequestBody DrawReqDto drawReqDto){
         logger.info("drawSaveNft- 호출");
         if(drawService.saveDrawNft(drawReqDto))

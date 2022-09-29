@@ -212,14 +212,14 @@ public class SalesServiceImpl implements SalesService {
         NFT targetNFT = nftRepository.findById(purchaseReqDto.getNft_id())
                 .orElseThrow(IllegalArgumentException::new);
 
-        User targetUser = userRepository.findById(purchaseReqDto.getUser_id())
-                .orElseThrow(IllegalArgumentException::new);
+        User targetUser = userRepository.findByWalletAddress(purchaseReqDto.getWallet_address());
 
         targetNFT.updateUser(targetUser);
 
         // 구매자 유저 컬렉션에 저장
-        ServiceCollection serviceTarget = serviceCollectionRepository.findById(purchaseReqDto.getService_collection_id())
-                .orElseThrow(IllegalArgumentException::new);
+//        ServiceCollection serviceTarget = serviceCollectionRepository.findById(purchaseReqDto.getService_collection_id())
+//                .orElseThrow(IllegalArgumentException::new);
+        ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(targetNFT.getJav_code());
 
         // 유저 도감에 없는 자브종일 때 추가
         if(userCollectionRepository.countByWalletAndJav(targetUser.getWallet_address(), serviceTarget.getJav_id())==0){
