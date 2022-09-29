@@ -16,16 +16,13 @@ public class PurchaseResDto {
 
     private String nft_address;
 
-    private long user_collection_id;
-
     private long jav_id;
 
     @Builder
-    public PurchaseResDto(long nft_id, long user_id, String nft_address, long user_collection_id, long jav_id) {
+    public PurchaseResDto(long nft_id, long user_id, String nft_address, long jav_id) {
         this.nft_id = nft_id;
         this.user_id = user_id;
         this.nft_address = nft_address;
-        this.user_collection_id = user_collection_id;
         this.jav_id = jav_id;
     }
 }

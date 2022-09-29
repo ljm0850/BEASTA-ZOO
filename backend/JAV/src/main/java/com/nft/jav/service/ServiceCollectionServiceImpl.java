@@ -60,6 +60,47 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
     }
 
     @Override
+    public List<ServiceCollectionResDto> firstUserCollectionList(int page, int size, String wallet_address) {
+        logger.info("firstUserCollectionList - 호출");
+        List<ServiceCollection> findAll = serviceCollectionRepository.findAll();
+
+        List<ServiceCollectionResDto> found = new ArrayList<>();
+        List<ServiceCollectionResDto> notFound = new ArrayList<>();
+
+        int totalSize = findAll.size();
+        int totalPage = totalSize/size+1;
+
+        for(ServiceCollection serviceCollection : findAll){
+
+            ServiceCollectionResDto resDto = ServiceCollectionResDto.builder()
+                    .total_page(totalPage)
+                    .jav_id(serviceCollection.getJav_id())
+                    .user_id(serviceCollection.getUser().getUser_id())
+                    .jav_code(serviceCollection.getJav_code())
+                    .level(serviceCollection.getLevel())
+                    .jav_img_path(serviceCollection.getJav_img_path())
+                    .discover_time(serviceCollection.getCreate_date())
+                    .discover_user_count(serviceCollection.getDiscover_user_count())
+                    .build();
+
+            if(userCollectionRepository.countByWalletAndJav(wallet_address, serviceCollection.getJav_id())>0){
+                resDto.setOwner(true);
+                found.add(resDto);
+            } else {
+                resDto.setOwner(false);
+                notFound.add(resDto);
+            }
+        }
+
+        List<ServiceCollectionResDto> joined = new ArrayList<>();
+        joined.addAll(found);
+        joined.addAll(notFound);
+
+        if(page*size+size>= totalSize) return joined.subList(page*size, totalSize);
+        return joined.subList(page*size, page*size+size);
+    }
+
+    @Override
     public List<SalesResDto> getSaleByJavCode(String jav_code) {
         List<Sales> salesLit = salesRepository.findAllByJavCode(jav_code);
 

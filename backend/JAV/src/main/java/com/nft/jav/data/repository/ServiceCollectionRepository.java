@@ -15,10 +15,10 @@ public interface ServiceCollectionRepository extends JpaRepository<ServiceCollec
     @Query("select S from ServiceCollection S where S.jav_code=:jav_code")
     ServiceCollection findByJav_code(@Param("jav_code") String jav_code);
 
-    @Query("select S from ServiceCollection S where S.discover_user_count > 0 order by S.create_date")
+    @Query("select S from ServiceCollection S order by S.create_date")
     Page<ServiceCollection> findDiscoverJav(PageRequest pageRequest);
 
-    @Query("select S from ServiceCollection S where S.discover_user_count > 0 order by S.create_date desc")
+    @Query("select S from ServiceCollection S order by S.create_date desc")
     Page<ServiceCollection> findLatest(PageRequest pageRequest);
 
     @Query("select case when count(S.jav_code)> 0 THEN true ELSE false END from ServiceCollection S where S.jav_code =:jav_code")
