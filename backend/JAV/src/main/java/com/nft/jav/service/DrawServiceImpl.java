@@ -35,7 +35,7 @@ public class DrawServiceImpl implements DrawService{
         // 전체 도감에 있는 자브종이 아닐 때 전체 도감에 자브종 저장
         if(!serviceCollectionRepository.existsByJav_code(drawReqDto.getJav_code())){
             serviceCollectionRepository.save(ServiceCollection.builder()
-                            .discover_user_count(1)
+                            .discover_user_count(0)
                             .jav_code(drawReqDto.getJav_code())
                             .jav_img_path(drawReqDto.getImg_address())
                             .level(drawReqDto.getTier())
