@@ -40,4 +40,7 @@ public interface SalesRepository extends JpaRepository<Sales, Long>, JpaSpecific
     List<Sales> findAllByJavCode(@Param("jav_code") String jav_code);
 
     List<Sales> findAll(Specification<Sales> spec);
+
+    @Query("select S from Sales S where S.contract_address=:contract_address")
+    Sales findByContractAddress(@Param("contract_address") String contract_address);
 }

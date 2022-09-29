@@ -330,4 +330,14 @@ public class SalesServiceImpl implements SalesService {
 
         return userSalesResDtoList;
     }
+
+    @Override
+    public boolean deleteCommunity(String contract_address) {
+        Sales sale = salesRepository.findByContractAddress(contract_address);
+        long saleId = sale.getSale_id();
+        salesRepository.delete(sale);
+
+        if(!salesRepository.existsById(saleId)) return true;
+        return false;
+    }
 }

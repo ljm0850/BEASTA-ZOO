@@ -18,4 +18,6 @@ public interface SalesService {
     SalesResDto getSale(long sale_id);
 
     List<SalesResDto> getSaleByJavCodeCompleted(String jav_code);
+
+    boolean deleteCommunity(String contract_address);
 }
