@@ -12,13 +12,7 @@ export const ABI = {
   CONTRACT_ABI: {
     NFT_ABI: [
       {
-        inputs: [
-          {
-            internalType: "address",
-            name: "_JavTokenAddress",
-            type: "address",
-          },
-        ],
+        inputs: [],
         stateMutability: "nonpayable",
         type: "constructor",
       },
@@ -117,20 +111,6 @@ export const ABI = {
         type: "event",
       },
       {
-        inputs: [],
-        name: "JavTokenContract",
-        outputs: [
-          {
-            internalType: "contract JavToken",
-            name: "",
-            type: "address",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
-      },
-      {
         inputs: [
           {
             internalType: "address",
@@ -166,7 +146,130 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
+      },
+      {
+        inputs: [],
+        name: "current",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "NFT_ID1",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "NFT_ID2",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256[4]",
+            name: "_nums",
+            type: "uint256[4]",
+          },
+          {
+            internalType: "uint8",
+            name: "body",
+            type: "uint8",
+          },
+        ],
+        name: "fusion",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "_tokenURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "NFTid1",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "NFTid2",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256[3]",
+            name: "_gene",
+            type: "uint256[3]",
+          },
+          {
+            internalType: "uint256[4]",
+            name: "_accessory",
+            type: "uint256[4]",
+          },
+        ],
+        name: "fusionJavs",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256[15]",
+            name: "_nums",
+            type: "uint256[15]",
+          },
+        ],
+        name: "gacha",
+        outputs: [
+          {
+            internalType: "uint256[3]",
+            name: "",
+            type: "uint256[3]",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256[4]",
+            name: "_nums",
+            type: "uint256[4]",
+          },
+        ],
+        name: "getAcce",
+        outputs: [
+          {
+            internalType: "uint256[4]",
+            name: "",
+            type: "uint256[4]",
+          },
+        ],
+        stateMutability: "pure",
+        type: "function",
       },
       {
         inputs: [
@@ -186,7 +289,82 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+        ],
+        name: "getJavsAccessory",
+        outputs: [
+          {
+            internalType: "uint256[4]",
+            name: "",
+            type: "uint256[4]",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+        ],
+        name: "getJavsCreate_at",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+        ],
+        name: "getJavsGene",
+        outputs: [
+          {
+            internalType: "uint256[3]",
+            name: "",
+            type: "uint256[3]",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+        ],
+        name: "getSaleData",
+        outputs: [
+          {
+            internalType: "uint256[]",
+            name: "",
+            type: "uint256[]",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
       },
       {
         inputs: [
@@ -211,7 +389,6 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
       },
       {
         inputs: [],
@@ -225,7 +402,6 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
       },
       {
         inputs: [
@@ -245,7 +421,53 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
+      },
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "_tokenURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256[3]",
+            name: "_gene",
+            type: "uint256[3]",
+          },
+          {
+            internalType: "uint256[4]",
+            name: "_accessory",
+            type: "uint256[4]",
+          },
+        ],
+        name: "pickup",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+        ],
+        name: "pushSaleData",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
       },
       {
         inputs: [
@@ -319,6 +541,32 @@ export const ABI = {
       {
         inputs: [
           {
+            internalType: "address",
+            name: "_sale",
+            type: "address",
+          },
+        ],
+        name: "setSaleAddress",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "_saleFactory",
+            type: "address",
+          },
+        ],
+        name: "setSaleAdmin",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
             internalType: "bytes4",
             name: "interfaceId",
             type: "bytes4",
@@ -334,7 +582,6 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
       },
       {
         inputs: [],
@@ -348,7 +595,25 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+        ],
+        name: "tokenURI",
+        outputs: [
+          {
+            internalType: "string",
+            name: "",
+            type: "string",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
       },
       {
         inputs: [
@@ -373,514 +638,207 @@ export const ABI = {
         stateMutability: "nonpayable",
         type: "function",
       },
-      {
-        inputs: [],
-        name: "current",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
-        ],
-        name: "tokenURI",
-        outputs: [
-          {
-            internalType: "string",
-            name: "",
-            type: "string",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
-        ],
-        name: "getJavsGene",
-        outputs: [
-          {
-            internalType: "uint256[3]",
-            name: "",
-            type: "uint256[3]",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
-        ],
-        name: "getJavsAccessory",
-        outputs: [
-          {
-            internalType: "uint256[4]",
-            name: "",
-            type: "uint256[4]",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
-        ],
-        name: "getJavsCreate_at",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "_saleFactory",
-            type: "address",
-          },
-        ],
-        name: "setSaleAdmin",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "_sale",
-            type: "address",
-          },
-        ],
-        name: "setSaleAddress",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
-        ],
-        name: "getSaleData",
-        outputs: [
-          {
-            internalType: "uint256[]",
-            name: "",
-            type: "uint256[]",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "price",
-            type: "uint256",
-          },
-        ],
-        name: "pushSaleData",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "string",
-            name: "_tokenURI",
-            type: "string",
-          },
-          {
-            internalType: "uint256[3]",
-            name: "_gene",
-            type: "uint256[3]",
-          },
-          {
-            internalType: "uint256[4]",
-            name: "_accessory",
-            type: "uint256[4]",
-          },
-        ],
-        name: "pickup",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-        ],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "string",
-            name: "_tokenURI",
-            type: "string",
-          },
-          {
-            internalType: "uint256",
-            name: "NFTid1",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "NFTid2",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256[3]",
-            name: "_gene",
-            type: "uint256[3]",
-          },
-          {
-            internalType: "uint256[4]",
-            name: "_accessory",
-            type: "uint256[4]",
-          },
-        ],
-        name: "fusionJavs",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-        ],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256[15]",
-            name: "_nums",
-            type: "uint256[15]",
-          },
-        ],
-        name: "gacha",
-        outputs: [
-          {
-            internalType: "uint256[3]",
-            name: "",
-            type: "uint256[3]",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "NFT_ID1",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "NFT_ID2",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256[4]",
-            name: "_nums",
-            type: "uint256[4]",
-          },
-          {
-            internalType: "uint8",
-            name: "body",
-            type: "uint8",
-          },
-        ],
-        name: "fusion",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256[4]",
-            name: "_nums",
-            type: "uint256[4]",
-          },
-        ],
-        name: "getAcce",
-        outputs: [
-          {
-            internalType: "uint256[4]",
-            name: "",
-            type: "uint256[4]",
-          },
-        ],
-        stateMutability: "pure",
-        type: "function",
-        constant: true,
-      },
     ] as AbiItem[],
     SALE_FACTORY_ABI: [
       {
-        inputs: [
+        "inputs": [
           {
-            internalType: "address",
-            name: "_NFTcreatorAddress",
-            type: "address",
-          },
+            "internalType": "address",
+            "name": "_NFTcreatorAddress",
+            "type": "address"
+          }
         ],
-        stateMutability: "nonpayable",
-        type: "constructor",
+        "stateMutability": "nonpayable",
+        "type": "constructor"
       },
       {
-        anonymous: false,
-        inputs: [
+        "anonymous": false,
+        "inputs": [
           {
-            indexed: true,
-            internalType: "address",
-            name: "_saleContract",
-            type: "address",
+            "indexed": true,
+            "internalType": "address",
+            "name": "_saleContract",
+            "type": "address"
           },
           {
-            indexed: true,
-            internalType: "address",
-            name: "_owner",
-            type: "address",
+            "indexed": true,
+            "internalType": "address",
+            "name": "_owner",
+            "type": "address"
           },
           {
-            indexed: false,
-            internalType: "uint256",
-            name: "_workId",
-            type: "uint256",
-          },
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "_workId",
+            "type": "uint256"
+          }
         ],
-        name: "NewSale",
-        type: "event",
+        "name": "NewSale",
+        "type": "event"
       },
       {
-        anonymous: false,
-        inputs: [
+        "anonymous": false,
+        "inputs": [
           {
-            indexed: true,
-            internalType: "address",
-            name: "previousOwner",
-            type: "address",
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
           },
           {
-            indexed: true,
-            internalType: "address",
-            name: "newOwner",
-            type: "address",
-          },
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
         ],
-        name: "OwnershipTransferred",
-        type: "event",
+        "name": "OwnershipTransferred",
+        "type": "event"
       },
       {
-        inputs: [],
-        name: "NFTcreatorContract",
-        outputs: [
+        "inputs": [],
+        "name": "NFTcreatorContract",
+        "outputs": [
           {
-            internalType: "contract JAV_NFT",
-            name: "",
-            type: "address",
-          },
+            "internalType": "contract JAV_NFT",
+            "name": "",
+            "type": "address"
+          }
         ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
+        "stateMutability": "view",
+        "type": "function"
       },
       {
-        inputs: [],
-        name: "admin",
-        outputs: [
+        "inputs": [],
+        "name": "admin",
+        "outputs": [
           {
-            internalType: "address",
-            name: "",
-            type: "address",
-          },
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
         ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
+        "stateMutability": "view",
+        "type": "function"
       },
       {
-        inputs: [],
-        name: "owner",
-        outputs: [
+        "inputs": [],
+        "name": "allSales",
+        "outputs": [
           {
-            internalType: "address",
-            name: "",
-            type: "address",
-          },
+            "internalType": "address[]",
+            "name": "",
+            "type": "address[]"
+          }
         ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
+        "stateMutability": "view",
+        "type": "function"
       },
       {
-        inputs: [],
-        name: "renounceOwnership",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "itemId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "purchasePrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "currencyAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "nftAddress",
+            "type": "address"
+          }
+        ],
+        "name": "createSale",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
       },
       {
-        inputs: [
+        "inputs": [
           {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
         ],
-        name: "sales",
-        outputs: [
+        "name": "getSaleContractAddress",
+        "outputs": [
           {
-            internalType: "address",
-            name: "",
-            type: "address",
-          },
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
         ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
+        "stateMutability": "view",
+        "type": "function"
       },
       {
-        inputs: [
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
           {
-            internalType: "address",
-            name: "newOwner",
-            type: "address",
-          },
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
         ],
-        name: "transferOwnership",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
+        "stateMutability": "view",
+        "type": "function"
       },
       {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "itemId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "purchasePrice",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "currencyAddress",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "nftAddress",
-            type: "address",
-          },
-        ],
-        name: "createSale",
-        outputs: [
-          {
-            internalType: "address",
-            name: "",
-            type: "address",
-          },
-        ],
-        stateMutability: "nonpayable",
-        type: "function",
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
       },
       {
-        inputs: [],
-        name: "allSales",
-        outputs: [
+        "inputs": [
           {
-            internalType: "address[]",
-            name: "",
-            type: "address[]",
-          },
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
         ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
+        "name": "sales",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
       },
       {
-        inputs: [
+        "inputs": [
           {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
         ],
-        name: "getSaleContractAddress",
-        outputs: [
-          {
-            internalType: "address",
-            name: "",
-            type: "address",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-        constant: true,
-      },
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
     ] as AbiItem[],
     SALE_ABI: [
       {
@@ -992,6 +950,13 @@ export const ABI = {
       },
       {
         inputs: [],
+        name: "cancelSales",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [],
         name: "currencyAddress",
         outputs: [
           {
@@ -1018,6 +983,34 @@ export const ABI = {
       },
       {
         inputs: [],
+        name: "getSaleInfo",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [],
         name: "nftAddress",
         outputs: [
           {
@@ -1027,6 +1020,19 @@ export const ABI = {
           },
         ],
         stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "purchase_amount",
+            type: "uint256",
+          },
+        ],
+        name: "purchase",
+        outputs: [],
+        stateMutability: "nonpayable",
         type: "function",
       },
       {
@@ -1068,54 +1074,6 @@ export const ABI = {
         stateMutability: "view",
         type: "function",
       },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "purchase_amount",
-            type: "uint256",
-          },
-        ],
-        name: "purchase",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [],
-        name: "cancelSales",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [],
-        name: "getSaleInfo",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "",
-            type: "address",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
     ] as AbiItem[],
     TOKEN_ABI: [
       {
@@ -1134,6 +1092,11 @@ export const ABI = {
             internalType: "uint8",
             name: "decimal",
             type: "uint8",
+          },
+          {
+            internalType: "address",
+            name: "JAV_NFT_address",
+            type: "address",
           },
         ],
         stateMutability: "nonpayable",
@@ -1209,6 +1172,42 @@ export const ABI = {
         type: "event",
       },
       {
+        inputs: [],
+        name: "JAV_NFT_Contract",
+        outputs: [
+          {
+            internalType: "contract JAV_NFT",
+            name: "",
+            type: "address",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "_tokenURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256[3]",
+            name: "_gene",
+            type: "uint256[3]",
+          },
+          {
+            internalType: "uint256[4]",
+            name: "_accessory",
+            type: "uint256[4]",
+          },
+        ],
+        name: "JavPickup",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
         inputs: [
           {
             internalType: "address",
@@ -1231,7 +1230,6 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
       },
       {
         inputs: [
@@ -1275,7 +1273,6 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
       },
       {
         inputs: [],
@@ -1289,7 +1286,6 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
       },
       {
         inputs: [
@@ -1319,6 +1315,29 @@ export const ABI = {
         inputs: [
           {
             internalType: "address",
+            name: "from",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+        ],
+        name: "forceToTransfer",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
             name: "spender",
             type: "address",
           },
@@ -1340,6 +1359,19 @@ export const ABI = {
         type: "function",
       },
       {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+        ],
+        name: "mint",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
         inputs: [],
         name: "name",
         outputs: [
@@ -1351,7 +1383,6 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
       },
       {
         inputs: [],
@@ -1365,7 +1396,6 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
       },
       {
         inputs: [],
@@ -1386,7 +1416,6 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
       },
       {
         inputs: [],
@@ -1400,7 +1429,6 @@ export const ABI = {
         ],
         stateMutability: "view",
         type: "function",
-        constant: true,
       },
       {
         inputs: [
@@ -1430,12 +1458,12 @@ export const ABI = {
         inputs: [
           {
             internalType: "address",
-            name: "from",
+            name: "sender",
             type: "address",
           },
           {
             internalType: "address",
-            name: "to",
+            name: "recipient",
             type: "address",
           },
           {
@@ -1468,49 +1496,13 @@ export const ABI = {
         stateMutability: "nonpayable",
         type: "function",
       },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
-        ],
-        name: "mint",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "from",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "to",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
-        ],
-        name: "forceToTransfer",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
     ] as AbiItem[],
   },
 
   CONTRACT_ADDRESS: {
-    NFT_ADDRESS: "0xb3081A1979B7DF916e459B06333Dff9647e5Bf8d",
-    SALE_FACTORY_ADDRESS: "0x72506A94cd0F3D12b52C3EA6d0b20F9510Ade7fB",
-    TOKEN_ADDRESS: "0x66464C83F8C68B6a8DfE404Ad99966a85a45E74b",
+    NFT_ADDRESS: "0xF68C63e45E0Efbf9BA02eE5AeA8785eed65e6eB6",
+    SALE_FACTORY_ADDRESS: "0x54d9Ca3B6D727214BEa61751505FCbE6b82dD882",
+    TOKEN_ADDRESS: "0x006ae245e9C013740433513328CE0de2929Eda87",
   },
 };
 // 랜덤
@@ -1563,24 +1555,29 @@ export const BalanceOfJavToken = async () => {
   return balance;
 };
 
-export const randomGene = () =>{
+export const randomGene = () => {
   const genes = JAV_NFT_Contract.methods.gacha(randomNums(15)).call();
   return genes;
-}
+};
 
-export const randomAcce = () =>{
+export const randomAcce = () => {
   const acces = JAV_NFT_Contract.methods.getAcce(randomNums(4)).call();
   return acces;
-}
+};
 
-export const PickUp = async (address: string, imageURI: string ,genes:number[], acces:number[]) => {
+export const PickUp = async (
+  address: string,
+  imageURI: string,
+  genes: number[],
+  acces: number[]
+) => {
   JavToken_Contract.methods
     .transfer(ABI.CONTRACT_ADDRESS.NFT_ADDRESS, 100)
     .send({ from: address });
-  
+
   await console.log(BigInt(genes[0]).toString(16));
   //유전정보 + 악세사리 통해서 이미지 만들고
-  
+
   //ipfs경로에 등록 한 후 아래 과정 수행
 
   JAV_NFT_Contract.methods
@@ -1592,57 +1589,84 @@ export const PickUp = async (address: string, imageURI: string ,genes:number[], 
     .send({ from: address });
 };
 
-export const FusionJavs = async (address:string, NFTID_1:Number, NFTID_2:Number) => {
-  const body0 = await JAV_NFT_Contract.methods.fusion(
-    NFTID_1,
-    NFTID_2,
-    randomNums(4),
-    0
-  ).call();
+export const getFusionGene = async (NFTID_1: Number, NFTID_2: Number) => {
+  const body0 = await JAV_NFT_Contract.methods
+    .fusion(NFTID_1, NFTID_2, randomNums(4), 0)
+    .call();
 
-  const body1 = await JAV_NFT_Contract.methods.fusion(
-    NFTID_1,
-    NFTID_2,
-    randomNums(4),
-    1
-  ).call();
+  const body1 = await JAV_NFT_Contract.methods
+    .fusion(NFTID_1, NFTID_2, randomNums(4), 1)
+    .call();
 
-  const body2 = await JAV_NFT_Contract.methods.fusion(
-    NFTID_1,
-    NFTID_2,
-    randomNums(4),
-    2
-  ).call();
+  const body2 = await JAV_NFT_Contract.methods
+    .fusion(NFTID_1, NFTID_2, randomNums(4), 2)
+    .call();
 
-  const acces = await JAV_NFT_Contract.methods.getAcce(randomNums(4)).call();  
+  return [BigInt(body0), BigInt(body1), BigInt(body2)];
+};
+
+export const FusionJavs = async (
+  address: string,
+  NFTID_1: Number,
+  NFTID_2: Number
+) => {
+  const body0 = await JAV_NFT_Contract.methods
+    .fusion(NFTID_1, NFTID_2, randomNums(4), 0)
+    .call();
+
+  const body1 = await JAV_NFT_Contract.methods
+    .fusion(NFTID_1, NFTID_2, randomNums(4), 1)
+    .call();
+
+  const body2 = await JAV_NFT_Contract.methods
+    .fusion(NFTID_1, NFTID_2, randomNums(4), 2)
+    .call();
   
-  const result = await JAV_NFT_Contract.methods.fusionJavs(
-    "www.daum.com",
-    NFTID_1,
-    NFTID_2,
-    [BigInt(body0),BigInt(body1),BigInt(body2)],
-    [Number(acces[0]), Number(acces[1]), Number(acces[2]), Number(acces[3])]
-  ).send({from:address});
+  const acces = await JAV_NFT_Contract.methods.getAcce(randomNums(4)).call();
+
+  const result = await JAV_NFT_Contract.methods
+    .fusionJavs(
+      "www.daum.com",
+      NFTID_1,
+      NFTID_2,
+      [BigInt(body0), BigInt(body1), BigInt(body2)],
+      [Number(acces[0]), Number(acces[1]), Number(acces[2]), Number(acces[3])]
+    )
+    .send({ from: address });
 
   console.log(result);
 };
 
-export const CreateSale = async (address: string, tokenId:Number, price:Number) => {
-  await JAV_NFT_Contract.methods.setApprovalForAll(ABI.CONTRACT_ADDRESS.NFT_ADDRESS, true).send({from : address});
-  await JAV_NFT_Contract.methods.setSaleAdmin(ABI.CONTRACT_ADDRESS.NFT_ADDRESS);
+export const CreateSale = async (
+  address: string,
+  tokenId: Number,
+  price: Number
+) => {
+  //await JAV_NFT_Contract.methods.setApprovalForAll(ABI.CONTRACT_ADDRESS.SALE_FACTORY_ADDRESS, true).send({from : address});
+  //await JAV_NFT_Contract.methods.setSaleAdmin(ABI.CONTRACT_ADDRESS.SALE_FACTORY_ADDRESS).send({from : address});
 
-  const SaleContractAddress = await SaleFactory_Contract.methods.createSale(
-    tokenId,
-    price,
-    ABI.CONTRACT_ADDRESS.TOKEN_ADDRESS,
-    ABI.CONTRACT_ADDRESS.NFT_ADDRESS
-  );
+  const SaleContractAddress = await SaleFactory_Contract.methods
+    .createSale(
+      tokenId,
+      price,
+      ABI.CONTRACT_ADDRESS.TOKEN_ADDRESS,
+      ABI.CONTRACT_ADDRESS.NFT_ADDRESS
+    )
+    .send({ from: address });
 
-  return SaleContractAddress;
-}
+  //console.log("createSale 완료 후 반환 값");
+  //console.log(SaleContractAddress.events.NewSale.returnValues[0]);
+  return SaleContractAddress.events.NewSale.returnValues[0];
+};
 
-export const Purchase = async (address:string, saleAddress:string, price:Number) => {
-  await JavToken_Contract.methods.approve(saleAddress, price).send({from : address});
+export const Purchase = async (
+  address: string,
+  saleAddress: string,
+  price: Number
+) => {
+  await JavToken_Contract.methods
+    .approve(saleAddress, price)
+    .send({ from: address });
 
   const Sale_Contract = new web3.eth.Contract(
     ABI.CONTRACT_ABI.SALE_ABI,
@@ -1652,7 +1676,7 @@ export const Purchase = async (address:string, saleAddress:string, price:Number)
   await Sale_Contract.methods.purchase(price);
 };
 
-export const cancelSale = async(saleAddress:string) => {
+export const cancelSale = async (saleAddress: string) => {
   const Sale_Contract = new web3.eth.Contract(
     ABI.CONTRACT_ABI.SALE_ABI,
     saleAddress

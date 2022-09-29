@@ -167,17 +167,19 @@ const ItemDraw = () => {
     const nonce = await web3.eth.getTransactionCount(accounts[0]);
   };
 
+  let NFTSaleAddress = "";
   //판매함수
   const createsale = async () => {
     const address = await getWalletAddress();
 
-    const targetNFT = 2; //판매할 NFT의 tokenID 백에서 받아와 선언
+    const targetNFT = 3; //판매할 NFT의 tokenID 백에서 받아와 선언
     const price = 100; //판매할 가격
 
     const saleAddress = await CreateSale(address, targetNFT, price);
     console.log(saleAddress);
     
     //판매Contract 주소 반환
+    NFTSaleAddress = saleAddress;
     return saleAddress;
   }
 
@@ -207,6 +209,7 @@ const ItemDraw = () => {
           <button onClick={pickup}> JAV NFT 발급</button>
           <button onClick={fusionjavs}> JAV NFT 조합하기</button>
           <button onClick={createsale}> JAV NFT 판매하기</button>
+          <button onClick={createsale}> JAV NFT 구매하기</button>
           <img src={b64} alt="" />
           <img src={test}/>
           <Box
