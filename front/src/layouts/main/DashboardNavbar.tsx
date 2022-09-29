@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Stack, Button } from "@mui/material";
+import { Box, Stack, Button, Link } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -265,9 +265,23 @@ const DashboardNavbar = () => {
         sx={{ fontWeight: "bold" }}
         className={styles.contents}
       >
-        <div>뽑기</div>
+        <Link
+          to={"/market"}
+          color="inherit"
+          underline="hover"
+          component={RouterLink}
+        >
+          마켓
+        </Link>
         <div>조합</div>
-        <div>마켓</div>
+        <Link
+          to={`/market/draw`}
+          color="inherit"
+          underline="hover"
+          component={RouterLink}
+        >
+          뽑기
+        </Link>
         <div>도감</div>
 
         {isLogined === "true" ? (
@@ -310,7 +324,10 @@ const DashboardNavbar = () => {
             ))}
           </SpeedDial>
         ) : (
-          <AccountCircleOutlinedIcon onClick={toggleDrawer(true)} sx={{ fontSize: 35, color: "black", cursor: "pointer"}} />
+          <AccountCircleOutlinedIcon
+            onClick={toggleDrawer(true)}
+            sx={{ fontSize: 35, color: "black", cursor: "pointer" }}
+          />
         )}
 
         <div>
