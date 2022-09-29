@@ -26,6 +26,54 @@ import mouth6 from "../../image/parts/mouth/6.svg";
 import mouth7 from "../../image/parts/mouth/7.svg";
 import mouth8 from "../../image/parts/mouth/8.svg";
 import mouth9 from "../../image/parts/mouth/9.svg";
+import eyes1 from "../../image/parts/eyes/1.svg";
+import eyes2 from "../../image/parts/eyes/2.svg";
+import eyes3 from "../../image/parts/eyes/3.svg";
+import eyes4 from "../../image/parts/eyes/4.svg";
+import eyes5 from "../../image/parts/eyes/5.svg";
+import eyes6 from "../../image/parts/eyes/6.svg";
+import eyes7 from "../../image/parts/eyes/7.svg";
+import eyes8 from "../../image/parts/eyes/8.svg";
+import eyes9 from "../../image/parts/eyes/9.svg";
+import eyes10 from "../../image/parts/eyes/10.svg";
+import eyes11 from "../../image/parts/eyes/11.svg";
+import eyes12 from "../../image/parts/eyes/12.svg";
+import eyes13 from "../../image/parts/eyes/13.svg";
+import eyes14 from "../../image/parts/eyes/14.svg";
+import eyes15 from "../../image/parts/eyes/15.svg";
+import body1 from "../../image/parts/body/1.svg";
+import body2 from "../../image/parts/body/2.svg";
+import body3 from "../../image/parts/body/3.svg";
+import body4 from "../../image/parts/body/4.svg";
+import body5 from "../../image/parts/body/5.svg";
+import body6 from "../../image/parts/body/6.svg";
+import body7 from "../../image/parts/body/7.svg";
+import body8 from "../../image/parts/body/8.svg";
+import body9 from "../../image/parts/body/9.svg";
+import body10 from "../../image/parts/body/10.svg";
+import body11 from "../../image/parts/body/11.svg";
+import body12 from "../../image/parts/body/12.svg";
+import acc1 from "../../image/parts/acc/1.svg";
+import acc2 from "../../image/parts/acc/2.svg";
+import acc3 from "../../image/parts/acc/3.svg";
+import acc4 from "../../image/parts/acc/4.svg";
+import acc5 from "../../image/parts/acc/5.svg";
+import acc6 from "../../image/parts/acc/6.svg";
+import acc7 from "../../image/parts/acc/7.svg";
+import acc8 from "../../image/parts/acc/8.svg";
+import acc9 from "../../image/parts/acc/9.svg";
+import back1 from "../../image/parts/back/1.svg";
+import back2 from "../../image/parts/back/2.svg";
+import back3 from "../../image/parts/back/3.svg";
+import back4 from "../../image/parts/back/4.svg";
+import back5 from "../../image/parts/back/5.svg";
+import back6 from "../../image/parts/back/6.svg";
+import back7 from "../../image/parts/back/7.svg";
+import back8 from "../../image/parts/back/8.svg";
+import back9 from "../../image/parts/back/9.svg";
+import back10 from "../../image/parts/back/10.svg";
+import back11 from "../../image/parts/back/11.svg";
+import back12 from "../../image/parts/back/12.svg";
 
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -54,21 +102,19 @@ interface Parts {
 
 declare global {
   interface String {
-    changeIndex(index: number, replacement: number): string;
+    changeIndex(index: number, replacement: string): string;
   }
 }
 
 String.prototype.changeIndex = function (
   this: string,
   index: number,
-  replacement: number
+  replacement: string
 ) {
   if (index >= this.length) {
     return this.valueOf();
   }
-  return (
-    this.substring(0, index) + String(replacement) + this.substring(index + 1)
-  );
+  return this.substring(0, index) + replacement + this.substring(index + 1);
 };
 
 interface Props {
@@ -115,32 +161,74 @@ const ItemFilterContainer = ({
         mouth9,
       ],
     },
-    // {
-    //   id: 4,
-    //   title: '눈',
-    //   images: [head1, head2, head3, head4, head5, head6, head7, head8, head9],
-    // },
-    // {
-    //   id: 5,
-    //   title: '몸',
-    //   images: [head1, head2, head3, head4, head5, head6, head7, head8, head9],
-    // },
-    // {
-    //   id: 6,
-    //   title: '액세서리',
-    //   images: [head1, head2, head3, head4, head5, head6, head7, head8, head9],
-    // },
-    // {
-    //   id: 7,
-    //   title: '배경',
-    //   images: [head1, head2, head3, head4, head5, head6, head7, head8, head9],
-    // },
+    {
+      id: 4,
+      title: "눈",
+      images: [
+        eyes1,
+        eyes2,
+        eyes3,
+        eyes4,
+        eyes5,
+        eyes6,
+        eyes7,
+        eyes8,
+        eyes9,
+        eyes10,
+        eyes11,
+        eyes12,
+        eyes13,
+        eyes14,
+        eyes15,
+      ],
+    },
+    {
+      id: 5,
+      title: "몸",
+      images: [
+        body1,
+        body2,
+        body3,
+        body4,
+        body5,
+        body6,
+        body7,
+        body8,
+        body9,
+        body10,
+        body11,
+        body12,
+      ],
+    },
+    {
+      id: 6,
+      title: "액세서리",
+      images: [acc1, acc2, acc3, acc4, acc5, acc6, acc7, acc8, acc9],
+    },
+    {
+      id: 7,
+      title: "배경",
+      images: [
+        back1,
+        back2,
+        back3,
+        back4,
+        back5,
+        back6,
+        back7,
+        back8,
+        back9,
+        back10,
+        back11,
+        back12,
+      ],
+    },
   ];
   const selectFilter = (index: number, choice: number) => {
-    if (Number(search[index]) !== choice) {
-      setSearch(search.changeIndex(index, choice));
+    if (parseInt(search[index], 16) !== choice) {
+      setSearch(search.changeIndex(index, choice.toString(16)));
     } else {
-      setSearch(search.changeIndex(index, 0));
+      setSearch(search.changeIndex(index, "0"));
     }
   };
 
@@ -169,9 +257,14 @@ const ItemFilterContainer = ({
               <Typography sx={{ width: "33%", flexShrink: 0 }}>
                 {filter.title}
               </Typography>
-              <Typography align="left" sx={{ width: "33%", flexShrink: 0 }}>
-                {FetchAnimal(Number(search[filter.id - 1]))["name"]}
-              </Typography>
+
+              {parseInt(search[filter.id - 1], 16) >= 1 && (
+                <img
+                  src={filter.images[parseInt(search[filter.id - 1], 16) - 1]}
+                  alt="img"
+                  style={{ maxWidth: "20%", height: "auto" }}
+                />
+              )}
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={2}>
@@ -179,7 +272,7 @@ const ItemFilterContainer = ({
                   return (
                     <Grid item xs={4} sm={6} md={4}>
                       <Button
-                        {...(Number(search[index]) === imgNum + 1
+                        {...(parseInt(search[index], 16) === imgNum + 1
                           ? { variant: "outlined" }
                           : "")}
                         onClick={() => selectFilter(index, imgNum + 1)}
