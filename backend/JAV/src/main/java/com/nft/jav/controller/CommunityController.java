@@ -2,6 +2,7 @@ package com.nft.jav.controller;
 
 import com.nft.jav.data.dto.*;
 import com.nft.jav.service.CommunityService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +69,7 @@ public class CommunityController {
 //    }
 
     @GetMapping("/rank")
+    @ApiOperation(value = "순위 리스트")
     public ResponseEntity<List<RankResDto>> rankUser(){
         logger.info("ranking - 호출");
         return new ResponseEntity<>(communityService.rankUser(), HttpStatus.OK);
