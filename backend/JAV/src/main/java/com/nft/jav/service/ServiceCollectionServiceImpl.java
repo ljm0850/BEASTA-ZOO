@@ -6,6 +6,7 @@ import com.nft.jav.data.entity.Sales;
 import com.nft.jav.data.entity.ServiceCollection;
 import com.nft.jav.data.repository.SalesRepository;
 import com.nft.jav.data.repository.ServiceCollectionRepository;
+import com.nft.jav.data.repository.UserCollectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +25,11 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
 
     private final Logger logger = LoggerFactory.getLogger(ServiceCollectionServiceImpl.class);
     private final ServiceCollectionRepository serviceCollectionRepository;
+    private final UserCollectionRepository userCollectionRepository;
     private final SalesRepository salesRepository;
 
     @Override
-    public List<ServiceCollectionResDto> serviceCollectionList(int page, int size) {
+    public List<ServiceCollectionResDto> serviceCollectionList(int page, int size, String wallet_address) {
         logger.info("serviceCollectionList - 호출");
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<ServiceCollection> findAll = serviceCollectionRepository.findDiscoverJav(pageRequest);
@@ -44,6 +46,12 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
                     .discover_time(serviceCollection.getCreate_date())
                     .discover_user_count(serviceCollection.getDiscover_user_count())
                     .build();
+
+            if(wallet_address !=null){
+                if(userCollectionRepository.countByWalletAndJav(wallet_address, serviceCollection.getJav_id())>0){
+                    resDto.setOwner(true);
+                } else resDto.setOwner(false);
+            } else resDto.setOwner(false);
 
             findAllDto.add(resDto);
         }

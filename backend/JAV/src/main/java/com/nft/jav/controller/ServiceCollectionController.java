@@ -21,9 +21,10 @@ public class ServiceCollectionController {
     private final ServiceCollectionService serviceCollectionService;
 
     @GetMapping("")
-    public ResponseEntity<List<ServiceCollectionResDto>> serviceCollectionList(@RequestParam int page, @RequestParam int size){
+    public ResponseEntity<List<ServiceCollectionResDto>> serviceCollectionList(
+            @RequestParam int page, @RequestParam int size, @RequestParam(required = false) String wallet_address){
         logger.info("serviceCollectionList - 호출");
-        return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(page,size), HttpStatus.OK);
+        return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(page,size, wallet_address), HttpStatus.OK);
     }
 
     @GetMapping("/latest")
