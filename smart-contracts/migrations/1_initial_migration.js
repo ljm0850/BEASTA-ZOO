@@ -11,18 +11,11 @@ const SaleFactory = artifacts.require("SaleFactory");
  * PJT Ⅲ - SsafyNFT, SsafyToken, SaleFactory
  * 가 배포되어야 합니다.
  */
-module.exports = function (deployer) {
+module.exports =  function (deployer) {
   deployer.deploy(Migrations);
   deployer.deploy(JAV_NFT)
   .then(() => {
     deployer.deploy(JavToken, "JavJong", "JAV", 0, JAV_NFT.address)
     deployer.deploy(SaleFactory, JAV_NFT.address)
   })
-  // deployer.deploy(JavToken, "JavJong", "JAV", 0)
-  // .then(() => {
-  //   return deployer.deploy(JAV_NFT, JavToken.address) 
-  //  })
-  // .then(() => {
-  //   return deployer.deploy(SaleFactory, JAV_NFT.address)
-  // })
 };
