@@ -87,4 +87,15 @@ public class SalesController {
         LikedResDto likedResDto = likedService.addLiked(user_id, sale_id);
         return new ResponseEntity<>(likedResDto,HttpStatus.OK);
     }
+
+    @DeleteMapping("/{contract_address}")
+    @ApiOperation(value = "판매 삭제")
+    public ResponseEntity<String> deleteSale(@PathVariable String contract_address){
+        logger.info("deleteCommunity - 호출");
+
+        if(salesService.deleteCommunity(contract_address)){
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Fail",HttpStatus.BAD_REQUEST);
+    }
 }
