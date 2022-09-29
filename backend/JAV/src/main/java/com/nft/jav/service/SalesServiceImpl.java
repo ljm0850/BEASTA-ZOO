@@ -208,28 +208,34 @@ public class SalesServiceImpl implements SalesService {
 
     @Override
     public PurchaseResDto purchaseNFT(PurchaseReqDto purchaseReqDto) {
+        // 구매하면 NFT 컬럼에 소유자 id 변경
         NFT targetNFT = nftRepository.findById(purchaseReqDto.getNft_id())
                 .orElseThrow(IllegalArgumentException::new);
 
         User targetUser = userRepository.findById(purchaseReqDto.getUser_id())
                 .orElseThrow(IllegalArgumentException::new);
 
+        targetNFT.updateUser(targetUser);
+
+        // 구매자 유저 컬렉션에 저장
         ServiceCollection targetServiceCollection = serviceCollectionRepository.findById(purchaseReqDto.getService_collection_id())
                 .orElseThrow(IllegalArgumentException::new);
 
+        UserCollection userCollection = UserCollection.builder()
+                .user(targetUser)
+                .nft_address(targetNFT.getNft_address())
+                .img_address(targetNFT.getImg_address())
+                .jav(targetServiceCollection)
+                .build();
+
+        UserCollection savedUserCollection = userCollectionRepository.save(userCollection);
+
+        // Sales 테이블 정보 변경
         Sales targetSale = salesRepository.findById(purchaseReqDto.getSale_id())
                 .orElseThrow(IllegalArgumentException::new);
 
         targetSale.updateBuyerWallet(targetUser.getWallet_address());
         targetSale.updateState();
-
-        UserCollection userCollection = UserCollection.builder()
-                        .user(targetUser)
-                        .nft_address(targetNFT.getNft_address())
-                        .jav(targetServiceCollection)
-                        .build();
-
-        UserCollection savedUserCollection = userCollectionRepository.save(userCollection);
 
         PurchaseResDto purchaseResDto = PurchaseResDto.builder()
                 .nft_id(targetNFT.getNft_id())

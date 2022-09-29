@@ -21,4 +21,8 @@ public interface UserCollectionRepository extends JpaRepository<UserCollection, 
 
     @Query(value = "select count(U.user) from UserCollection U where U.user.wallet_address =:wallet_address")
     Long countByWallet(@Param("wallet_address") String wallet_address);
+
+    @Query(value = "select count(U) from UserCollection U " +
+            "where U.user.wallet_address =:wallet_address and U.jav.jav_id=:jav_id")
+    Long countByWalletAndJav(@Param("wallet_address") String wallet_address, long jav_id);
 }

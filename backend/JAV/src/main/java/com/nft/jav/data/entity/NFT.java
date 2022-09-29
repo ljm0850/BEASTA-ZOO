@@ -41,4 +41,8 @@ public class NFT extends BaseTimeEntity {
         this.img_address = img_address;
         this.jav_code = jav_code;
     }
+
+    public void updateUser(User user) {
+        this.user = user;
+    }
 }
