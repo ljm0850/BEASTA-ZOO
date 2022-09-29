@@ -9,7 +9,6 @@ import "./token/ERC721/ERC721.sol";
  */
 contract JAV_NFT is ERC721 {
     mapping(address => bool) god;
-    mapping(address => bool) saleAddress;
     address saleAdmin;
 
     // JavToken public JavTokenContract;
@@ -63,17 +62,11 @@ contract JAV_NFT is ERC721 {
         saleAdmin = _saleFactory;
     }
 
-    function setSaleAddress(address _sale) external {
-        require(msg.sender == saleAdmin);
-        saleAddress[_sale] = true;
-    }
-
     function getSaleData(uint256 tokenId) public view returns(uint[] memory) {
         return saleTracking[tokenId];
     }
     
     function pushSaleData(uint256 tokenId, uint256 price) external {
-        require(saleAddress[msg.sender] == true);
         saleTracking[tokenId].push(price);
     }
 
