@@ -278,6 +278,7 @@ const ItemFilterContainer = ({
           <Accordion
             expanded={expanded === String(filter.id)}
             onChange={handleChange(String(filter.id))}
+            key={filter.id}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -300,7 +301,7 @@ const ItemFilterContainer = ({
               <Grid container spacing={2}>
                 {filter.images.map((image, imgNum) => {
                   return (
-                    <Grid item xs={4} sm={6} md={4}>
+                    <Grid item xs={4} sm={6} md={4} key={image}>
                       <Button
                         {...(parseInt(search[index], 16) === imgNum + 1
                           ? { variant: "outlined" }
