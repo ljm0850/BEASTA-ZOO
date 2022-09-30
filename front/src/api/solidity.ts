@@ -33,14 +33,16 @@ import {
 Jav Tokken 관련 함수
 - 자브토큰 발행(getJavToken)
 */
-// 자브토큰 1000개 발행
-export const getJavToken = async () => {
+
+// 자브토큰 발행
+export const receiveJavToken = async () => {
   const address = await getWalletAddress();
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
-  const signature = await signer.signMessage(address);
-  CreateJavToken(address);
+  await signer.signMessage(address);
+  await CreateJavToken(address);
 };
+
 export const myJavToken = async () => {
   const myAddress = await getWalletAddress();
   const money = await BalanceOfJavToken(myAddress);
@@ -69,17 +71,8 @@ function dataURLtoFile(dataurl: string, filename: string) {
 }
 
 // NFT 생성, gene는 SC에서 받은 것 그대로, myGenes는 [1,1,1]과 같이 자신의 형질만 분리한 것
-const createNFT = async (
-  genes: number[],
-  myGenes: number[],
-  acces: number[],
-  myAcces: number[],
-  address: string
-) => {
+const createNFT = async (myGenes: number[], myAcces: number[]) => {
   // 이미지 생성
-  // const address = await getWalletAddress();
-  await console.log(myGenes);
-  await console.log(myAcces);
   const head = require(`../image/asset/head/${myGenes[0]}.svg`); // 이미지 주소 확인 필요
   const ears = require(`../image/asset/ears/${myGenes[1]}.svg`);
   const face = require(`../image/asset/mouth/${myGenes[2]}.svg`);
@@ -102,20 +95,20 @@ const createNFT = async (
   const ipfs = await IPFS.create({ repo: "ok" + Math.random() });
   const added = await ipfs.add(imageFile);
   const url = `https://ipfs.io/ipfs/${added.path}`;
-  await console.log(url);
   return url;
 };
 
-const changeGene = (genes: string[]) => {
+export const changeGene = (genes: string[]) => {
   const myGenes: number[] = [];
-  genes.forEach((gene: string, idx: number) => {
+  genes.forEach((gene: string) => {
     myGenes.push(parseInt(BigInt(gene).toString(16).slice(3, 4), 16));
   });
   return myGenes;
 };
+
 const changeAcces = (acces: string[]) => {
   const myAcces: number[] = [];
-  acces.forEach((acce: any, idx: number) => {
+  acces.forEach((acce: string) => {
     const num = Number(acce).toString(16);
     myAcces.push(parseInt(num.slice(1, 3), 16));
   });
@@ -130,10 +123,11 @@ export const pickup = async () => {
   const acces = await randomAcce();
   const myGenes: number[] = changeGene(genes); // 이미지에서 본인 유전자만 쓰기 위해 사용
   const myAcces: number[] = changeAcces(acces);
-  const url: string = await createNFT(genes, myGenes, acces, myAcces, address);
+  const url: string = await createNFT(myGenes, myAcces);
   const tokenId = await PickUp(address, url, genes, acces);
   return tokenId;
 };
+
 // 조합
 export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   const address = await getWalletAddress();
@@ -141,7 +135,7 @@ export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   const acces = await randomAcce();
   const myGenes: number[] = await changeGene(genes);
   const myAcces: number[] = await changeAcces(acces);
-  const url: string = await createNFT(genes, myGenes, acces, myAcces, address);
+  const url: string = await createNFT(myGenes, myAcces);
   const tokenId = await FusionJavs(
     address,
     NFT_ID1,
@@ -152,6 +146,7 @@ export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   );
   return tokenId;
 };
+
 // NFT 조회
 export const javsData = async (NFT_ID: number) => {
   const data: object = {

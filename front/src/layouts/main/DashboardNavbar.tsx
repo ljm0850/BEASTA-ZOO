@@ -25,6 +25,8 @@ import BEASTAZOO_logo from "../../image/BEASTAZOO_logo.svg";
 import JAV from "../../image/JAV.svg";
 import styles from "./DashboardNavbar.module.scss";
 import NavHamburger from "./NavHamburger";
+import { getWalletAddress } from "../../common/ABI";
+import { myJavToken, receiveJavToken } from "../../api/solidity";
 
 const actions = [{ icon: <Logout />, name: "Logout" }];
 
@@ -58,20 +60,21 @@ const DashboardNavbar = () => {
       setDrawerState(open);
     };
 
-  ///
+  const receiveToken = async () => {
+    await receiveJavToken();
+    const money = await myJavToken();
+    setBalance(money);
+  };
 
+  // 계정 정보 및 잔액 받아오기
   const getAccount = async () => {
-    const accounts = await window.ethereum.request({ method: "eth_accounts" });
-    setAccount(accounts[0]);
-    getBalance(accounts[0]);
+    const address = await getWalletAddress();
+    setAccount(address);
+    const money = await myJavToken();
+    setBalance(money);
   };
 
-  const getBalance = async (account: string) => {
-    // console.log(account);
-    // const response = await SSFTokenContract.methods.balanceOf(account).call();
-    // setBalance(response);
-  };
-
+  // 로그인 시 계정정보 받아오기
   useEffect(() => {
     if (isLogined) {
       getAccount();
@@ -143,11 +146,13 @@ const DashboardNavbar = () => {
                 <div>My JAV</div>
                 <div>
                   <img src={JAV} alt="" />
-                  <div>{balance} ETH</div>
+                  <div>{balance} JAV</div>
                 </div>
               </div>
             </div>
-            <div className={styles.charge}>충전하기</div>
+            <div className={styles.charge} onClick={receiveToken}>
+              충전하기
+            </div>
           </div>
         </div>
       ) : (
