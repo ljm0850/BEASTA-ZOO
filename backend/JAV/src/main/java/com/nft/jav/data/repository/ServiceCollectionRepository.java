@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ServiceCollectionRepository extends JpaRepository<ServiceCollection, Long> {
-    @Query("select S from ServiceCollection S where S.jav_code=:jav_code")
+    @Query("select S from ServiceCollection S where S.jav_code like  CONCAT(:jav_code,'%')")
     ServiceCollection findByJav_code(@Param("jav_code") String jav_code);
 
     @Query("select S from ServiceCollection S order by S.create_date")
