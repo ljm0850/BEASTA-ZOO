@@ -64,37 +64,22 @@ const Collections = () => {
   useEffect(() => {
     if (sessionStorage.getItem("isLogined") === "true") {
       getAccount()
-
     }
 
     if (walletAddress) {
       myCollCount(walletAddress).then((res :Wallet) => {
         setMyWall(res)
       })
+      Collection(page - 1, 24, sortMethod, walletAddress).then((res :Coll[]) => {
+        setCollList(res)
+      })
     }
 
-    Collection(page - 1, 24, sortMethod, walletAddress).then((res :Coll[]) => {
-      setCollList(res)
-    })
 
     totalCount().then((res) => {
       setTotal(res)
     })
   }, [page, sortMethod, walletAddress])
-
-
-  const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
-
 
   return (
     <div className={styles.CollBody}>
@@ -117,9 +102,10 @@ const Collections = () => {
           {collList.map((item, idx) => {
             return (
               <div key={item.discover_time} className={styles.collCard} onClick={() => {
+                if (item.owner) {
                 handleOpen()
                 setModalData(item)
-              }}>
+              }}}>
                 {item.owner ?
                 <img key={item.discover_time} className={styles.JAVImg} src={item.jav_img_path} alt="" /> :
                 <div className={styles.lockCard}><img key={item.discover_time} className={styles.JAVImgFalse} src={item.jav_img_path} alt="" />
