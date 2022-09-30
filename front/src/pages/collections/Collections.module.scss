@@ -1,6 +1,16 @@
 .CollBody {
   width: 75%;
   margin: 2% 12.5% 3% 12.5%;
+
+  .toggleCounterDiv {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3%;
+
+    .collCounter {
+      font-weight: 700;
+    }
+  }
   
   .JAVS {
     display: grid;

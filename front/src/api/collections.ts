@@ -15,3 +15,13 @@ export const userRank = async () => {
   const { data } = await axios.get(`${ENDPOINT_URL}/community/rank`);
   return data
 }
+
+export const myCollCount = async (wallet_address :string) => {
+  const { data } = await axios.get(`${ENDPOINT_URL}/user/rank/${wallet_address}`);
+  return data
+}
+
+export const totalCount = async () => {
+  const { data } = await axios.get(`${ENDPOINT_URL}/collection/totalCount`);
+  return data
+}

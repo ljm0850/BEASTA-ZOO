@@ -282,7 +282,14 @@ const DashboardNavbar = () => {
         >
           뽑기
         </Link>
-        <div>도감</div>
+        <Link
+          to={`/collections`}
+          color="inherit"
+          underline="hover"
+          component={RouterLink}
+        >
+          도감
+        </Link>
 
         {isLogined === "true" ? (
           <SpeedDial

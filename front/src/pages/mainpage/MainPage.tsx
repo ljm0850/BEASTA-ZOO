@@ -18,17 +18,6 @@ const MainPage = () => {
   
   const userNickname = sessionStorage.getItem('nickname');
 
-  // 임시 프로필 이동 버튼 
-  const [ account, setAccount ] = useState("")
-  
-  const getAccount = async () => {
-    const accounts = await window.ethereum.request({ method: "eth_accounts" });
-    setAccount(accounts[0]);
-  };
-
-  useEffect(() => {
-    getAccount()
-  }, [])
 
   return (
     <div className={styles.mainBody}>
