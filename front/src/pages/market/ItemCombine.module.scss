@@ -1,0 +1,218 @@
+@media screen and (min-width: 1000px) {
+  .mainContainer {
+    display: flex;
+    min-height: 90vh;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+
+    .space {
+      margin: 2vw;
+    }
+
+    .xsSubmitBtn {
+      display: none;
+    }
+
+    .mdSubmitBtn {
+      display: flex;
+      justify-content: center;
+      button {
+        width: 250px;
+        height: 50px;
+        background: #ffc42e;
+        &:hover {
+          background: #e3a300;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .mainContainer {
+    display: inline-block;
+    min-height: 90vh;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 80px 0 30px 0;
+
+    .space {
+      display: flex;
+      justify-content: center;
+      margin: 30px 0 30px 0;
+    }
+
+    .mdSubmitBtn {
+      display: none;
+    }
+
+    .xsSubmitBtn {
+      display: flex;
+      justify-content: center;
+      button {
+        width: 250px;
+        height: 50px;
+        background: #ffc42e;
+        &:hover {
+          background: #e3a300;
+        }
+      }
+    }
+  }
+}
+
+.combineLogo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .hos {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    width: 70px;
+    height: 70px;
+    z-index: 10;
+    transform: rotate3d(0, 0, 0, 0deg);
+    transition: 3s;
+
+    &:hover {
+      left: -225;
+      top: -225;
+      width: 600px;
+      height: 600px;
+      transform: rotate3d(0, 0, -1, 60000deg);
+      transition: 20s;
+      transition-timing-function: cubic-bezier(0.2, 0.01, 0.6, 0.11);
+    }
+
+    &:not(:hover) {
+      left: 75;
+      top: 0;
+      width: 70px;
+      height: 70px;
+      transform: rotate3d(0, 0, 0, 0deg);
+      transition: 3s;
+    }
+  }
+
+  div {
+    margin: 0 0 0 10px;
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+}
+
+.material {
+  display: flex;
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffc42e;
+    border-radius: 10px;
+    margin: 12px;
+    width: 210px;
+    height: 267.517px;
+
+    .centerPosition {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      // text-align: center;
+      color: black;
+      font-weight: 700;
+      background: #fff;
+      width: 200px;
+      height: 257.517px;
+      border-radius: 10px;
+    }
+  }
+  img {
+    width: 200px;
+    border-radius: 10px;
+    height: 257.517px;
+  }
+}
+
+.javLabel input[type="checkbox"] {
+  display: none;
+}
+
+.javLabel {
+  display: inline-block;
+  margin: 10px 15px 10px 15px;
+  object-fit: cover;
+  transition: all 0.5s;
+  border-radius: 10px;
+  
+  div {
+    height: 0px;
+    display: inline-block;
+    position: relative;
+    width: 0px;
+  }
+  img {
+    border-radius: 10px;
+    z-index: 10;
+    object-fit: cover;
+    width: 180px;
+    height: 232.244px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: all 0.5s;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
+}
+.javLabel input:checked ~ div::after {
+  content: "";
+  display: inline-block;
+  position: relative;
+  top: 5px;
+  right: 185px;
+  width: 190px;
+  height: 242.244px;
+  border-radius: 10px;
+  z-index: -10;
+  background-color: #ffc42e;
+}
+
+.javList {
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  display: inline-block;
+  width: 430px;
+  height: 800px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.javsHeader {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.cautionContainer {
+  margin: 0 5vw 0 5vw;
+
+  .caution {
+    margin: 30px 2vw 50px 2vw;
+    div {
+      font-weight: 700;
+      font-size: 16px;
+      color: #ff7a00;
+    }
+
+    li {
+      font-weight: 500;
+      font-size: 16px;
+      color: #a6a6a6;
+      margin: 5px
+    }
+  }
+}
