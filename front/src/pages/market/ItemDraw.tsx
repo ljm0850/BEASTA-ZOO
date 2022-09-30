@@ -77,7 +77,9 @@ const ItemDraw = () => {
       address,
       targetNFT1,
       targetNFT2,
-      "imageURI가 들어가야합니다."
+      "imageURI가 들어가야합니다.",
+      ["1","2","3"],
+      ["1","2","3","4"]
     );
   };
   const payDraw = async () => {

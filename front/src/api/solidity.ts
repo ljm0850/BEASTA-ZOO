@@ -1,6 +1,5 @@
 import mergeImages from 'merge-images';
 import * as IPFS from "ipfs-core"
-import { draw } from "./market"
 import { ethers } from "ethers";
 import {
     ABI,
@@ -9,26 +8,44 @@ import {
     PickUp,
     randomAcce,
     randomGene,
+    getFusionGene,
+    FusionJavs,
+    CreateSale,
+    Purchase,
+    CancelSale,
+    SetApproveAll,
+    GetSaleData,
+    GetJavsGene,
+    GetJavsAccessory,
+    GetJavsCreate_at,
+    GetJavsOwner,
+    GetJavsURI,
+    IsApproved,
+    BalanceOfJavToken
   } from "../common/ABI";
-import { CreateSale } from '../contracts';
 
-
-
+// export const myAddress = async() =>{
+//   const myWallet:string = await getWalletAddress()
+//   return myWallet
+// }
 
 /* 
 Jav Tokken 관련 함수
 - 자브토큰 발행(getJavToken)
 */
-  // 자브토큰 1000개 발행
-  const getJavToken = async () => {
-    const address = await getWalletAddress();
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const signature = await signer.signMessage(address);
-    CreateJavToken(address);
-  };
-
-
+// 자브토큰 1000개 발행
+export const getJavToken = async () => {
+  const address = await getWalletAddress();
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  const signature = await signer.signMessage(address);
+  CreateJavToken(address);
+};
+export const myJavToken = async () => {
+  const myAddress = await getWalletAddress();
+  const money = await BalanceOfJavToken(myAddress);
+  return money
+}
 
 /* 
 Jav NFT 관련 함수
@@ -37,7 +54,7 @@ Jav NFT 관련 함수
 - SC에서 받은 유전자에서 자신의 형질 뽑는 함수(changeGene)
 - SC에서 받은 악세에서 이미지 파일에 맞는 숫자를 뽑는 함수(changeAcces)
 - 뽑기(pickup)
-- 조합(fusionJavs)
+- 조합(fusion)
 */
 function dataURLtoFile(dataurl:string, filename:string) {
     var arr :any = dataurl.split(','),
@@ -52,17 +69,17 @@ function dataURLtoFile(dataurl:string, filename:string) {
   }
 
 // NFT 생성, gene는 SC에서 받은 것 그대로, myGenes는 [1,1,1]과 같이 자신의 형질만 분리한 것
-const createNFT = async(genes:number[],myGenes:number[],acces:number[], myAcces:number[] ) =>{
+const createNFT = async(genes:number[],myGenes:number[],acces:number[], myAcces:number[], address:string) =>{
     // 이미지 생성
-    const address = await getWalletAddress();
+    // const address = await getWalletAddress();
     await console.log(myGenes)
     await console.log(myAcces)
     const head = require(`../image/asset/head/${myGenes[0]}.svg`);  // 이미지 주소 확인 필요
     const ears = require(`../image/asset/ears/${myGenes[1]}.svg`);
-    const face = require(`../image/asset/face/${myGenes[2]}.svg`);
+    const face = require(`../image/asset/mouth/${myGenes[2]}.svg`);
     const eyes = require(`../image/asset/eyes/${myAcces[0]}.svg`);
     const body = require(`../image/asset/body/${myAcces[1]}.svg`);
-    const background = require(`../image/asset/background/${myAcces[2]}.svg`);
+    const background = require(`../image/asset/back/${myAcces[2]}.svg`);
     const acc = require(`../image/asset/acc/${myAcces[3]}.svg`);
     const image = await mergeImages([
       { src: background },
@@ -79,25 +96,8 @@ const createNFT = async(genes:number[],myGenes:number[],acces:number[], myAcces:
     const ipfs = await IPFS.create({ repo: "ok" + Math.random()});
     const added = await ipfs.add(imageFile);
     const url = `https://ipfs.io/ipfs/${added.path}`;
-    // NFT 발급
     await console.log(url)
-    await PickUp(address,url,genes,acces)
-  
-    // 백엔드 처리
-    // let javCode = ""
-    // let tier = 1;
-    // await myGenes.forEach((myGene:number,idx:number) => {
-    //   tier += parseInt((myGene/3).toString())
-    //   javCode += myGene.toString() + ","
-    // })
-    // await myAcces.forEach((myAcce:number,idx:number) => {
-    //   if (idx != 3){
-    //     javCode += myAcce.toString() + ","
-    //   }
-    //   else{
-    //     javCode += myAcce.toString()
-    //   }
-    // })
+    return url
   }
 
 const changeGene = (genes:string[])=>{
@@ -119,36 +119,76 @@ const changeAcces = (acces:string[])=>{
 // 뽑기
 export const pickup = async () => {
     // 사전작업
+    const address = await getWalletAddress();
     const genes = await randomGene()
     const acces = await randomAcce();
     const myGenes : number[] = changeGene(genes); // 이미지에서 본인 유전자만 쓰기 위해 사용
     const myAcces : number[] = changeAcces(acces);
-    await createNFT(genes,myGenes,acces,myAcces)
+    const url : string = await createNFT(genes,myGenes,acces,myAcces,address)
+    const tokenId = await PickUp(address,url,genes,acces)
+    return tokenId
 }
-// 퓨전
-export const fusionJavs = async () => {
-    // const genes = await FusionJavs()
-    const acces = await randomAcce();
-    // const myGenes : number[] = changeGene(genes)
-    const myAcces : number[] = changeAcces(acces)
-    // await createNFT(genes,myGenes,acces,myAcces)
+// 조합
+export const fusion = async (NFT_ID1:number, NFT_ID2:number) => {
+  const address = await getWalletAddress();  
+  const genes = await getFusionGene(NFT_ID1,NFT_ID2);
+  const acces = await randomAcce();
+  const myGenes : number[] = await changeGene(genes)
+  const myAcces : number[] = await changeAcces(acces)
+  const url : string = await createNFT(genes,myGenes,acces,myAcces,address)
+  const tokenId = await FusionJavs(address, NFT_ID1, NFT_ID2, url, genes, acces)
+  return tokenId
+}
+// NFT 조회
+export const javsData = async(NFT_ID:number)=>{
+  const data :object = {
+    genes : GetJavsGene(NFT_ID),
+    acces : GetJavsAccessory(NFT_ID),
+    created_at : GetJavsCreate_at(NFT_ID),
+    owner : GetJavsOwner(NFT_ID),
+    URI : GetJavsURI(NFT_ID)
+  };
+  return data
 }
 
 /* 
 NFT 판매 관련 함수
-- 판매 등록 함수(createSale)
-- 구메 함수(purchaseNFT)
+- 판매 등록 함수(createSale)  // saleAddress 주소 반환
+- 구메 함수(purchaseNFT)  // 구매한 토큰 아이디 반환
 - 판매 등록 취소 함수(cancelSaleNFT)
 */
 
-export const createSale = async () => {
-
+export const createSale = async (NFT_ID : number, price : number) => {
+  const address = await getWalletAddress();
+  const saleAddress = await CreateSale(address, NFT_ID, price);
+  return saleAddress;
 }
 
-export const purchaseNFT = async () => {
-
+export const purchaseNFT = async (saleAddress:string) => {
+  const address = await getWalletAddress();
+  const purchaseTokenId = await Purchase(address,saleAddress);
+  return purchaseTokenId
+}
+// SC 좀 수정해야함
+export const cancelSaleNFT = async (saleAddress:string) => {
+  CancelSale(saleAddress);
 }
 
-export const cancelSaleNFT = async () => {
-
+export const saleRecord = async (tokenId:number) =>{
+  return GetSaleData(tokenId)
 }
+
+/*
+유저 당 한번은 해야 하는 함수
+*/
+export const approveSale = async() =>{
+  const myAddress : string = await getWalletAddress();
+  SetApproveAll(myAddress);
+}
+
+export const isApprove = async(userAddress:string) => {
+  const data : boolean = await IsApproved(userAddress);
+  return data
+}
+
+// 테스트중

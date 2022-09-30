@@ -9,6 +9,8 @@ import SaleRegistration from "./pages/market/SaleRegistration";
 import ItemPurchase from "./pages/market/ItemPurchase";
 import MarketMain from "./pages/market/MarketMain";
 
+import Test from "./pages/soliditytest"
+
 export default function Router() {
   return useRoutes([
     {
@@ -35,5 +37,11 @@ export default function Router() {
       element: <MainLayout />,
       children: [{ path: ":account", element: <Profile /> }],
     },
+
+    {
+      path: "/test",
+      element: <Test />
+    },
+
   ]);
 }
