@@ -9,7 +9,7 @@ import "./token/ERC721/ERC721.sol";
  */
 contract JAV_NFT is ERC721 {
     mapping(address => bool) god;
-    address saleAdmin;
+    // address saleAdmin;
 
     // JavToken public JavTokenContract;
     constructor() ERC721("javjongNFT","JNFT"){
@@ -57,10 +57,12 @@ contract JAV_NFT is ERC721 {
     }
     
     // 판매기록 관련
-    function setSaleAdmin(address _saleFactory) public {
-        require(god[msg.sender] == true);
-        saleAdmin = _saleFactory;
-    }
+
+    // SaleAdmin이면 판매 기록 권한을 주려 했는데, require,assert가 사용이 안되서 현재는 필요 없어짐
+    // function setSaleAdmin(address _saleFactory) public {
+    //     require(god[msg.sender] == true);
+    //     saleAdmin = _saleFactory;
+    // }
 
     function getSaleData(uint256 tokenId) public view returns(uint[] memory) {
         return saleTracking[tokenId];
