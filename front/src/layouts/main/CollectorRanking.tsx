@@ -33,7 +33,7 @@ const Marketplace = () => {
         <tbody>
           {rankList.map((item, idx) => {
             return (
-              <tr>
+              <tr key={idx}>
                 <td>{idx + 1}</td>
                 <td>{item.user_id}</td>
                 <td>{item.grade}</td>

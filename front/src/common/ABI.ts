@@ -1560,9 +1560,9 @@ export const CreateJavToken = async (address: string) => {
   await JavToken_Contract.methods.mint(10000).send({ from: address });
 };
 
-export const BalanceOfJavToken = async (userAddress:string) => {
+export const BalanceOfJavToken = async (account: string) => {
   const balance = await JavToken_Contract.methods
-    .balanceOf(userAddress) // <- 얘는 사용자 지갑 주소 받아와서 할당해야함
+    .balanceOf(account) // <- 얘는 사용자 지갑 주소 받아와서 할당해야함
     .call();
 
   return balance;

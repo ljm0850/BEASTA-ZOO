@@ -82,8 +82,9 @@ const ItemCombine = () => {
 
   const getPost = useCallback(async () => {
     //글 불러오기
+
     setLoad(true); //로딩 시작
-    getMyNFTs("0x983716873adcf49f5f3f1f82c93f004a3d3aff39", page, 10, 0)
+    getMyNFTs(sessionStorage.getItem("account"), page, 10, 0)
       .then((res) => {
         setMyJAVList((prev) => [...prev, ...res]); //리스트 추가
         preventRef.current = true;
@@ -100,8 +101,10 @@ const ItemCombine = () => {
       });
   }, [page]);
 
-  const [material1, setMaterial1] = useState("");
-  const [material2, setMaterial2] = useState("");
+  const [material1Img, setMaterial1Img] = useState("");
+  const [material2Img, setMaterial2Img] = useState("");
+  const [material1Addr, setMaterial1Addr] = useState("");
+  const [material2Addr, setMaterial2Addr] = useState("");
 
   ////////////////////////////////////////////////////////////////////////
   // NFT 미선택, 자브종 2종 이상 선택 시 경고창
@@ -126,39 +129,45 @@ const ItemCombine = () => {
   ////////////////////////////////////////////////////////////////////////
 
   const Combine = () => {
-    if (!!material1 === false || !!material2 == false) {
+    if (!!material1Img === false || !!material2Img == false) {
       setNotice("자브종이 충분히 선택되지 않았습니다.");
       handleClick();
     } else {
       // 조합함수 실행
-    }
+    } 
   };
 
   // 체크박스
 
-  const [checkedInputs, setCheckedInputs] = useState([""]);
+  const [checkedImgInputs, setCheckedImgInputs] = useState([""]);
+  const [checkedAddrInputs, setCheckedAddrInputs] = useState([""]);
 
-  const check = (event: any, id: any) => {
+  const check = (event: any, id: any, nft_address: string) => {
     console.log(id);
 
     if (event.currentTarget.checked) {
-      setCheckedInputs([...checkedInputs, id]);
+      setCheckedImgInputs([...checkedImgInputs, id]);
+      setCheckedAddrInputs([...checkedAddrInputs, nft_address]);
     } else if (!event.currentTarget.checked) {
-      setCheckedInputs(checkedInputs.filter((el) => el !== id));
+      setCheckedImgInputs(checkedImgInputs.filter((el) => el !== id));
+      setCheckedAddrInputs(checkedAddrInputs.filter((el) => el !== nft_address));
       return;
     }
-    if (checkedInputs.length > 2) {
+    if (checkedImgInputs.length > 2) {
       setNotice("조합은 2개의 자브종이 사용됩니다.");
       handleClick();
-      setCheckedInputs(checkedInputs.filter((el) => el !== id));
+      setCheckedImgInputs(checkedImgInputs.filter((el) => el !== id));
+      setCheckedAddrInputs(checkedAddrInputs.filter((el) => el !== nft_address));
       event.target.checked = false;
     }
   };
 
   useEffect(() => {
-    setMaterial1(checkedInputs[1]);
-    setMaterial2(checkedInputs[2]);
-  }, [checkedInputs]);
+    setMaterial1Img(checkedImgInputs[1]);
+    setMaterial2Img(checkedImgInputs[2]);
+    setMaterial1Addr(checkedAddrInputs[1]);
+    setMaterial2Addr(checkedAddrInputs[2]);
+  }, [checkedImgInputs, checkedAddrInputs]);
 
   return (
     <div>
@@ -172,8 +181,8 @@ const ItemCombine = () => {
 
             <div className={styles.material}>
               <div className={styles.container}>
-                {material1 ? (
-                  <img style={{objectFit: "cover"}} src={material1} alt="" />
+                {material1Img ? (
+                  <img style={{objectFit: "cover"}} src={material1Img} alt="" />
                 ) : (
                   <div className={styles.container}>
                     <div className={styles.centerPosition}>
@@ -184,8 +193,8 @@ const ItemCombine = () => {
                 )}
               </div>
               <div className={styles.container}>
-                {material2 ? (
-                  <img style={{objectFit: "cover"}} src={material2} alt="" />
+                {material2Img ? (
+                  <img style={{objectFit: "cover"}} src={material2Img} alt="" />
                 ) : (
                   <div className={styles.container}>
                     <div className={styles.centerPosition}>
@@ -226,7 +235,7 @@ const ItemCombine = () => {
                   <img src={contact.img_address} alt="" />
                   <input
                     onChange={(e) => {
-                      check(e, contact.img_address);
+                      check(e, contact.img_address, contact.nft_address);
                     }}
                     className={styles.jav}
                     id={contact.img_address}

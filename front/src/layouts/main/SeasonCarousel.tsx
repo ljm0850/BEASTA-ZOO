@@ -56,9 +56,9 @@ export default class SeasonCarousel extends Component {
       <div className={styles.seasonCarousel}>
         <p className={styles.SCTitle}>Season 1 - OOZ Project</p>
         <Slider {...settings}>
-          {jav.map((item) => {
+          {jav.map((item, idx) => {
             return (
-              <div key={item} className={styles.carouselCard}>
+              <div className={styles.carouselCard} key={idx}>
                 <img className={styles.carouselImg} src={item} alt="" />
               </div>
             );

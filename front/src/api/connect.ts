@@ -53,7 +53,7 @@ export function connectAPI(account: string, balance: string, chain: string) {
   }
 
   // 내 NFT 목록
-  export const getMyNFTs = async (account: string | undefined, page: number, size: number, sort: number) => {
+  export const getMyNFTs = async (account: string | null | undefined, page: number, size: number, sort: number) => {
     const option = {
       params: {
         page: page,
