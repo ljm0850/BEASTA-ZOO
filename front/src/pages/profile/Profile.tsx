@@ -195,7 +195,7 @@ const Profile = () => {
   };
 
   return (
-    <div style={{ marginTop: "110px" }}>
+    <div>
       {spinner && (
         <div className={styles.spinner}>
           <CircularProgress />
