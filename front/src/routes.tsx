@@ -8,6 +8,7 @@ import Profile from "./pages/profile/Profile";
 import SaleRegistration from "./pages/market/SaleRegistration";
 import ItemPurchase from "./pages/market/ItemPurchase";
 import MarketMain from "./pages/market/MarketMain";
+import Collections from "./pages/collections/Collections";
 
 import Test from "./pages/soliditytest"
 
@@ -37,11 +38,10 @@ export default function Router() {
       element: <MainLayout />,
       children: [{ path: ":account", element: <Profile /> }],
     },
-
     {
-      path: "/test",
-      element: <Test />
+      path: "/collections",
+      element: <MainLayout />,
+      children: [{ path: "", element: <Collections /> }],
     },
-
   ]);
 }
