@@ -11,4 +11,5 @@ public interface ServiceCollectionService {
     List<SalesResDto> getSaleByJavCode(String jav_code);
     List<ServiceCollectionResDto> latestJav(int size);
     ServiceCollectionResDto detailJav(long javId);
+    Long countJav();
 }

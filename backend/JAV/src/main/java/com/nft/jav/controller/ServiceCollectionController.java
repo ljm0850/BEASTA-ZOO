@@ -51,4 +51,11 @@ public class ServiceCollectionController {
         logger.info("detailJav - 호출");
         return new ResponseEntity<>(serviceCollectionService.detailJav(jav_id), HttpStatus.OK);
     }
+
+    @GetMapping("/totalCount")
+    @ApiOperation(value = "총 자브종 개수")
+    public ResponseEntity<Long> totalCount(){
+        logger.info("totalCount - 호출");
+        return new ResponseEntity<>(serviceCollectionService.countJav(), HttpStatus.OK);
+    }
 }
