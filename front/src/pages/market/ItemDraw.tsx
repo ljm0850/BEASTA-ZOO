@@ -26,7 +26,7 @@ import {
   randomGene,
   FusionJavs,
   CreateSale,
-  Purchase
+  Purchase,
 } from "../../common/ABI";
 // 이미지 처리
 import mergeImages from "merge-images";
@@ -73,7 +73,12 @@ const ItemDraw = () => {
     const targetNFT1 = 4; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
     const targetNFT2 = 5; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
 
-    await FusionJavs(address, targetNFT1, targetNFT2,"imageURI가 들어가야합니다.");
+    await FusionJavs(
+      address,
+      targetNFT1,
+      targetNFT2,
+      "imageURI가 들어가야합니다."
+    );
   };
   const payDraw = async () => {
     const accounts = await web3.eth.getAccounts();
@@ -97,13 +102,12 @@ const ItemDraw = () => {
     return saleAddress;
   };
 
-
   const purchase = async () => {
     const address = await getWalletAddress();
 
     const purchaseTokenId = await Purchase(address, NFTSaleAddress);
     return purchaseTokenId;
-  }
+  };
 
   // 테스트중
   const [b64, setB64] = useState("");
@@ -135,15 +139,13 @@ const ItemDraw = () => {
     });
 
     // 이미지 생성
-    await console.log(myGenes);
-    await console.log(myAcces);
-    const head = require(`../../image/parts/head/${myGenes[0]}.svg`);
-    const ears = require(`../../image/parts/ears/${myGenes[1]}.svg`);
-    const mouth = require(`../../image/parts/mouth/${myGenes[2]}.svg`);
-    const eyes = require(`../../image/parts/eyes/${myAcces[0]}.svg`);
-    const body = require(`../../image/parts/body/${myAcces[1]}.svg`);
-    const background = require(`../../image/parts/back/${myAcces[2]}.svg`);
-    const acc = require(`../../image/parts/acc/${myAcces[3]}.svg`);
+    const head = require(`../../image/asset/head/${myGenes[0]}.svg`);
+    const ears = require(`../../image/asset/ears/${myGenes[1]}.svg`);
+    const mouth = require(`../../image/asset/mouth/${myGenes[2]}.svg`);
+    const eyes = require(`../../image/asset/eyes/${myAcces[0]}.svg`);
+    const body = require(`../../image/asset/body/${myAcces[1]}.svg`);
+    const background = require(`../../image/asset/back/${myAcces[2]}.svg`);
+    const acc = require(`../../image/asset/acc/${myAcces[3]}.svg`);
     const image = await mergeImages([
       { src: background },
       { src: body },
@@ -153,30 +155,25 @@ const ItemDraw = () => {
       { src: mouth },
       { src: acc },
     ]);
-    await console.log("hi");
-    await setB64(image);
+
+    setB64(image);
     const imageFile = await dataURLtoFile(image, "JavNFT");
     // IPFS 등록
     const ipfs = await IPFS.create({ repo: "ok" + Math.random() });
     const added = await ipfs.add(imageFile);
     const url = `https://ipfs.io/ipfs/${added.path}`;
     // NFT 발급
-    await console.log(url);
     await PickUp(address, url, genes, acces);
 
     // 백엔드 처리
     let javCode = "";
-    let tier = 1;
-    await myGenes.forEach((myGene: number, idx: number) => {
+    let tier = 3;
+    myGenes.forEach((myGene: number) => {
       tier += parseInt((myGene / 3).toString());
-      javCode += myGene.toString() + ",";
+      javCode += myGene.toString();
     });
-    await myAcces.forEach((myAcce: number, idx: number) => {
-      if (idx != 3) {
-        javCode += myAcce.toString() + ",";
-      } else {
-        javCode += myAcce.toString();
-      }
+    myAcces.forEach((myAcce: number) => {
+      javCode += myAcce.toString();
     });
     await draw(url, javCode, ABI.CONTRACT_ADDRESS.NFT_ADDRESS, tier, address);
     return image;

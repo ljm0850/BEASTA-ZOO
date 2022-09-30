@@ -44,7 +44,7 @@ const PartsInfo = ({ javCode }: Props) => {
         {nftParts.map((nftPart, idx) => {
           return (
             <Stack direction="row" alignItems="center">
-              <img src={nftPart.url} style={{ maxWidth: "100px" }}></img>
+              <img src={nftPart.url} style={{ width: "40%" }}></img>
               <Stack>
                 <Typography>
                   {nftPart.name} {partName[idx]}

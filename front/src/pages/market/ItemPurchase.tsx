@@ -157,7 +157,6 @@ const ItemPurchase = () => {
 
   return (
     <div>
-      {saleId}
       {item !== null ? (
         <>
           <Stack direction="row" justifyContent="center" sx={{ mt: 4 }}>
