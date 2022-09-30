@@ -32,7 +32,7 @@ export default class SeasonCarousel extends Component {
         <Slider {...settings}>
           {jav.map((item, idx) => {
             return (
-              <div className={styles.carouselCard}>
+              <div className={styles.carouselCard} key={idx}>
                 <img className={styles.carouselImg} src={item} alt="" />
               </div>
             );

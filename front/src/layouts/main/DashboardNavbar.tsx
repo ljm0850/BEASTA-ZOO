@@ -25,6 +25,8 @@ import BEASTAZOO_logo from "../../image/BEASTAZOO_logo.svg";
 import JAV from "../../image/JAV.svg";
 import styles from "./DashboardNavbar.module.scss";
 import NavHamburger from "./NavHamburger";
+import { BalanceOfJavToken, CreateJavToken } from "../../common/ABI";
+import convertToAccountingFormat from "../../utils/NumberFormatter";
 
 const actions = [{ icon: <Logout />, name: "Logout" }];
 
@@ -32,7 +34,7 @@ const actions = [{ icon: <Logout />, name: "Logout" }];
 const DashboardNavbar = () => {
   const navigate = useNavigate();
   const [account, setAccount] = useState("");
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState("");
   const [copy, setCopy] = useState("copy");
 
   const isLogined = sessionStorage.getItem("isLogined");
@@ -67,10 +69,19 @@ const DashboardNavbar = () => {
   };
 
   const getBalance = async (account: string) => {
-    // console.log(account);
-    // const response = await SSFTokenContract.methods.balanceOf(account).call();
-    // setBalance(response);
+    BalanceOfJavToken(account)
+    .then((res) => {
+      const formatting = convertToAccountingFormat(res)
+      setBalance(formatting)
+    }) .catch((err) => {
+      console.log(err)
+    })
   };
+
+  const javCharge = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    await CreateJavToken(account)
+    await getBalance(account)
+  }
 
   useEffect(() => {
     if (isLogined) {
@@ -143,11 +154,11 @@ const DashboardNavbar = () => {
                 <div>My JAV</div>
                 <div>
                   <img src={JAV} alt="" />
-                  <div>{balance} ETH</div>
+                  <div>{balance} JAV</div>
                 </div>
               </div>
             </div>
-            <div className={styles.charge}>충전하기</div>
+            <div className={styles.charge} onClick={javCharge}>충전하기</div>
           </div>
         </div>
       ) : (
@@ -273,7 +284,6 @@ const DashboardNavbar = () => {
         >
           마켓
         </Link>
-        <div>조합</div>
         <Link
           to={`/market/draw`}
           color="inherit"
@@ -281,6 +291,14 @@ const DashboardNavbar = () => {
           component={RouterLink}
         >
           뽑기
+        </Link>
+        <Link
+          to={`/market/combine`}
+          color="inherit"
+          underline="hover"
+          component={RouterLink}
+        >
+          조합
         </Link>
         <div>도감</div>
 
