@@ -23,6 +23,7 @@ import {
   IsApproved,
   BalanceOfJavToken,
 } from "../common/ABI";
+import { draw } from "./market";
 
 // export const myAddress = async() =>{
 //   const myWallet:string = await getWalletAddress()
@@ -90,7 +91,7 @@ const createNFT = async (myGenes: number[], myAcces: number[]) => {
     { src: acc },
   ]);
   // image를 src에 넣으면 이미지 확인 가능
-  const imageFile = await dataURLtoFile(image, "JavNFT");
+  const imageFile = dataURLtoFile(image, "JavNFT");
   // IPFS 등록
   const ipfs = await IPFS.create({ repo: "ok" + Math.random() });
   const added = await ipfs.add(imageFile);
@@ -118,14 +119,33 @@ const changeAcces = (acces: string[]) => {
 // 뽑기
 export const pickup = async () => {
   // 사전작업
-  const address = await getWalletAddress();
+  const address: string = await getWalletAddress();
   const genes = await randomGene();
   const acces = await randomAcce();
   const myGenes: number[] = changeGene(genes); // 이미지에서 본인 유전자만 쓰기 위해 사용
   const myAcces: number[] = changeAcces(acces);
   const url: string = await createNFT(myGenes, myAcces);
   const tokenId = await PickUp(address, url, genes, acces);
-  return tokenId;
+  let javCode = "";
+  let tier = 3;
+  myGenes.forEach((myGene: number) => {
+    tier += parseInt((myGene - 1 / 3).toString());
+    javCode += myGene.toString();
+  });
+  myAcces.forEach((myAcce: number) => {
+    javCode += myAcce.toString();
+  });
+  const nftData = {
+    img_address: url,
+    jav_code: javCode,
+    nft_address: ABI.CONTRACT_ADDRESS.NFT_ADDRESS,
+    tier: tier,
+    wallet_address: address,
+  };
+  console.log(nftData);
+  await draw(nftData);
+  const genesStr = myGenes.join("");
+  return { genes: genesStr, url: url };
 };
 
 // 조합
@@ -133,8 +153,8 @@ export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   const address = await getWalletAddress();
   const genes = await getFusionGene(NFT_ID1, NFT_ID2);
   const acces = await randomAcce();
-  const myGenes: number[] = await changeGene(genes);
-  const myAcces: number[] = await changeAcces(acces);
+  const myGenes: number[] = changeGene(genes);
+  const myAcces: number[] = changeAcces(acces);
   const url: string = await createNFT(myGenes, myAcces);
   const tokenId = await FusionJavs(
     address,
