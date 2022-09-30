@@ -9,6 +9,8 @@ import ItemPurchase from "./pages/market/ItemPurchase";
 import MarketMain from "./pages/market/MarketMain";
 import Collections from "./pages/collections/Collections";
 
+import Test from "./pages/soliditytest"
+
 export default function Router() {
   return useRoutes([
     {

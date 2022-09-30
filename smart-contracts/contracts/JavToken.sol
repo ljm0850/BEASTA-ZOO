@@ -11,6 +11,8 @@ import "./SaleFactory.sol";
  */ 
 contract JavToken is ERC20, Ownable{
     JAV_NFT public JAV_NFT_Contract;
+    event createNFT (uint256 indexed _tokenId, address indexed _owner);
+    event purchaseNFT (uint256 _tokenId);
     // mapping(address => uint256) private JavToken;
     constructor(string memory name, string memory symbol, uint8 decimal, address JAV_NFT_address) ERC20(name, symbol, decimal) {
         JAV_NFT_Contract = JAV_NFT(JAV_NFT_address);
@@ -24,10 +26,12 @@ contract JavToken is ERC20, Ownable{
     //     _transfer(from, to, amount);
     // }
 
-    function JavPickup(string memory _tokenURI, uint[3] memory _gene, uint[4] memory _accessory) public {
+    function JavPickup(string memory _tokenURI, uint[3] memory _gene, uint[4] memory _accessory) public returns(uint) {
         super.transfer(address(JAV_NFT_Contract),100);
         uint tokenId = JAV_NFT_Contract.pickup(_tokenURI, _gene, _accessory);
         JAV_NFT_Contract.transferFrom(address(this),msg.sender,tokenId);
+        emit createNFT(tokenId, msg.sender);
+        return tokenId;
     }
 
     // function sendMoney(address seller, uint pay) internal {
@@ -49,6 +53,7 @@ contract JavToken is ERC20, Ownable{
         JAV_NFT_Contract.transferFrom(seller,msg.sender,tokenId);
         JAV_NFT_Contract.pushSaleData(tokenId,price);
         SaleContract.purchase(price,msg.sender);
+        emit purchaseNFT(tokenId);
         return tokenId;
     }
 }
