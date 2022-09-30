@@ -51,7 +51,7 @@ const Login = () => {
           params: {
             type: "ERC20",
             options: {
-              address: "0xD915163c2687a2AB79862606BEf50E0503282Eb6",
+              address: "0xDDE8404acA08384Cd33306DF0716B4948c444D95",
               symbol: "JAV",
               decimals: 0,
               image:
@@ -88,6 +88,7 @@ const Login = () => {
         sessionStorage.setItem("profileImgPath", profileImgPath === null ? "default image" : profileImgPath);
         sessionStorage.setItem("bannerImgPath", bannerImgPath === null ? "default image" : bannerImgPath);
         sessionStorage.setItem("profileDescription", profileDescription);
+        sessionStorage.setItem("account", account)
         window.location.reload();
         navigate('/')
       })
@@ -149,7 +150,7 @@ const Login = () => {
 
   // JAV 토큰으로 변환하기
   // 현재 SSF 가져오기
-  const getSsfBalance = async () => {
+  // const getSsfBalance = async () => {
     // try {
     //   const ssafyToken = new web3.eth.Contract(
     //     // ABI.CONTRACT_ABI.ERC_ABI,
@@ -166,7 +167,7 @@ const Login = () => {
     // } catch(err) {
     //   console.log(err)
     // }
-  };
+  // };
 
   const onClickInstall = () => {
     onboarding.startOnboarding();

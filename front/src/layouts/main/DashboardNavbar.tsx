@@ -34,7 +34,7 @@ const actions = [{ icon: <Logout />, name: "Logout" }];
 const DashboardNavbar = () => {
   const navigate = useNavigate();
   const [account, setAccount] = useState("");
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState("");
   const [copy, setCopy] = useState("copy");
 
   const isLogined = sessionStorage.getItem("isLogined");
@@ -278,7 +278,6 @@ const DashboardNavbar = () => {
         >
           마켓
         </Link>
-        <div>조합</div>
         <Link
           to={`/market/draw`}
           color="inherit"
@@ -286,6 +285,14 @@ const DashboardNavbar = () => {
           component={RouterLink}
         >
           뽑기
+        </Link>
+        <Link
+          to={`/market/combine`}
+          color="inherit"
+          underline="hover"
+          component={RouterLink}
+        >
+          조합
         </Link>
         <Link
           to={`/collections`}

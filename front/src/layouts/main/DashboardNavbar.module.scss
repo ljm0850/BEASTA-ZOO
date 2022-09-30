@@ -153,6 +153,15 @@
     :nth-child(4) {
       cursor: pointer;
     }
+
+    a {
+      transition: all 0.2s;
+      &:hover {
+        text-decoration: none;
+        margin-bottom: 5px;
+        font-size: 1.05rem;
+      }
+    }
   }
 }
 

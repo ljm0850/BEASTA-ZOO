@@ -19,20 +19,46 @@ export default class SeasonCarousel extends Component {
     const jav = [cat, rooster, deer, dragon, hawk, pig, rabbit, sheep, tiger]
     const settings = {
       infinite: true,
-      slidesToShow: 5,
-      slidesToScroll: 1,
       autoplay: true,
       speed: 2000,
       autoplaySpeed: 0,
-      cssEase: "linear"
+      cssEase: "linear",
+      slidesToShow: 5,
+      slidesToScroll: 1,
+      responsive: [
+        {
+          breakpoint: 1750,
+          settings: {
+            slidesToShow: 4,
+          }
+        },
+        {
+          breakpoint: 1400,
+          settings: {
+            slidesToShow: 3,
+          }
+        },
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 2,
+          }
+        },
+        {
+          breakpoint: 700,
+          settings: {
+            slidesToShow: 1,
+          }
+        }
+      ]
     };
     return (
       <div className={styles.seasonCarousel}>
         <p className={styles.SCTitle}>Season 1 - OOZ Project</p>
         <Slider {...settings}>
-          {jav.map((item) => {
+          {jav.map((item, idx) => {
             return (
-              <div key={item} className={styles.carouselCard}>
+              <div className={styles.carouselCard} key={idx}>
                 <img className={styles.carouselImg} src={item} alt="" />
               </div>
             );

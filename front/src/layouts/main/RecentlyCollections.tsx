@@ -16,7 +16,7 @@ const RecentlyCollections = () => {
   const [collectionsUrl, setCollectionsUrl] = useState<recentJAV[]>([]);
 
   useEffect(() => {
-    recentCollection(5).then((res :recentJAV[]) => {
+    recentCollection(4).then((res :recentJAV[]) => {
       setCollectionsUrl(res)
     })
   }, [])
@@ -26,8 +26,8 @@ const RecentlyCollections = () => {
       <p className={styles.RCTitle}>Recently added collections</p>
       <p className={styles.RCDetail}>방금 도감에 추가된 JAV를 구경하세요.</p>
       <div className={styles.RCContainer}>
-        {collectionsUrl.map((item) => {
-          return <img key={item.discover_time} src={item.jav_img_path} alt='' className={styles.recentColl}/>
+        {collectionsUrl.map((item, idx) => {
+          return <img key={idx} src={item.jav_img_path} alt="" className={styles.recentColl}/>
         })}
       </div>
     </div>
