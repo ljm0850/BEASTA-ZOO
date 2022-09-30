@@ -169,4 +169,10 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
 
         return resDto;
     }
+
+    @Override
+    public Long countJav() {
+        logger.info("전체 카운트 - 호출");
+        return serviceCollectionRepository.count();
+    }
 }
