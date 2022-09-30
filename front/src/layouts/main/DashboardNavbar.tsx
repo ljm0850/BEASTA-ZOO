@@ -70,18 +70,21 @@ const DashboardNavbar = () => {
 
   const getBalance = async (account: string) => {
     BalanceOfJavToken(account)
-    .then((res) => {
-      const formatting = convertToAccountingFormat(res)
-      setBalance(formatting)
-    }) .catch((err) => {
-      console.log(err)
-    })
+      .then((res) => {
+        const formatting = convertToAccountingFormat(res);
+        setBalance(formatting);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const javCharge = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    await CreateJavToken(account)
-    await getBalance(account)
-  }
+  const javCharge = async (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    await CreateJavToken(account);
+    await getBalance(account);
+  };
 
   useEffect(() => {
     if (isLogined) {
@@ -158,7 +161,9 @@ const DashboardNavbar = () => {
                 </div>
               </div>
             </div>
-            <div className={styles.charge} onClick={javCharge}>충전하기</div>
+            <div className={styles.charge} onClick={javCharge}>
+              충전하기
+            </div>
           </div>
         </div>
       ) : (
@@ -300,8 +305,15 @@ const DashboardNavbar = () => {
         >
           조합
         </Link>
-        <div>도감</div>
-
+        <Link
+          to={`/collections`}
+          color="inherit"
+          underline="hover"
+          component={RouterLink}
+        >
+          도감
+        </Link>
+        
         {isLogined === "true" ? (
           <SpeedDial
             ariaLabel="SpeedDial basic example"

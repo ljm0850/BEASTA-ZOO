@@ -15,11 +15,49 @@
   }
   
   .RCContainer {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(auto-fit, 1fr);
+    position: relative;
+    grid-gap: 2%;
+    margin-top: 3%;
   
     .recentColl {
-      width: 18%;
+      width: 100%;
+      border-radius: 12px;
+    }
+  }
+  
+  @media screen and (max-width: 900px) {
+    .RCContainer {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(auto-fit, 1fr);
+      position: relative;
+      grid-gap: 2%;
+      margin-top: 3%;
+    
+      .recentColl {
+        width: 100%;
+        border-radius: 12px;
+      }
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .RCContainer {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      grid-template-rows: repeat(auto-fit, 1fr);
+      position: relative;
+      grid-gap: 2%;
+      margin-top: 3%;
+      margin-bottom: 50%;
+      
+      .recentColl {
+        width: 100%;
+        border-radius: 12px;
+      }
     }
   }
 }

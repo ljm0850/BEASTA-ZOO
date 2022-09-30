@@ -16,7 +16,7 @@ const RecentlyCollections = () => {
   const [collectionsUrl, setCollectionsUrl] = useState<recentJAV[]>([]);
 
   useEffect(() => {
-    recentCollection(5).then((res :recentJAV[]) => {
+    recentCollection(4).then((res :recentJAV[]) => {
       setCollectionsUrl(res)
     })
   }, [])

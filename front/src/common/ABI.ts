@@ -541,19 +541,6 @@ export const ABI = {
       {
         "inputs": [
           {
-            "internalType": "address",
-            "name": "_saleFactory",
-            "type": "address"
-          }
-        ],
-        "name": "setSaleAdmin",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
             "internalType": "bytes4",
             "name": "interfaceId",
             "type": "bytes4"
@@ -630,6 +617,40 @@ export const ABI = {
       {
         "inputs": [
           {
+            "internalType": "uint256",
+            "name": "itemId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "purchasePrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "currencyAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "nftAddress",
+            "type": "address"
+          }
+        ],
+        "name": "createSale",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
             "internalType": "address",
             "name": "_NFTcreatorAddress",
             "type": "address"
@@ -684,15 +705,22 @@ export const ABI = {
       },
       {
         "inputs": [],
-        "name": "NFTcreatorContract",
-        "outputs": [
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
           {
-            "internalType": "contract JAV_NFT",
-            "name": "",
+            "internalType": "address",
+            "name": "newOwner",
             "type": "address"
           }
         ],
-        "stateMutability": "view",
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -725,40 +753,6 @@ export const ABI = {
         "inputs": [
           {
             "internalType": "uint256",
-            "name": "itemId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "purchasePrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "currencyAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "nftAddress",
-            "type": "address"
-          }
-        ],
-        "name": "createSale",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
             "name": "tokenId",
             "type": "uint256"
           }
@@ -767,6 +761,19 @@ export const ABI = {
         "outputs": [
           {
             "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "NFTcreatorContract",
+        "outputs": [
+          {
+            "internalType": "contract JAV_NFT",
             "name": "",
             "type": "address"
           }
@@ -788,13 +795,6 @@ export const ABI = {
         "type": "function"
       },
       {
-        "inputs": [],
-        "name": "renounceOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
         "inputs": [
           {
             "internalType": "uint256",
@@ -811,19 +811,6 @@ export const ABI = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "newOwner",
-            "type": "address"
-          }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
         "type": "function"
       }
     ] as AbiItem[],
@@ -1120,6 +1107,148 @@ export const ABI = {
         "type": "event"
       },
       {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "_tokenId",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "_owner",
+            "type": "address"
+          }
+        ],
+        "name": "createNFT",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "_tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "purchaseNFT",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "JAV_NFT_Contract",
+        "outputs": [
+          {
+            "internalType": "contract JAV_NFT",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_tokenURI",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256[3]",
+            "name": "_gene",
+            "type": "uint256[3]"
+          },
+          {
+            "internalType": "uint256[4]",
+            "name": "_accessory",
+            "type": "uint256[4]"
+          }
+        ],
+        "name": "JavPickup",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
         "inputs": [
           {
             "internalType": "address",
@@ -1141,6 +1270,38 @@ export const ABI = {
           }
         ],
         "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
         "type": "function"
       },
       {
@@ -1194,29 +1355,6 @@ export const ABI = {
       {
         "inputs": [
           {
-            "internalType": "string",
-            "name": "_tokenURI",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256[3]",
-            "name": "_gene",
-            "type": "uint256[3]"
-          },
-          {
-            "internalType": "uint256[4]",
-            "name": "_accessory",
-            "type": "uint256[4]"
-          }
-        ],
-        "name": "JavPickup",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
             "internalType": "uint256",
             "name": "amount",
             "type": "uint256"
@@ -1228,23 +1366,30 @@ export const ABI = {
         "type": "function"
       },
       {
-        "anonymous": false,
-        "inputs": [
+        "inputs": [],
+        "name": "name",
+        "outputs": [
           {
-            "indexed": true,
-            "internalType": "address",
-            "name": "previousOwner",
-            "type": "address"
-          },
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
           {
-            "indexed": true,
             "internalType": "address",
-            "name": "newOwner",
+            "name": "",
             "type": "address"
           }
         ],
-        "name": "OwnershipTransferred",
-        "type": "event"
+        "stateMutability": "view",
+        "type": "function"
       },
       {
         "inputs": [
@@ -1273,6 +1418,32 @@ export const ABI = {
         "type": "function"
       },
       {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
         "inputs": [
           {
             "internalType": "address",
@@ -1295,31 +1466,6 @@ export const ABI = {
         ],
         "stateMutability": "nonpayable",
         "type": "function"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Transfer",
-        "type": "event"
       },
       {
         "inputs": [
@@ -1362,135 +1508,14 @@ export const ABI = {
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "spender",
-            "type": "address"
-          }
-        ],
-        "name": "allowance",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          }
-        ],
-        "name": "balanceOf",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "decimals",
-        "outputs": [
-          {
-            "internalType": "uint8",
-            "name": "",
-            "type": "uint8"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "JAV_NFT_Contract",
-        "outputs": [
-          {
-            "internalType": "contract JAV_NFT",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "name",
-        "outputs": [
-          {
-            "internalType": "string",
-            "name": "",
-            "type": "string"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "symbol",
-        "outputs": [
-          {
-            "internalType": "string",
-            "name": "",
-            "type": "string"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "totalSupply",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
       }
     ] as AbiItem[],
   },
 
   CONTRACT_ADDRESS: {
-    NFT_ADDRESS: "0x3D4Ab256D26b5Eb73D89505cD18274EfBea55242",
-    SALE_FACTORY_ADDRESS: "0x7790367206830Ec8c647dB3Af24DCA3D024Eb010",
-    TOKEN_ADDRESS: "0xDDE8404acA08384Cd33306DF0716B4948c444D95",
+    NFT_ADDRESS: "0x71Df61797BD670261b8750fBFA831F80406134ae",
+    SALE_FACTORY_ADDRESS: "0x913348B095a3f2E5E621B057d80fCa0b581b7460",
+    TOKEN_ADDRESS: "0xFBec88eA0D09D4Eb0766A53AC6B35F0746C11e39",
   },
 };
 // 랜덤
@@ -1559,20 +1584,14 @@ export const PickUp = async (
   genes: number[],
   acces: number[]
 ) => {
-  // JavToken_Contract.methods
-  //   .transfer(ABI.CONTRACT_ADDRESS.NFT_ADDRESS, 100)
-  //   .send({ from: address });
-
-  //await console.log(BigInt(genes[0]).toString(16));
-
-  JavToken_Contract.methods
+  const value =  await JavToken_Contract.methods
     .JavPickup(
       imageURI,
       [BigInt(genes[0]), BigInt(genes[1]), BigInt(genes[2])],
       [Number(acces[0]), Number(acces[1]), Number(acces[2]), Number(acces[3])]
     )
-    .send({ from: address });
-
+    .send({ from: address })
+  return value.events.createNFT[1].returnValues._tokenId
 };
 
 export const getFusionGene = async (NFTID_1: Number, NFTID_2: Number) => {
@@ -1588,40 +1607,29 @@ export const getFusionGene = async (NFTID_1: Number, NFTID_2: Number) => {
     .fusion(NFTID_1, NFTID_2, randomNums(4), 2)
     .call();
 
-  return [BigInt(body0), BigInt(body1), BigInt(body2)];
+  return [body0, body1, body2];
 };
 
 export const FusionJavs = async (
   address: string,
   NFTID_1: Number,
   NFTID_2: Number,
-  imageURI : string
+  imageURI : string,
+  genes : string[],
+  acces : string[],
 ) => {
-  const body0 = await JAV_NFT_Contract.methods
-    .fusion(NFTID_1, NFTID_2, randomNums(4), 0)
-    .call();
-
-  const body1 = await JAV_NFT_Contract.methods
-    .fusion(NFTID_1, NFTID_2, randomNums(4), 1)
-    .call();
-
-  const body2 = await JAV_NFT_Contract.methods
-    .fusion(NFTID_1, NFTID_2, randomNums(4), 2)
-    .call();
-  
-  const acces = await JAV_NFT_Contract.methods.getAcce(randomNums(4)).call();
-
   const result = await JAV_NFT_Contract.methods
     .fusionJavs(
       imageURI,
       NFTID_1,
       NFTID_2,
-      [BigInt(body0), BigInt(body1), BigInt(body2)],
+      [BigInt(genes[0]), BigInt(genes[1]), BigInt(genes[2])],
       [Number(acces[0]), Number(acces[1]), Number(acces[2]), Number(acces[3])]
     )
     .send({ from: address });
-
-  console.log(result);
+  
+  const tokenId = result.events.createNFT.returnValues._tokenId
+  return tokenId
 };
 
 export const CreateSale = async (
@@ -1629,7 +1637,7 @@ export const CreateSale = async (
   tokenId: Number,
   price: Number
 ) => {
-  await JAV_NFT_Contract.methods.setApprovalForAll(ABI.CONTRACT_ADDRESS.TOKEN_ADDRESS, true).send({from : address});
+  // await JAV_NFT_Contract.methods.setApprovalForAll(ABI.CONTRACT_ADDRESS.TOKEN_ADDRESS, true).send({from : address});
 
   const SaleContractAddress = await SaleFactory_Contract.methods
     .createSale(
@@ -1640,36 +1648,78 @@ export const CreateSale = async (
     )
     .send({ from: address });
 
-  console.log("createSale 완료 후 반환 값");
-  console.log(SaleContractAddress.events.NewSale.returnValues[0]);
-  return SaleContractAddress.events.NewSale.returnValues[0];
+  const saleAddress = SaleContractAddress.events.NewSale.returnValues[0]
+  return saleAddress;
 };
 
 export const Purchase = async (
   address: string,
   saleAddress: string,
 ) => {
-  // await JavToken_Contract.methods
-  //   .approve(saleAddress, price)
-  //   .send({ from: address });
-
-  // const Sale_Contract = new web3.eth.Contract(
-  //   ABI.CONTRACT_ABI.SALE_ABI,
-  //   saleAddress
-  // );
-
-  const tokenId = await JavToken_Contract.methods.purchase(saleAddress).send({ from: address });
-  console.log(tokenId);
-  console.log("구매한 NFT ID : " + tokenId);
-  // await Sale_Contract.methods.purchase(price);
+  const value = await JavToken_Contract.methods.purchase(saleAddress).send({ from: address });
+  const tokenId = value.events.purchaseNFT.returnValues._tokenId
+  return tokenId
 };
 
-export const cancelSale = async (saleAddress: string) => {
+export const CancelSale = async (saleAddress: string) => {
+  const address = getWalletAddress();
   const Sale_Contract = new web3.eth.Contract(
     ABI.CONTRACT_ABI.SALE_ABI,
     saleAddress
   );
 
-  const bool = await Sale_Contract.methods.cancelSales();
+  const bool = await Sale_Contract.methods.cancelSales().send({ from: address});
   return bool;
 };
+
+export const SetApproveAll = async(myAddress:string)=>{
+  const value : boolean = await JAV_NFT_Contract.methods.setApprovalForAll(ABI.CONTRACT_ADDRESS.TOKEN_ADDRESS, true).send({from : myAddress})
+  return value
+}
+
+export const GetSaleData = async(tokenId : number)=>{
+  const data = await JAV_NFT_Contract.methods.getSaleData(tokenId).call()
+  return data
+}
+
+// NFT 데이터 조회
+export const GetJavsGene = async(tokenId : number) => {
+  const data = await JAV_NFT_Contract.methods.getJavsGene(tokenId).call()
+  return data
+}
+
+export const GetJavsAccessory = async(tokenId:number) => {
+  const data = await JAV_NFT_Contract.methods.getJavsAccessory(tokenId).call()
+  return data 
+}
+
+export const GetJavsCreate_at = async(tokenId:number) =>{
+  const data = await JAV_NFT_Contract.methods.getJavsCreate_at(tokenId).call()
+  return data
+}
+
+export const GetJavsOwner = async(tokenId:number) => {
+  const data = await JAV_NFT_Contract.methods.ownerOf(tokenId).call()
+  return data
+}
+
+export const GetJavsURI = async(tokenId:number) => {
+  const data = await JAV_NFT_Contract.methods.tokenURI(tokenId).call()
+  return data
+}
+
+// 판매 권한 등록 확인
+export const IsApproved = async (user_address:string) => {
+  const data = await JAV_NFT_Contract.methods.isApprovedForAll(user_address,ABI.CONTRACT_ADDRESS.TOKEN_ADDRESS).call()
+  return data
+}
+
+// Sale data 확인
+// export const SaleTokenId = async (saleAddress:string) => {
+//   const Sale_Contract = new web3.eth.Contract(ABI.CONTRACT_ABI.SALE_ABI,saleAddress);
+//   const data = await Sale_Contract.methods.tokenId().call()
+//   return data
+// }
+
+// 테스트중
+// let EventTest = JAV_NFT_Contract.events.createNFT
