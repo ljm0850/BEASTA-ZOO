@@ -3,27 +3,31 @@ import { Box, Card, Link, Typography, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export interface Product {
-  url: string | undefined;
-  price: number | 0;
-  nftId: number | undefined;
-  buyerWallet: string | undefined;
-  saleId: number | 0;
+  url: string;
+  price: number;
+  nftId: number;
+  javCode: string;
+  buyerWallet: string;
+  buyerNickname: string;
+  sellerWallet: string;
+  sellerNickname: string;
+  saleId: number;
   saleStartDate: string;
   saleCompleteDate: string;
   contractAddress: string;
-  sellerId: number | 0;
+  state: number;
 }
 
 const ImgStyle = styled("img")({
   top: 0,
   width: "100%",
   height: "100%",
-  objectFit: "contain",
+  objectFit: "cover",
   position: "absolute",
 });
 
 const ItemsCard = ({ product }: { product: Product }) => {
-  const { url, price, nftId, saleId, sellerId } = product;
+  const { url, price, state, saleId, sellerNickname } = product;
   const symbol = "JAV";
 
   return (
@@ -31,16 +35,22 @@ const ItemsCard = ({ product }: { product: Product }) => {
       <Box sx={{ pt: "100%", position: "relative" }}>
         <ImgStyle src={url} />
       </Box>
-
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link
-          to={`/items/buy/${saleId}`}
+          to={`/market/buy/${saleId}`}
           color="inherit"
           underline="hover"
           component={RouterLink}
         >
+          <Typography
+            variant="h6"
+            noWrap
+            sx={state === 0 ? { color: "blue" } : { color: "red" }}
+          >
+            {state === 0 ? "판매중" : "판매완료"}
+          </Typography>
           <Typography variant="subtitle1" noWrap>
-            {nftId}
+            판매자 : {sellerNickname}
           </Typography>
         </Link>
 

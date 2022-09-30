@@ -9,7 +9,31 @@ import draw2 from "../../image/draw2.gif";
 import { useState } from "react";
 import JavModal from "../../layouts/modal/JavModal";
 import AlertDialog from "../../layouts/dialog/AlertDialog";
-import Web3 from "web3";
+import _ from "lodash";
+// 뽑기함수
+import { draw } from "../../api/market";
+
+import {
+  ABI,
+  web3,
+  JAV_NFT_Contract,
+  JavToken_Contract,
+  CreateJavToken,
+  BalanceOfJavToken,
+  getWalletAddress,
+  PickUp,
+  randomAcce,
+  randomGene,
+  FusionJavs,
+  CreateSale,
+  Purchase,
+} from "../../common/ABI";
+// 이미지 처리
+import mergeImages from "merge-images";
+import * as IPFS from "ipfs-core";
+// 테스트
+import { ethers } from "ethers";
+import { number } from "yup/lib/locale";
 
 const ItemDraw = () => {
   /**
@@ -34,13 +58,125 @@ const ItemDraw = () => {
   const handleClickOpenAlert = () => setOpenAlert(true);
   const handleCloseAlert = () => setOpenAlert(false);
 
-  // 뽑기 컨트랙트 전송
-  const web3 = new Web3(window.ethereum);
+  // 자브토큰 1000개 발행
+  const getJavToken = async () => {
+    const address = await getWalletAddress();
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const signature = await signer.signMessage(address);
+    CreateJavToken(address);
+  };
 
+  //조합 함수
+  const fusionjavs = async () => {
+    const address = await getWalletAddress();
+    const targetNFT1 = 4; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
+    const targetNFT2 = 5; //조합할 NFT의 tokenID 백에서 받아와 선언해야함
+
+    await FusionJavs(
+      address,
+      targetNFT1,
+      targetNFT2,
+      "imageURI가 들어가야합니다."
+    );
+  };
   const payDraw = async () => {
     const accounts = await web3.eth.getAccounts();
     // const drawContract = new web3.eth.Contract(drawABI, drawAddress);
     const nonce = await web3.eth.getTransactionCount(accounts[0]);
+  };
+
+  let NFTSaleAddress = "";
+  //판매함수
+  const createsale = async () => {
+    const address = await getWalletAddress();
+
+    const targetNFT = 3; //판매할 NFT의 tokenID 백에서 받아와 선언
+    const price = 100; //판매할 가격
+
+    const saleAddress = await CreateSale(address, targetNFT, price);
+    console.log(saleAddress);
+
+    //판매Contract 주소 반환
+    NFTSaleAddress = saleAddress;
+    return saleAddress;
+  };
+
+  const purchase = async () => {
+    const address = await getWalletAddress();
+
+    const purchaseTokenId = await Purchase(address, NFTSaleAddress);
+    return purchaseTokenId;
+  };
+
+  // 테스트중
+  const [b64, setB64] = useState("");
+  // base64 -> file
+  function dataURLtoFile(dataurl: string, filename: string) {
+    var arr: any = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
+  const pickup = async () => {
+    // 사전작업
+    const address = await getWalletAddress();
+    const genes = await randomGene();
+    const acces = await randomAcce();
+    const myGenes: number[] = []; // 이미지에서 본인 유전자만 쓰기 위해 사용
+    const myAcces: number[] = [];
+    genes.forEach((gene: string, idx: number) => {
+      myGenes.push(parseInt(BigInt(gene).toString(16).slice(3, 4), 16));
+    });
+    acces.forEach((acce: any, idx: number) => {
+      const num = Number(acce).toString(16);
+      myAcces.push(parseInt(num.slice(1, 3), 16));
+    });
+
+    // 이미지 생성
+    const head = require(`../../image/asset/head/${myGenes[0]}.svg`);
+    const ears = require(`../../image/asset/ears/${myGenes[1]}.svg`);
+    const mouth = require(`../../image/asset/mouth/${myGenes[2]}.svg`);
+    const eyes = require(`../../image/asset/eyes/${myAcces[0]}.svg`);
+    const body = require(`../../image/asset/body/${myAcces[1]}.svg`);
+    const background = require(`../../image/asset/back/${myAcces[2]}.svg`);
+    const acc = require(`../../image/asset/acc/${myAcces[3]}.svg`);
+    const image = await mergeImages([
+      { src: background },
+      { src: body },
+      { src: ears },
+      { src: head },
+      { src: eyes },
+      { src: mouth },
+      { src: acc },
+    ]);
+
+    setB64(image);
+    const imageFile = await dataURLtoFile(image, "JavNFT");
+    // IPFS 등록
+    const ipfs = await IPFS.create({ repo: "ok" + Math.random() });
+    const added = await ipfs.add(imageFile);
+    const url = `https://ipfs.io/ipfs/${added.path}`;
+    // NFT 발급
+    await PickUp(address, url, genes, acces);
+
+    // 백엔드 처리
+    let javCode = "";
+    let tier = 3;
+    myGenes.forEach((myGene: number) => {
+      tier += parseInt((myGene / 3).toString());
+      javCode += myGene.toString();
+    });
+    myAcces.forEach((myAcce: number) => {
+      javCode += myAcce.toString();
+    });
+    await draw(url, javCode, ABI.CONTRACT_ADDRESS.NFT_ADDRESS, tier, address);
+    return image;
   };
 
   return (
@@ -64,6 +200,13 @@ const ItemDraw = () => {
             alignItems: "center",
           }}
         >
+          <button onClick={getJavToken}> 10000 JavToken 받기</button>
+          <button onClick={pickup}> JAV NFT 발급</button>
+          <button onClick={fusionjavs}> JAV NFT 조합하기</button>
+          <button onClick={createsale}> JAV NFT 판매하기</button>
+          <button onClick={purchase}> JAV NFT 구매하기</button>
+          <img src={b64} alt="" />
+          {/* <img src={test}/> */}
           <Box
             component="form"
             sx={{
@@ -99,32 +242,6 @@ const ItemDraw = () => {
                 </Button>
               </CardActions>
             </Card>
-
-            <Card sx={{ minWidth: 275 }}>
-              <CardContent>
-                10연속 뽑기
-                <img style={{ width: "250px" }} src={draw2} alt="" />
-              </CardContent>
-              <CardActions
-                style={{ display: "flex", justifyContent: "center" }}
-              >
-                <Button
-                  sx={{ fontWeight: "bold" }}
-                  variant="contained"
-                  size="small"
-                  color="secondary"
-                >
-                  <Jav
-                    style={{
-                      width: "1.2rem",
-                      height: "auto",
-                      marginRight: "0.3rem",
-                    }}
-                  />
-                  1000.00 JAV
-                </Button>
-              </CardActions>
-            </Card>
           </Box>
         </div>
       </div>
@@ -134,7 +251,16 @@ const ItemDraw = () => {
         open={openItem}
         onClose={handleCloseItem}
         name="이잼민"
-        url="https://mblogthumb-phinf.pstatic.net/MjAyMTA1MTNfMjkz/MDAxNjIwOTEwNDQ3MjQ1.RjpPwu8qenTvn6uEdct9lXaDu6a-eaubruR2i06SjtUg.5izLqsFxNagkeTGMbhf6sGBbNE4adeUKdELQ-H4vozMg.PNG.ysg3355/image.png?type=w800"
+        data={{
+          count: 0,
+          nft_id: 123,
+          nft_address:
+            "https://mblogthumb-phinf.pstatic.net/MjAyMTA1MTNfMjkz/MDAxNjIwOTEwNDQ3MjQ1.RjpPwu8qenTvn6uEdct9lXaDu6a-eaubruR2i06SjtUg.5izLqsFxNagkeTGMbhf6sGBbNE4adeUKdELQ-H4vozMg.PNG.ysg3355/image.png?type=w800",
+          img_address: "string",
+          user_id: 123,
+          jav_code: 1231,
+          total_page: 3,
+        }}
       />
       <AlertDialog
         open={openAlert}

@@ -1,0 +1,77 @@
+
+
+.modalBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 450px;
+  max-height: 80vh;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar{
+    display:none;
+  }
+  background-color: #fff;
+  // border: 2px solid #DCDCDC;
+  border-radius: 10px;
+  box-shadow: 2;
+  padding: 50px;
+  &:focus {
+    outline: 0,
+  }
+}
+
+.imgContainer {
+  margin: 1rem 0.5rem 0 0;
+  img {
+    min-width: 290px;
+    max-width: 400px;
+    width: 20vw;
+
+    height: auto;
+  }
+}
+.modalInfo {
+  white-space:pre-line;
+  word-break:break-all;
+  
+  .season {
+    .title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #5A718B;
+    }
+
+    .seasonPJT {
+      display: flex;
+      align-items: center;
+      .logoImg {
+        width: 42px;
+        height: auto;
+        // mix-blend-mode: exclusion;
+      }
+
+      div {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 0 0 0 5px;
+      }
+    }
+  }
+
+  .tokenInfo {
+    margin: 15px 0 10px 0;
+    div:first-child {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #5A718B;
+    }
+    div:last-child {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 7px 0 0 0;
+      line-height: 15px;
+    }
+  }
+}

@@ -1,34 +1,20 @@
 import { Box, Container, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { fetchItems } from "../../api/market";
 import { MotionContainer, varBounceIn } from "../../components/animate";
 import { Product } from "../../layouts/items/ItemsCard";
 import ItemsList from "../../layouts/items/ItemsList";
 
-const Items = () => {
-  const resultItem = {
-    url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQRasieESJNiRFefqktJL4qkTQhbeLt-nrJQ&usqp=CAU",
-    price: 500,
-    nftId: 1,
-    buyerWallet: "1232131",
-    saleId: 1,
-    saleStartDate: "123",
-    saleCompleteDate: "123",
-    contractAddress: "주소",
-    sellerId: 1,
-  };
-  const resultItem2 = {
-    url: "https://img.freepik.com/free-photo/the-red-or-white-cat-i-on-white-studio_155003-13189.jpg?w=2000",
-    price: 500,
-    nftId: 2,
-    buyerWallet: "222",
-    saleId: 2,
-    saleStartDate: "1233",
-    saleCompleteDate: "1233",
-    contractAddress: "주소2",
-    sellerId: 2,
-  };
+interface Props {
+  page: number;
+  size: number;
+  search: string;
+  haveCompleted: number;
+  sort: number;
+}
 
+const Items = ({ page, size, search, haveCompleted, sort }: Props) => {
   const [item, setItem] = useState<Product[]>([]);
   const [isCollection, setIsCollection] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -43,18 +29,35 @@ const Items = () => {
   const getItem = async () => {
     // TODO
     setLoading(true);
-    const resultList = [];
-    resultList.push(resultItem);
-    resultList.push(resultItem2);
 
-    setItem(resultList);
-    setLoading(false);
-    setIsCollection(true);
+    fetchItems(page, size, search, haveCompleted, sort).then((res) => {
+      const resultList = [] as Product[];
+      res.map((item: any) =>
+        resultList.push({
+          saleId: item.sale_id,
+          url: item.img_address,
+          nftId: item.nft_id,
+          javCode: item.jav_code,
+          sellerWallet: item.seller_wallet,
+          sellerNickname: item.seller_nickname,
+          buyerWallet: item.buyer_wallet,
+          buyerNickname: item.buyer_nickname,
+          price: item.price,
+          saleStartDate: item.sale_start_date,
+          saleCompleteDate: item.sale_complete_date,
+          contractAddress: item.contract_address,
+          state: item.state,
+        })
+      );
+      setItem(resultList);
+      setLoading(false);
+      setIsCollection(true);
+    });
   };
 
   useEffect(() => {
     getItem();
-  }, []);
+  }, [search, haveCompleted, sort]);
 
   return (
     <div>

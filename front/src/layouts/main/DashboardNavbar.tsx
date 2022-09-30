@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { alpha, styled } from "@mui/material/styles";
-import { Box, Stack, Button, AppBar, Toolbar } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Box, Stack, Button, Link } from "@mui/material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
@@ -12,24 +11,26 @@ import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 
 import Login from "../Login";
-import profileExample from "../../image/profileExample.jpg";
 import Metamask from "../../image/WalletLogo/Metamask_logo.svg";
 import Coinbase from "../../image/WalletLogo/Coinbase_logo.svg";
 import WalletConnect from "../../image/WalletLogo/WalletConnect_logo.svg";
 import Logout from "../Logout";
 
-const actions = [
-  { icon: <Logout />, name: "Logout" },
-];
+import BEASTAZOO_logo from "../../image/BEASTAZOO_logo.svg";
+import JAV from "../../image/JAV.svg";
+import styles from "./DashboardNavbar.module.scss";
+import NavHamburger from "./NavHamburger";
+
+const actions = [{ icon: <Logout />, name: "Logout" }];
 
 // 헤더 화면 (상단 메뉴바)
 const DashboardNavbar = () => {
+  const navigate = useNavigate();
   const [account, setAccount] = useState("");
   const [balance, setBalance] = useState(0);
   const [copy, setCopy] = useState("copy");
@@ -42,7 +43,7 @@ const DashboardNavbar = () => {
     navigator.clipboard.writeText(account);
     setCopy("copied!");
   };
-  
+
   // drawer
   const [drawerState, setDrawerState] = useState(false);
   const toggleDrawer =
@@ -75,222 +76,280 @@ const DashboardNavbar = () => {
     if (isLogined) {
       getAccount();
     }
-  }, []);
+  }, [isLogined]);
 
   const list = () => (
     <Box
       sx={{ width: 400 }}
       role="presentation"
-      // onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        <div>
-          {profileImgPath ? (
-            // <img src={state.profileImgPath} alt="" />
-            <Avatar alt="Travis Howard" src={profileExample} />
-          ) : (
-            <AccountCircleIcon sx={{ fontSize: 35, color: "black" }} />
-          )}
-          My wallet
-        </div>
-        <div>
-          {account ? (
-            <Tooltip title={<div style={{ fontSize: "20px" }}>{copy}</div>}>
-              <Button
-                onClick={copyHandler}
-                onMouseOut={() => {
-                  setCopy("copy");
+        <div className={styles.myWallet}>
+          <div className={styles.wallet}>
+            {profileImgPath ? (
+              <img
+                style={{
+                  width: 35,
+                  height: 35,
+                  borderRadius: 100,
+                  objectFit: "cover",
                 }}
-                onMouseOver={() => {
-                  setCopy("copy");
-                }}
+                src={profileImgPath}
+                alt=""
+              />
+            ) : (
+              // <Avatar alt="Travis Howard" src={profileExample} />
+              <AccountCircleIcon sx={{ fontSize: 35, color: "black" }} />
+            )}
+            <div>My wallet</div>
+          </div>
+          <div>
+            {account ? (
+              <Tooltip
+                title={
+                  <div style={{ fontSize: "12px", fontWeight: 500 }}>
+                    {copy}
+                  </div>
+                }
               >
-                {account.toString().slice(0, 6) +
-                  "..." +
-                  account.toString().slice(38, 42)}
-              </Button>
-            </Tooltip>
-          ) : (
-            <></>
-          )}
+                <Button
+                  onClick={copyHandler}
+                  sx={{ fontWeight: 700, color: "#B8B8B8" }}
+                  onMouseOut={() => {
+                    setCopy("copy");
+                  }}
+                  onMouseOver={() => {
+                    setCopy("copy");
+                  }}
+                >
+                  {account.toString().slice(0, 6) +
+                    "..." +
+                    account.toString().slice(38, 42)}
+                </Button>
+              </Tooltip>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </List>
 
-      <Divider />
       {isLogined === "true" ? (
-        <Paper
-          variant="outlined"
-          sx={{ width: 320, maxWidth: "100%", padding: 0 }}
-        >
-          <List>
-            <ListItem>
-              <div>
-                <div>Total balance</div>
-                <div>{balance}ETH</div>
+        <div className={styles.balanceTable}>
+          <div className={styles.myBalance}>
+            <div className={styles.Btable}>
+              <div className={styles.balance}>
+                <div>My JAV</div>
+                <div>
+                  <img src={JAV} alt="" />
+                  <div>{balance} ETH</div>
+                </div>
               </div>
-            </ListItem>
-          </List>
-        </Paper>
+            </div>
+            <div className={styles.charge}>충전하기</div>
+          </div>
+        </div>
       ) : (
         <List>
-          <div>아직 지갑이 연결되지 않았습니다.</div>
-          <div>MetaMask를 이용하여 지갑을 연결해주세요.</div>
+          <div className={styles.noLogined}>
+            <div>아직 지갑이 연결되지 않았습니다.</div>
+            <div>MetaMask를 이용하여 지갑을 연결해주세요.</div>
+          </div>
           <Paper
             variant="outlined"
-            sx={{ width: 320, maxWidth: "100%", padding: 0 }}
+            sx={{
+              width: 356,
+              height: 200,
+              maxWidth: "100%",
+              margin: "0 1.4rem 1.5rem 1.4rem",
+              border: "2px solid #E5E8EB",
+              borderRadius: "10px",
+            }}
           >
             <List style={{ padding: 0 }}>
-              <ListItem style={{ padding: 0 }}>
+              <ListItem style={{ padding: 0, height: "4rem" }}>
                 <div
                   style={{
                     width: "100%",
                     height: "100%",
                     display: "flex",
                     justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "0 1rem 0 1rem",
                   }}
                 >
-                  <div style={{ display: "flex" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <img style={{ width: "25px" }} src={Metamask} alt="" />
-                    <div>Metamask</div>
+                    <div style={{ margin: "0 0 0 10px", fontWeight: 700 }}>
+                      Metamask
+                    </div>
                   </div>
                   <Login />
                 </div>
               </ListItem>
-              <Divider />
-              <ListItem style={{ padding: 0 }}>
+              <Divider sx={{ border: "1px solid #E5E8EB" }} />
+              <ListItem style={{ padding: 0, height: "4rem" }}>
                 <div
                   style={{
                     width: "100%",
                     height: "100%",
                     display: "flex",
                     justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "0 1rem 0 1rem",
                   }}
                 >
-                  <div style={{ display: "flex" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <img style={{ width: "25px" }} src={Coinbase} alt="" />
-                    <div>Coinbase Wallet</div>
+                    <div style={{ margin: "0 0 0 10px", fontWeight: 700 }}>
+                      Coinbase Wallet
+                    </div>
                   </div>
                   <Button variant="contained" disabled>
-                    Login
+                    지원 예정
                   </Button>
                 </div>
               </ListItem>
-              <Divider />
-              <ListItem style={{ padding: 0 }}>
+              <Divider sx={{ border: "1px solid #E5E8EB" }} />
+              <ListItem style={{ padding: 0, height: "4rem" }}>
                 <div
                   style={{
                     width: "100%",
                     height: "100%",
                     display: "flex",
                     justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "0 1rem 0 1rem",
                   }}
                 >
-                  <div style={{ display: "flex" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <img style={{ width: "25px" }} src={WalletConnect} alt="" />
-                    <div>WalletConnect</div>
+                    <div style={{ margin: "0 0 0 10px", fontWeight: 700 }}>
+                      WalletConnect
+                    </div>
                   </div>
                   <Button variant="contained" disabled>
-                    Login
+                    지원 예정
                   </Button>
                 </div>
               </ListItem>
             </List>
           </Paper>
+          <Divider />
+          <div className={styles.walletExplain}>
+            <div>현재 BESTAZOO에서는 </div>
+            <div>개인 지갑을 편리하고 안전하게 관리할 수 있는</div>
+            <div>Metamask를 이용하여 로그인합니다.</div>
+            <br />
+            <div>만약 Metamask가 설치되지 않았다면</div>
+            <div> 설치페이지로 이동합니다.</div>
+          </div>
         </List>
       )}
     </Box>
   );
 
-  // Nav 스타일링 다시 해야함
-  const APPBAR_MOBILE = 64;
-  const APPBAR_DESKTOP = 92;
-
-  const RootStyle = styled(AppBar)(({ theme }) => ({
-    boxShadow: "none",
-    backdropFilter: "blur(6px)",
-    WebkitBackdropFilter: "blur(6px)",
-    backgroundColor: alpha(theme.palette.background.default, 0.72),
-  }));
-
-  const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
-    minHeight: APPBAR_MOBILE,
-    [theme.breakpoints.up("lg")]: {
-      minHeight: APPBAR_DESKTOP,
-      padding: theme.spacing(0, 5),
-    },
-  }));
-
   return (
-    <RootStyle>
-      <ToolbarStyle>
-        <Box sx={{ px: 2.5, py: 3 }}>
-          <RouterLink to="/">
-            <div>BEASTAZOO</div>
-            <div>{account}</div>
-          </RouterLink>
-        </Box>
+    <div className={styles.navContainer}>
+      <div className={styles.logoStyle}>
+        <RouterLink to="/">
+          <img src={BEASTAZOO_logo} alt="beastazoo_logo" />
+        </RouterLink>
+      </div>
 
-        <Box sx={{ flexGrow: 1 }} />
-
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={{ xs: 0.5, sm: 6.5 }}
-          sx={{ mr: 10 }}
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={{ xs: 0.5, sm: 6.5 }}
+        sx={{ fontWeight: "bold" }}
+        className={styles.contents}
+      >
+        <Link
+          to={"/market"}
+          color="inherit"
+          underline="hover"
+          component={RouterLink}
         >
-          {isLogined === "true" ? (
-            // <img src={state.profileImgPath} alt="" />
-            // <Avatar
-            //   alt="Travis Howard"
-            //   style={{ cursor: "pointer" }}
-            //   sx={{ width: 35, height: 35 }}
-            //   src={profileExample}
-            // />
-            <SpeedDial
-              ariaLabel="SpeedDial basic example"
-              sx={{ '& .MuiFab-primary': { width: 35, height: 35 } }}
-              icon={
-                <Avatar
-                  alt="Travis Howard"
-                  style={{ cursor: "pointer" }}
-                  sx={{ width: 35, height: 35 }}
-                  src={profileExample}
-                />
-              }
-              direction="down"
-            >
-              {actions.map((action) => (
-                <SpeedDialAction
-                  key={action.name}
-                  icon={action.icon}
-                  tooltipTitle={action.name}
-                  tooltipPlacement={"right"}
-                  sx={{width: 40, height: 40 }}
-                />
-              ))}
-            </SpeedDial>
-          ) : (
-            <AccountCircleOutlinedIcon sx={{ fontSize: 35, color: "black" }} />
-          )}
+          마켓
+        </Link>
+        <div>조합</div>
+        <Link
+          to={`/market/draw`}
+          color="inherit"
+          underline="hover"
+          component={RouterLink}
+        >
+          뽑기
+        </Link>
+        <div>도감</div>
 
-          <div>
-            <Button onClick={toggleDrawer(true)}>
-              <AccountBalanceWalletOutlinedIcon
-                sx={{ fontSize: 35, color: "black" }}
+        {isLogined === "true" ? (
+          <SpeedDial
+            ariaLabel="SpeedDial basic example"
+            sx={{
+              "& .MuiFab-primary": { width: 35, height: 35 },
+              position: "relative",
+              top: "32px",
+            }}
+            icon={
+              <img
+                onClick={() => {
+                  navigate(`/user/${account}`);
+                }}
+                style={{
+                  width: 37,
+                  height: 37,
+                  borderRadius: 100,
+                  objectFit: "cover",
+                }}
+                src={
+                  profileImgPath
+                    ? profileImgPath
+                    : "https://mblogthumb-phinf.pstatic.net/MjAxODAzMDNfMTc5/MDAxNTIwMDQxNzQwODYx.qQDg_PbRHclce0n3s-2DRePFQggeU6_0bEnxV8OY1yQg.4EZpKfKEOyW_PXOVvy7wloTrIUzb71HP8N2y-YFsBJcg.PNG.osy2201/1_%2835%ED%8D%BC%EC%84%BC%ED%8A%B8_%ED%9A%8C%EC%83%89%29_%ED%9A%8C%EC%83%89_%EB%8B%A8%EC%83%89_%EB%B0%B0%EA%B2%BD%ED%99%94%EB%A9%B4_180303.png?type=w800"
+                }
+                alt=""
               />
-            </Button>
-            <Drawer
-              anchor={"right"}
-              open={drawerState}
-              onClose={toggleDrawer(false)}
-            >
-              {list()}
-            </Drawer>
-          </div>
-        </Stack>
-      </ToolbarStyle>
-    </RootStyle>
+            }
+            direction="down"
+          >
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                tooltipPlacement={"right"}
+                sx={{ width: 40, height: 40 }}
+              />
+            ))}
+          </SpeedDial>
+        ) : (
+          <AccountCircleOutlinedIcon
+            onClick={toggleDrawer(true)}
+            sx={{ fontSize: 35, color: "black", cursor: "pointer" }}
+          />
+        )}
+
+        <div>
+          <Button
+            sx={{ padding: 0, minWidth: 35 }}
+            onClick={toggleDrawer(true)}
+          >
+            <AccountBalanceWalletOutlinedIcon
+              sx={{ fontSize: 35, color: "black" }}
+            />
+          </Button>
+          <Drawer
+            anchor={"right"}
+            open={drawerState}
+            onClose={toggleDrawer(false)}
+          >
+            {list()}
+          </Drawer>
+        </div>
+      </Stack>
+      <NavHamburger walletDrawer={toggleDrawer(true)} account={account} />
+    </div>
   );
 };
 
