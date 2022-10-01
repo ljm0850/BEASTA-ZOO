@@ -42,7 +42,7 @@ public class CombiServiceImpl implements CombiService{
                     .discover_user_count(0)
                     .jav_code(combiReqDto.getJav_code())
                     .jav_img_path(combiReqDto.getImg_address())
-                    .level(combiReqDto.getTier())
+                    .tier(combiReqDto.getTier())
                     .user(targetUser)
                     .build());
 

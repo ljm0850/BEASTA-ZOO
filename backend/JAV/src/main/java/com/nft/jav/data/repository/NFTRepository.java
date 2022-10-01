@@ -27,6 +27,6 @@ public interface NFTRepository extends JpaRepository<NFT, Long> {
     @Query("select N from NFT N where N.user=:user order by N.modified_date")
     Page<NFT> findAllByUserSortOldest(@Param("user") User user, PageRequest pageRequest);
 
-    @Query("select N from NFT N where N.user=:user order by N.serviceCollection.level desc")
+    @Query("select N from NFT N where N.user=:user order by N.serviceCollection.tier desc")
     Page<NFT> findAllByUserSortTier(@Param("user") User user, PageRequest pageRequest);
 }
