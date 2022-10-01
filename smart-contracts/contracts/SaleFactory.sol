@@ -34,6 +34,7 @@ contract SaleFactory is Ownable {
     ) public returns (address) {
         require(msg.sender==NFTcreatorContract.ownerOf(itemId));    // NFT 오너만 판매 등록 가능
         require(saleContractAddress[itemId] == address(0), "this token is already on sale.");
+        require(NFTcreatorContract.isApprovedForAll(msg.sender,currencyAddress));
         address seller = msg.sender;    //해당 컨트랙트 호출자가 판매자
         Sale instance = new Sale(admin, seller, itemId, purchasePrice, currencyAddress, nftAddress, address(this));
         sales.push(address(instance));
@@ -102,6 +103,7 @@ contract Sale {
     // 구매
     function purchase(uint256 purchase_amount, address _buyer) public {
         require(seller != _buyer, "you are seller");
+        require(ended == false,"ended sale");
         buyer = _buyer;
         emit SaleEnded(buyer, purchase_amount);
         _end();
@@ -109,6 +111,7 @@ contract Sale {
 
     // 판매 철회 함수
     function cancelSales() public {
+        require(msg.sender == seller, "you are not seller");
         _end();
         emit Cancel(tokenId);
     }
@@ -138,6 +141,10 @@ contract Sale {
     // 잔액 조회
     function _getCurrencyAmount() private view returns (uint256) {
         return JavTokenContract.balanceOf(msg.sender);
+    }
+
+    function getcurrencyAddress() public view returns(address) {
+        return currencyAddress;
     }
 
     modifier onlySeller() {
