@@ -101,6 +101,7 @@ contract Sale {
 
     // 구매
     function purchase(uint256 purchase_amount, address _buyer) public {
+        require(seller != _buyer, "you are seller");
         buyer = _buyer;
         emit SaleEnded(buyer, purchase_amount);
         _end();
