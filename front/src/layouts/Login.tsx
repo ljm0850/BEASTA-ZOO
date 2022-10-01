@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { checkUser, createUser } from "../api/connect";
 
 import Button from "@mui/material/Button";
+import { ABI } from "../common/ABI";
 
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const onboarding = new MetaMaskOnboarding();
   const [account, setAccount] = useState(""); // 지갑
 
@@ -51,7 +52,7 @@ const Login = () => {
           params: {
             type: "ERC20",
             options: {
-              address: "0xDDE8404acA08384Cd33306DF0716B4948c444D95",
+              address: ABI.CONTRACT_ADDRESS.TOKEN_ADDRESS,
               symbol: "JAV",
               decimals: 0,
               image:
@@ -71,7 +72,6 @@ const Login = () => {
     }
   };
 
-
   // 계정 정보 얻어오기
   // 기존에 계정 정보가 없을 경우 createUserInfo를 통해 해당 지갑에 대한 새 계정을 생성한다.
   const getUserInfo = async (account: string) => {
@@ -84,13 +84,22 @@ const Login = () => {
         const profileDescription = res.profile_description;
 
         sessionStorage.setItem("isLogined", "true");
-        sessionStorage.setItem("nickname", nickname === null ? "Javjoung" : nickname);
-        sessionStorage.setItem("profileImgPath", profileImgPath === null ? "default image" : profileImgPath);
-        sessionStorage.setItem("bannerImgPath", bannerImgPath === null ? "default image" : bannerImgPath);
+        sessionStorage.setItem(
+          "nickname",
+          nickname === null ? "Javjoung" : nickname
+        );
+        sessionStorage.setItem(
+          "profileImgPath",
+          profileImgPath === null ? "default image" : profileImgPath
+        );
+        sessionStorage.setItem(
+          "bannerImgPath",
+          bannerImgPath === null ? "default image" : bannerImgPath
+        );
         sessionStorage.setItem("profileDescription", profileDescription);
-        sessionStorage.setItem("account", account)
+        sessionStorage.setItem("account", account);
         window.location.reload();
-        navigate('/')
+        navigate("/");
       })
       .catch((err) => {
         alert("처음 접속하시는군요! 회원가입을 진행합니다.");
@@ -107,13 +116,13 @@ const Login = () => {
           const bannerImgPath = res.banner_img_path;
           const nickname = res.nickname;
           const profileDescription = res.profile_description;
-          
+
           sessionStorage.setItem("isLogined", "true");
           sessionStorage.setItem("nickname", nickname);
           sessionStorage.setItem("profileImgPath", profileImgPath);
           sessionStorage.setItem("bannerImgPath", bannerImgPath);
           sessionStorage.setItem("profileDescription", profileDescription);
-          navigate('/')
+          navigate("/");
           window.location.reload();
         })
         .catch((err) => {
@@ -131,7 +140,6 @@ const Login = () => {
   //   }
   // }, [account]);
 
-
   // 현재 잔고 가져오기
   // const getBalance = async () => {
   //   try {
@@ -147,26 +155,25 @@ const Login = () => {
   //   }
   // };
 
-
   // JAV 토큰으로 변환하기
   // 현재 SSF 가져오기
   // const getSsfBalance = async () => {
-    // try {
-    //   const ssafyToken = new web3.eth.Contract(
-    //     // ABI.CONTRACT_ABI.ERC_ABI,
-    //     process.env.REACT_APP_ERC2_CA,
-    //   )
-    //   console.log(ssafyToken)
-    //   await ssafyToken.methods
-    //     .balanceOf(account)
-    //     .call()
-    //     .then((result: string) => {
-    //       console.log(result)
-    //       setSsfBalance(result)
-    //     }).catch((err: any) => {console.log('ssafyToken blance of error', err)})
-    // } catch(err) {
-    //   console.log(err)
-    // }
+  // try {
+  //   const ssafyToken = new web3.eth.Contract(
+  //     // ABI.CONTRACT_ABI.ERC_ABI,
+  //     process.env.REACT_APP_ERC2_CA,
+  //   )
+  //   console.log(ssafyToken)
+  //   await ssafyToken.methods
+  //     .balanceOf(account)
+  //     .call()
+  //     .then((result: string) => {
+  //       console.log(result)
+  //       setSsfBalance(result)
+  //     }).catch((err: any) => {console.log('ssafyToken blance of error', err)})
+  // } catch(err) {
+  //   console.log(err)
+  // }
   // };
 
   const onClickInstall = () => {
@@ -175,9 +182,16 @@ const Login = () => {
 
   return (
     <div>
-      <Button variant="contained" onClick={onClickLoginButton} sx={{background: "#FFC42E", "&:hover": {
-        background: "#FDB909"
-      }}}>
+      <Button
+        variant="contained"
+        onClick={onClickLoginButton}
+        sx={{
+          background: "#FFC42E",
+          "&:hover": {
+            background: "#FDB909",
+          },
+        }}
+      >
         로그인
       </Button>
     </div>

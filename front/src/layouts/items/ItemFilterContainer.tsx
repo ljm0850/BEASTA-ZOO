@@ -61,7 +61,6 @@ import acc5 from "../../image/parts/acc/5.svg";
 import acc6 from "../../image/parts/acc/6.svg";
 import acc7 from "../../image/parts/acc/7.svg";
 import acc8 from "../../image/parts/acc/8.svg";
-import acc9 from "../../image/parts/acc/9.svg";
 import back1 from "../../image/parts/back/1.svg";
 import back2 from "../../image/parts/back/2.svg";
 import back3 from "../../image/parts/back/3.svg";
@@ -91,8 +90,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import { Dispatch, SetStateAction, useState } from "react";
-import FetchAnimal from "../../utils/FetchAnimal";
+import { useState } from "react";
 
 interface Parts {
   id: number;
@@ -119,19 +117,18 @@ String.prototype.changeIndex = function (
 
 interface Props {
   search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
   haveCompleted: number;
-  setHaveCompleted: Dispatch<SetStateAction<number>>;
   sort: number;
-  setSort: Dispatch<SetStateAction<number>>;
+  searchParams: URLSearchParams;
+  setSearchParams: Function;
 }
 
 const ItemFilterContainer = ({
   search,
-  setSearch,
   haveCompleted,
-  setHaveCompleted,
-  setSort,
+  sort,
+  searchParams,
+  setSearchParams,
 }: Props) => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
@@ -203,7 +200,7 @@ const ItemFilterContainer = ({
     {
       id: 6,
       title: "액세서리",
-      images: [acc1, acc2, acc3, acc4, acc5, acc6, acc7, acc8, acc9],
+      images: [acc1, acc2, acc3, acc4, acc5, acc6, acc7, acc8],
     },
     {
       id: 7,
@@ -224,16 +221,49 @@ const ItemFilterContainer = ({
       ],
     },
   ];
+
+  // 파츠 선택
   const selectFilter = (index: number, choice: number) => {
     if (parseInt(search[index], 16) !== choice) {
-      setSearch(search.changeIndex(index, choice.toString(16)));
+      setSearchParams({
+        completed: haveCompleted,
+        sort: sort,
+        search: search.changeIndex(index, choice.toString(16)),
+      });
     } else {
-      setSearch(search.changeIndex(index, "0"));
+      setSearchParams({
+        search: search.changeIndex(index, "0"),
+        completed: haveCompleted,
+        sort: sort,
+      });
     }
   };
 
+  // 파츠 초기화
   const clearFilter = () => {
-    setSearch("0000000");
+    setSearchParams({
+      search: "0000000",
+      completed: haveCompleted,
+      sort: sort,
+    });
+  };
+
+  // 완료된 거래 목록 토글
+  const completedToggle = () => {
+    setSearchParams({
+      search: search,
+      sort: sort,
+      completed: 1 - haveCompleted,
+    });
+  };
+
+  // 정렬 선택
+  const sortFilter = (choice: Number) => {
+    setSearchParams({
+      search: search,
+      sort: choice,
+      completed: haveCompleted,
+    });
   };
 
   const handleChange =
@@ -248,6 +278,7 @@ const ItemFilterContainer = ({
           <Accordion
             expanded={expanded === String(filter.id)}
             onChange={handleChange(String(filter.id))}
+            key={filter.id}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -270,7 +301,7 @@ const ItemFilterContainer = ({
               <Grid container spacing={2}>
                 {filter.images.map((image, imgNum) => {
                   return (
-                    <Grid item xs={4} sm={6} md={4}>
+                    <Grid item xs={4} sm={6} md={4} key={image}>
                       <Button
                         {...(parseInt(search[index], 16) === imgNum + 1
                           ? { variant: "outlined" }
@@ -297,15 +328,12 @@ const ItemFilterContainer = ({
         variant="contained"
         color="warning"
       >
-        초기화
+        파츠 초기화
       </Button>
       <FormGroup>
         <FormControlLabel
           control={
-            <Checkbox
-              onClick={() => setHaveCompleted(1 - haveCompleted)}
-              checked={!!haveCompleted}
-            />
+            <Checkbox onClick={completedToggle} checked={!!haveCompleted} />
           }
           label="판매완료NFT"
         />
@@ -314,26 +342,26 @@ const ItemFilterContainer = ({
         <FormLabel id="demo-radio-buttons-group-label">정렬</FormLabel>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="recent"
+          value={String(sort)}
           name="radio-buttons-group"
         >
           <FormControlLabel
-            value="recent"
+            value="0"
             control={<Radio />}
             label="최신순"
-            onClick={() => setSort(0)}
+            onClick={() => sortFilter(0)}
           />
           <FormControlLabel
-            value="priceLow"
+            value="1"
             control={<Radio />}
             label="가격낮은순"
-            onClick={() => setSort(1)}
+            onClick={() => sortFilter(1)}
           />
           <FormControlLabel
-            value="priceHigh"
+            value="2"
             control={<Radio />}
             label="가격높은순"
-            onClick={() => setSort(2)}
+            onClick={() => sortFilter(2)}
           />
         </RadioGroup>
       </FormControl>

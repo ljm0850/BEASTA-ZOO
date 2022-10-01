@@ -25,8 +25,8 @@ import BEASTAZOO_logo from "../../image/BEASTAZOO_logo.svg";
 import JAV from "../../image/JAV.svg";
 import styles from "./DashboardNavbar.module.scss";
 import NavHamburger from "./NavHamburger";
-import { BalanceOfJavToken, CreateJavToken } from "../../common/ABI";
-import convertToAccountingFormat from "../../utils/NumberFormatter";
+import { getWalletAddress } from "../../common/ABI";
+import { myJavToken, receiveJavToken } from "../../api/solidity";
 
 const actions = [{ icon: <Logout />, name: "Logout" }];
 
@@ -60,32 +60,21 @@ const DashboardNavbar = () => {
       setDrawerState(open);
     };
 
-  ///
+  const receiveToken = async () => {
+    await receiveJavToken();
+    const money = await myJavToken();
+    setBalance(money);
+  };
 
+  // 계정 정보 및 잔액 받아오기
   const getAccount = async () => {
-    const accounts = await window.ethereum.request({ method: "eth_accounts" });
-    setAccount(accounts[0]);
-    getBalance(accounts[0]);
+    const address = await getWalletAddress();
+    setAccount(address);
+    const money = await myJavToken();
+    setBalance(money);
   };
 
-  const getBalance = async (account: string) => {
-    BalanceOfJavToken(account)
-      .then((res) => {
-        const formatting = convertToAccountingFormat(res);
-        setBalance(formatting);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const javCharge = async (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    await CreateJavToken(account);
-    await getBalance(account);
-  };
-
+  // 로그인 시 계정정보 받아오기
   useEffect(() => {
     if (isLogined) {
       getAccount();
@@ -161,7 +150,7 @@ const DashboardNavbar = () => {
                 </div>
               </div>
             </div>
-            <div className={styles.charge} onClick={javCharge}>
+            <div className={styles.charge} onClick={receiveToken}>
               충전하기
             </div>
           </div>
@@ -313,7 +302,7 @@ const DashboardNavbar = () => {
         >
           도감
         </Link>
-        
+
         {isLogined === "true" ? (
           <SpeedDial
             ariaLabel="SpeedDial basic example"
