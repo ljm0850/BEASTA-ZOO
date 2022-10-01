@@ -32,8 +32,10 @@ contract SaleFactory is Ownable {
         address currencyAddress,    //ERC-20 주소
         address nftAddress  // NFT 계약 주소
     ) public returns (address) {
+        require(msg.sender==NFTcreatorContract.ownerOf(itemId));    // NFT 오너만 판매 등록 가능
+        require(saleContractAddress[itemId] == address(0), "this token is already on sale.");
         address seller = msg.sender;    //해당 컨트랙트 호출자가 판매자
-        Sale instance = new Sale(admin, seller, itemId, purchasePrice, currencyAddress, nftAddress);
+        Sale instance = new Sale(admin, seller, itemId, purchasePrice, currencyAddress, nftAddress, address(this));
         sales.push(address(instance));
         saleContractAddress[itemId] = address(instance);
         emit NewSale(address(instance), msg.sender, itemId);
@@ -46,8 +48,12 @@ contract SaleFactory is Ownable {
     }
 
     function getSaleContractAddress(uint256 tokenId) public view returns (address) {
-        require(saleContractAddress[tokenId] != address(0), "this token is not on sale.");
         return saleContractAddress[tokenId];
+    }
+
+    function resetSaleContractAddress(uint256 tokenId) external {
+        require(msg.sender == getSaleContractAddress(tokenId));
+        saleContractAddress[tokenId] = address(0);
     }
 }
 
@@ -67,6 +73,7 @@ contract Sale {
     );
     JavToken public JavTokenContract;
     JAV_NFT public NFTcreatorContract;
+    SaleFactory public SaleFactoryContract;
 
     event SaleEnded(address winner, uint256 amount);    // 최종 구매자 정보(판매 종료시, 구매자, 가격 event 발생)
     // 최초 배포시 관리자, 구매자, 판매자 등 기록
@@ -76,7 +83,8 @@ contract Sale {
         uint256 _tokenId,
         uint256 _purchasePrice,
         address _currencyAddress,
-        address _nftAddress
+        address _nftAddress,
+        address _saleFactoryAddress
     ) {
         require(_purchasePrice > 0); // 정말 필요한지 나중에 다시 확인해보자
         tokenId = _tokenId;
@@ -87,7 +95,8 @@ contract Sale {
         nftAddress = _nftAddress;
         ended = false;
         JavTokenContract = JavToken(_currencyAddress);
-        NFTcreatorContract = JAV_NFT(_nftAddress);     
+        NFTcreatorContract = JAV_NFT(_nftAddress);
+        SaleFactoryContract = SaleFactory(_saleFactoryAddress);     
     }
 
     // 구매
@@ -123,6 +132,7 @@ contract Sale {
     // 판매 종료
     function _end() internal {
         ended = true;
+        SaleFactoryContract.resetSaleContractAddress(tokenId);
     }
     // 잔액 조회
     function _getCurrencyAmount() private view returns (uint256) {
