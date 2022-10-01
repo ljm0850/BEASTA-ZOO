@@ -13,7 +13,6 @@ contract JavToken is ERC20, Ownable{
     JAV_NFT public JAV_NFT_Contract;
     event createNFT (uint256 indexed _tokenId, address indexed _owner);
     event purchaseNFT (uint256 _tokenId);
-    // mapping(address => uint256) private JavToken;
     constructor(string memory name, string memory symbol, uint8 decimal, address JAV_NFT_address) ERC20(name, symbol, decimal) {
         JAV_NFT_Contract = JAV_NFT(JAV_NFT_address);
     }
@@ -21,10 +20,6 @@ contract JavToken is ERC20, Ownable{
     function mint(uint256 amount) public {
         _mint(_msgSender(),amount);
     }
-    
-    // function forceToTransfer(address from, address to, uint256 amount) public onlyOwner{
-    //     _transfer(from, to, amount);
-    // }
 
     function JavPickup(string memory _tokenURI, uint[3] memory _gene, uint[4] memory _accessory) public returns(uint) {
         super.transfer(address(JAV_NFT_Contract),100);
@@ -34,11 +29,6 @@ contract JavToken is ERC20, Ownable{
         return tokenId;
     }
 
-    // function sendMoney(address seller, uint pay) internal {
-    //     // require(_balances[msg.sender] >= pay,"show me the money");
-    //     _balances[msg.sender] -= pay;
-    //     _balances[seller] += pay;
-    // }
     function transfer(address recipient, uint256 amount) public override returns (bool) {
         super.transfer(recipient,amount);
         return true;
@@ -46,6 +36,7 @@ contract JavToken is ERC20, Ownable{
 
     function purchase(address saleAddress) public returns(uint){
         Sale SaleContract = Sale(saleAddress);
+        require(SaleContract.getcurrencyAddress() == address(this),"bank essue");
         uint price = SaleContract.purchasePrice();
         uint tokenId = SaleContract.tokenId();
         address seller = SaleContract.seller();
