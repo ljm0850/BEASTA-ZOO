@@ -23,6 +23,9 @@ public class NFT extends BaseTimeEntity {
     private String nft_address;
 
     @Column
+    private String token_id;
+
+    @Column
     private String img_address;
 
     @Column
@@ -33,11 +36,12 @@ public class NFT extends BaseTimeEntity {
     private ServiceCollection serviceCollection;
 
     @Builder
-    public NFT(long nft_id, User user, ServiceCollection serviceCollection, String nft_address, String img_address, String jav_code) {
+    public NFT(long nft_id, User user, ServiceCollection serviceCollection, String nft_address, String token_id, String img_address, String jav_code) {
         this.nft_id = nft_id;
         this.serviceCollection = serviceCollection;
         this.user = user;
         this.nft_address = nft_address;
+        this.token_id = token_id;
         this.img_address = img_address;
         this.jav_code = jav_code;
     }

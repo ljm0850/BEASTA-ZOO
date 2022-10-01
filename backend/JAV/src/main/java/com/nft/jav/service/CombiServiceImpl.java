@@ -37,7 +37,7 @@ public class CombiServiceImpl implements CombiService{
         logger.info(combiReqDto.getJav_code().substring(0,4));
 
         // 전체 도감에 있는 자브종이 아닐 때 전체 도감에 자브종 저장
-        if(!serviceCollectionRepository.existsByJav_code(combiReqDto.getJav_code().substring(0,4))){
+        if(!serviceCollectionRepository.existsByJav_code(combiReqDto.getJav_code())){
             serviceCollectionRepository.save(ServiceCollection.builder()
                     .discover_user_count(0)
                     .jav_code(combiReqDto.getJav_code())
@@ -57,6 +57,7 @@ public class CombiServiceImpl implements CombiService{
         NFT savedNFT = nftRepository.save(NFT.builder()
                 .user(targetUser)
                 .nft_address(combiReqDto.getNft_address())
+                .token_id(combiReqDto.getToken_id())
                 .jav_code(combiReqDto.getJav_code())
                 .serviceCollection(serviceTarget)
                 .img_address(combiReqDto.getImg_address())
@@ -108,6 +109,7 @@ public class CombiServiceImpl implements CombiService{
                         .nft_id(targetNFT.getNft_id())
                         .jav_code(targetNFT.getJav_code())
                         .nft_address(targetNFT.getNft_address())
+                        .token_id(targetNFT.getToken_id())
                         .user_id(targetNFT.getUser().getUser_id())
                         .build();
 

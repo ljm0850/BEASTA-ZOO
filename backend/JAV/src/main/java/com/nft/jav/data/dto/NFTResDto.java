@@ -13,17 +13,19 @@ public class NFTResDto {
     private int total_page;
     private long count;
     private String nft_address;
+    private String token_id;
     private String img_address;
     private long user_id;
     private String jav_code;
 
     @Builder
-    public NFTResDto(long nft_id, int total_page, long count, String nft_address, String img_address, long user_id, String jav_code) {
+    public NFTResDto(long nft_id, int total_page, long count, String nft_address, String token_id, String img_address, long user_id, String jav_code) {
         this.nft_id = nft_id;
         this.total_page = total_page;
         this.count = count;
         this.nft_address = nft_address;
         this.img_address = img_address;
+        this.token_id = token_id;
         this.user_id = user_id;
         this.jav_code = jav_code;
     }
