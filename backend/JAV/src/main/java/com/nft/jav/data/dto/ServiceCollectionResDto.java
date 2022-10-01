@@ -17,21 +17,21 @@ public class ServiceCollectionResDto {
     private String nickname;
     private int total_page;
     private String jav_code;
-    private int level;
+    private int tier;
     private String jav_img_path;
     private boolean owner;
     private LocalDateTime discover_time;
     private int discover_user_count;
 
     @Builder
-    public ServiceCollectionResDto(long jav_id, long user_id, int total_page, String jav_code, int level, String nickname,
+    public ServiceCollectionResDto(long jav_id, long user_id, int total_page, String jav_code, int tier, String nickname,
                                    String jav_img_path, boolean owner, LocalDateTime discover_time, int discover_user_count) {
         this.jav_id = jav_id;
         this.user_id = user_id;
         this.total_page = total_page;
         this.jav_code = jav_code;
         this.nickname = nickname;
-        this.level = level;
+        this.tier = tier;
         this.jav_img_path = jav_img_path;
         this.owner = owner;
         this.discover_time = discover_time;

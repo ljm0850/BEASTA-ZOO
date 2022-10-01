@@ -38,7 +38,7 @@ public class DrawServiceImpl implements DrawService{
                             .discover_user_count(0)
                             .jav_code(drawReqDto.getJav_code())
                             .jav_img_path(drawReqDto.getImg_address())
-                            .level(drawReqDto.getTier())
+                            .tier(drawReqDto.getTier())
                             .user(targetUser)
                             .build());
 

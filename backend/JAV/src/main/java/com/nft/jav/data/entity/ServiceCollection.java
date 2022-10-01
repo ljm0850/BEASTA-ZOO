@@ -23,7 +23,7 @@ public class ServiceCollection extends BaseTimeEntity{
     private String jav_code;
 
     @Column
-    private int level;
+    private int tier;
 
     @Column
     private String jav_img_path;
@@ -32,11 +32,11 @@ public class ServiceCollection extends BaseTimeEntity{
     private int discover_user_count;
 
     @Builder
-    public ServiceCollection(long jav_id, User user, String jav_code, int level, String jav_img_path, int discover_user_count) {
+    public ServiceCollection(long jav_id, User user, String jav_code, int tier, String jav_img_path, int discover_user_count) {
         this.jav_id = jav_id;
         this.user = user;
         this.jav_code = jav_code;
-        this.level = level;
+        this.tier = tier;
         this.jav_img_path = jav_img_path;
         this.discover_user_count = discover_user_count;
     }
