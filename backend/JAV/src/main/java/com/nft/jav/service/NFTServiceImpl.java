@@ -45,6 +45,7 @@ public class NFTServiceImpl implements NFTService {
                     .total_page(userNFTList.getTotalPages())
                     .nft_id(targetNFT.getNft_id())
                     .nft_address(targetNFT.getNft_address())
+                    .token_id(targetNFT.getToken_id())
                     .user_id(targetUser.getUser_id())
                     .jav_code(targetNFT.getJav_code())
                     .img_address(targetNFT.getImg_address())
