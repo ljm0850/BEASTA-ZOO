@@ -63,6 +63,20 @@
   }
 }
 
+@keyframes rotate_image{
+  100% {
+      transform: rotate(-60000deg);
+  }
+}
+
+.spin {
+  width: 70px;
+  height: 70px;
+  transform: rotate3d(0, 0, -1, 60000deg);
+  transition-timing-function: cubic-bezier(0.2, 0.01, 0.6, 0.11);
+  transition: 50s;
+}
+
 .combineLogo {
   display: flex;
   justify-content: center;
@@ -147,6 +161,7 @@
   object-fit: cover;
   transition: all 0.5s;
   border-radius: 10px;
+  cursor: pointer;
   
   div {
     height: 0px;
@@ -214,5 +229,14 @@
       color: #a6a6a6;
       margin: 5px
     }
+  }
+}
+
+.refresh {
+  transition: all 0.3s;
+  font-size: 0.8rem;
+  cursor: pointer;
+  &:hover {
+    color: rgb(98, 98, 98);
   }
 }

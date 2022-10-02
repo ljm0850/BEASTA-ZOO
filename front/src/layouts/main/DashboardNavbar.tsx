@@ -106,6 +106,7 @@ const DashboardNavbar = () => {
                   height: 35,
                   borderRadius: 100,
                   objectFit: "cover",
+                  background: "#fff",
                 }}
                 src={profileImgPath}
                 alt=""
@@ -162,7 +163,7 @@ const DashboardNavbar = () => {
                   <div>My JAV</div>
                   <div>
                     <img src={JAV} alt="" />
-                    <div>{balance} JAV</div>
+                    <div>{convertToAccountingFormat(balance)} JAV</div>
                   </div>
                 </div>
               </div>
@@ -326,7 +327,7 @@ const DashboardNavbar = () => {
             sx={{
               "& .MuiFab-primary": { width: 35, height: 35 },
               position: "relative",
-              top: "32px",
+              top: "36px",
             }}
             icon={
               <img
@@ -339,12 +340,13 @@ const DashboardNavbar = () => {
                   borderRadius: 100,
                   objectFit: "cover",
                 }}
+                className={styles.navProfile}
                 src={
                   profileImgPath
                     ? profileImgPath
                     : "https://mblogthumb-phinf.pstatic.net/MjAxODAzMDNfMTc5/MDAxNTIwMDQxNzQwODYx.qQDg_PbRHclce0n3s-2DRePFQggeU6_0bEnxV8OY1yQg.4EZpKfKEOyW_PXOVvy7wloTrIUzb71HP8N2y-YFsBJcg.PNG.osy2201/1_%2835%ED%8D%BC%EC%84%BC%ED%8A%B8_%ED%9A%8C%EC%83%89%29_%ED%9A%8C%EC%83%89_%EB%8B%A8%EC%83%89_%EB%B0%B0%EA%B2%BD%ED%99%94%EB%A9%B4_180303.png?type=w800"
                 }
-                alt=""
+                alt="왜 안나와"
               />
             }
             direction="down"
