@@ -24,6 +24,7 @@ import {
   BalanceOfJavToken,
 } from "../common/ABI";
 import { draw } from "./market";
+import { useState } from "react";
 
 // export const myAddress = async() =>{
 //   const myWallet:string = await getWalletAddress()
@@ -152,9 +153,12 @@ export const pickup = async () => {
 export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   const address = await getWalletAddress();
   const genes = await getFusionGene(NFT_ID1, NFT_ID2);
+  await console.log(genes);
   const acces = await randomAcce();
-  const myGenes: number[] = changeGene(genes);
-  const myAcces: number[] = changeAcces(acces);
+  const myGenes: number[] = await changeGene(genes);
+  const myAcces: number[] = await changeAcces(acces);
+  await console.log(myGenes);
+  await console.log(myAcces);
   const url: string = await createNFT(myGenes, myAcces);
   const tokenId = await FusionJavs(
     address,
@@ -167,15 +171,24 @@ export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   return tokenId;
 };
 
+interface JavDATA {
+  genes: string[];
+  acces: string[];
+  created_at: string;
+  URI: string;
+  owner: string;
+}
+
 // NFT 조회
 export const javsData = async (NFT_ID: number) => {
-  const data: object = {
-    genes: GetJavsGene(NFT_ID),
-    acces: GetJavsAccessory(NFT_ID),
-    created_at: GetJavsCreate_at(NFT_ID),
-    owner: GetJavsOwner(NFT_ID),
-    URI: GetJavsURI(NFT_ID),
+  const data: JavDATA = {
+    genes: await GetJavsGene(NFT_ID),
+    acces: await GetJavsAccessory(NFT_ID),
+    created_at: await GetJavsCreate_at(NFT_ID),
+    owner: await GetJavsOwner(NFT_ID),
+    URI: await GetJavsURI(NFT_ID),
   };
+
   return data;
 };
 

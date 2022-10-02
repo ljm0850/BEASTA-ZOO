@@ -78,7 +78,6 @@ const ItemDraw = () => {
             autoComplete="off"
           >
             <Card sx={{ minWidth: 275 }}>
-              <CardContent></CardContent>
               <CardActions
                 style={{ display: "flex", justifyContent: "center" }}
               >
@@ -95,6 +94,7 @@ const ItemDraw = () => {
                       width: "1.2rem",
                       height: "auto",
                       marginRight: "0.3rem",
+                      marginLeft: "0.8rem",
                     }}
                   />
                   100 JAV

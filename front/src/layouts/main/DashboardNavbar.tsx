@@ -14,6 +14,7 @@ import ListItem from "@mui/material/ListItem";
 import Tooltip from "@mui/material/Tooltip";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 import Login from "../Login";
 import Metamask from "../../image/WalletLogo/Metamask_logo.svg";
@@ -27,6 +28,7 @@ import styles from "./DashboardNavbar.module.scss";
 import NavHamburger from "./NavHamburger";
 import { getWalletAddress } from "../../common/ABI";
 import { myJavToken, receiveJavToken } from "../../api/solidity";
+import convertToAccountingFormat from "../../utils/NumberFormatter";
 
 const actions = [{ icon: <Logout />, name: "Logout" }];
 
@@ -71,8 +73,15 @@ const DashboardNavbar = () => {
     const address = await getWalletAddress();
     setAccount(address);
     const money = await myJavToken();
-    setBalance(money);
+    const myBalance = convertToAccountingFormat(money)
+    setBalance(myBalance);
   };
+
+  const refreshBalance = async () => {
+    const money = await myJavToken();
+    const myBalance = convertToAccountingFormat(money)
+    setBalance(myBalance)
+  }
 
   // 로그인 시 계정정보 받아오기
   useEffect(() => {
@@ -139,19 +148,27 @@ const DashboardNavbar = () => {
       </List>
 
       {isLogined === "true" ? (
-        <div className={styles.balanceTable}>
-          <div className={styles.myBalance}>
-            <div className={styles.Btable}>
-              <div className={styles.balance}>
-                <div>My JAV</div>
-                <div>
-                  <img src={JAV} alt="" />
-                  <div>{balance} JAV</div>
+        <div>
+          <div className={styles.refreshBtn} onClick={refreshBalance}>
+            <div className={styles.refresh}>
+              <div>새로고침</div>
+              <RefreshIcon />
+            </div>
+          </div>
+          <div className={styles.balanceTable}>
+            <div className={styles.myBalance}>
+              <div className={styles.Btable}>
+                <div className={styles.balance}>
+                  <div>My JAV</div>
+                  <div>
+                    <img src={JAV} alt="" />
+                    <div>{balance} JAV</div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={styles.charge} onClick={receiveToken}>
-              충전하기
+              <div className={styles.charge} onClick={receiveToken}>
+                충전하기
+              </div>
             </div>
           </div>
         </div>

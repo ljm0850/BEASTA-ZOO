@@ -39,10 +39,32 @@
   }
 }
 
+.refreshBtn {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.3rem 1.5rem 0 1.5rem;
+  .refresh {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    color: rgb(194, 194, 194);
+    transition: all 0.3s;
+    svg {
+      font-size: 1.2rem;
+    }
+
+    &:hover {
+      color: black;
+    }
+  }
+}
+
 .balanceTable {
   display: flex;
   justify-content: center;
-  margin: 1.5rem 0 0 0;
+  margin: 0.5rem 0 0 0;
 }
 
 .myBalance {
@@ -125,7 +147,7 @@
   cursor: pointer;
   justify-content: center;
   align-items: center;
-  background: #FFC42E;
+  background: #ffc42e;
   margin: 1rem 0.5rem 0.7rem 0.5rem;
   transition: all 0.2s;
 
@@ -170,7 +192,7 @@
     display: flex;
     overflow: hidden;
   }
-  
+
   .contents {
     :nth-child(1) {
       display: none;

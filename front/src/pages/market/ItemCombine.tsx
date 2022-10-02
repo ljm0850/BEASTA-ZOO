@@ -9,6 +9,10 @@ import HOS from "../../image/HOS.svg";
 import { getMyNFTs } from "../../api/connect";
 import { NFT } from "../profile/MyJavs";
 import { Divider } from "@mui/material";
+import { fusion, javsData } from "../../api/solidity";
+import { ABI } from "../../common/ABI";
+import { fusionNFT } from "../../api/market";
+import JavModal from "../../layouts/modal/JavModal";
 
 interface NFTs extends Array<NFT> {}
 
@@ -86,6 +90,7 @@ const ItemCombine = () => {
     setLoad(true); //로딩 시작
     getMyNFTs(sessionStorage.getItem("account"), page, 10, 0)
       .then((res) => {
+        console.log(res)
         setMyJAVList((prev) => [...prev, ...res]); //리스트 추가
         preventRef.current = true;
         setLoad(false);
@@ -101,10 +106,14 @@ const ItemCombine = () => {
       });
   }, [page]);
 
+
+  // 백엔드, solidity에서 요구하는게 달라서 쓰는게 많아졌음.
   const [material1Img, setMaterial1Img] = useState("");
   const [material2Img, setMaterial2Img] = useState("");
-  const [material1Addr, setMaterial1Addr] = useState("");
-  const [material2Addr, setMaterial2Addr] = useState("");
+  const [material1ID, setMaterial1ID] = useState(0);
+  const [material2ID, setMaterial2ID] = useState(0);
+  const [material1NFTID, setMaterial1NFTID] = useState(0);
+  const [material2NFTID, setMaterial2NFTID] = useState(0);
 
   ////////////////////////////////////////////////////////////////////////
   // NFT 미선택, 자브종 2종 이상 선택 시 경고창
@@ -128,36 +137,67 @@ const ItemCombine = () => {
 
   ////////////////////////////////////////////////////////////////////////
 
-  const Combine = () => {
+  // 뽑기 모달
+  const [openItem, setOpenItem] = useState(false);
+  const handleOpenItem = () => setOpenItem(true);
+  const handleCloseItem = () => setOpenItem(false);
+
+  ///
+  const [img, setImg] = useState("");
+  const [genes, setGenes] = useState("");
+
+  const Combine = async () => {
     if (!!material1Img === false || !!material2Img == false) {
       setNotice("자브종이 충분히 선택되지 않았습니다.");
       handleClick();
     } else {
-      // 조합함수 실행
+      const fusionData = await fusion(material1ID, material2ID);
+      const javData = await javsData(fusionData)
+      // console.log(javData)
+      const NFTData = {
+        img_address: javData.URI,
+        jav_code: javData.created_at,
+        nft_address: ABI.CONTRACT_ADDRESS.NFT_ADDRESS,
+        nft_id_1: material1NFTID,
+        nft_id_2: material2NFTID,
+        tier: 0,
+        token_id: fusionData,
+        wallet_address: javData.owner,
+      }
+      console.log(NFTData)
+      // 백엔드 통신
+      await fusionNFT(NFTData);
+      await setImg(NFTData.img_address);
+      await setGenes(NFTData.jav_code);
+      setOpenItem(true)
     } 
   };
 
   // 체크박스
 
   const [checkedImgInputs, setCheckedImgInputs] = useState([""]);
-  const [checkedAddrInputs, setCheckedAddrInputs] = useState([""]);
+  const [checkedIDInputs, setCheckedIDInputs] = useState<Array<number>>([]);
+  const [checkedNFTIDInputs, setCheckedNFTIDInputs] = useState<Array<number>>([]);
 
-  const check = (event: any, id: any, nft_address: string) => {
+  const check = (event: any, id: any, token_id: number, nft_id: number) => {
     console.log(id);
 
     if (event.currentTarget.checked) {
       setCheckedImgInputs([...checkedImgInputs, id]);
-      setCheckedAddrInputs([...checkedAddrInputs, nft_address]);
+      setCheckedIDInputs([...checkedIDInputs, token_id]);
+      setCheckedNFTIDInputs([...checkedNFTIDInputs, nft_id]);
     } else if (!event.currentTarget.checked) {
       setCheckedImgInputs(checkedImgInputs.filter((el) => el !== id));
-      setCheckedAddrInputs(checkedAddrInputs.filter((el) => el !== nft_address));
+      setCheckedIDInputs(checkedIDInputs.filter((el) => el !== token_id));
+      setCheckedNFTIDInputs(checkedNFTIDInputs.filter((el) => el !== nft_id));
       return;
     }
     if (checkedImgInputs.length > 2) {
       setNotice("조합은 2개의 자브종이 사용됩니다.");
       handleClick();
       setCheckedImgInputs(checkedImgInputs.filter((el) => el !== id));
-      setCheckedAddrInputs(checkedAddrInputs.filter((el) => el !== nft_address));
+      setCheckedIDInputs(checkedIDInputs.filter((el) => el !== token_id));
+      setCheckedNFTIDInputs(checkedNFTIDInputs.filter((el) => el !== nft_id));
       event.target.checked = false;
     }
   };
@@ -165,12 +205,17 @@ const ItemCombine = () => {
   useEffect(() => {
     setMaterial1Img(checkedImgInputs[1]);
     setMaterial2Img(checkedImgInputs[2]);
-    setMaterial1Addr(checkedAddrInputs[1]);
-    setMaterial2Addr(checkedAddrInputs[2]);
-  }, [checkedImgInputs, checkedAddrInputs]);
+    setMaterial1ID(checkedIDInputs[0]);
+    setMaterial2ID(checkedIDInputs[1]);
+    setMaterial1NFTID(checkedNFTIDInputs[0]);
+    setMaterial2NFTID(checkedNFTIDInputs[1]);
+  }, [checkedImgInputs, checkedIDInputs, checkedNFTIDInputs]);
 
   return (
     <div>
+      <div>{material1NFTID}</div>
+      <div>{material2NFTID}</div>
+
       <div className={styles.mainContainer}>
         <div className={styles.space}>
           <div>
@@ -235,7 +280,7 @@ const ItemCombine = () => {
                   <img src={contact.img_address} alt="" />
                   <input
                     onChange={(e) => {
-                      check(e, contact.img_address, contact.nft_address);
+                      check(e, contact.img_address, Number(contact.token_id), Number(contact.nft_id));
                     }}
                     className={styles.jav}
                     id={contact.img_address}
@@ -282,6 +327,20 @@ const ItemCombine = () => {
           </ul>
         </div>
       </div>
+      <JavModal
+        open={openItem}
+        onClose={handleCloseItem}
+        name="이잼민"
+        data={{
+          nft_id: 123,
+          nft_address:
+            "https://mblogthumb-phinf.pstatic.net/MjAyMTA1MTNfMjkz/MDAxNjIwOTEwNDQ3MjQ1.RjpPwu8qenTvn6uEdct9lXaDu6a-eaubruR2i06SjtUg.5izLqsFxNagkeTGMbhf6sGBbNE4adeUKdELQ-H4vozMg.PNG.ysg3355/image.png?type=w800",
+          img_address: img,
+          user_id: 123,
+          jav_code: 1231,
+          token_id: "123123",
+        }}
+      />
     </div>
   );
 };
