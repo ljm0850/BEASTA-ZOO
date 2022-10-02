@@ -34,13 +34,14 @@ public class CombiServiceImpl implements CombiService{
         logger.info("saveCombiNft serviceImpl - 호출");
 
         User targetUser = userRepository.findByWalletAddress(combiReqDto.getWallet_address());
-        logger.info(combiReqDto.getJav_code().substring(0,4));
+        logger.info(combiReqDto.getJav_code().substring(0,3));
+        String gene = combiReqDto.getJav_code().substring(0,3);
 
         // 전체 도감에 있는 자브종이 아닐 때 전체 도감에 자브종 저장
-        if(!serviceCollectionRepository.existsByJav_code(combiReqDto.getJav_code())){
+        if(!serviceCollectionRepository.existsByJav_code(gene)){
             serviceCollectionRepository.save(ServiceCollection.builder()
                     .discover_user_count(0)
-                    .jav_code(combiReqDto.getJav_code())
+                    .jav_code(gene)
                     .jav_img_path(combiReqDto.getImg_address())
                     .tier(combiReqDto.getTier())
                     .user(targetUser)
@@ -51,7 +52,7 @@ public class CombiServiceImpl implements CombiService{
             targetUser.updateFirstDiscoverCount(userCount+1);
         }
 
-        ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(combiReqDto.getJav_code());
+        ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(gene);
 
         // 뽑은 NFT 저장
         NFT savedNFT = nftRepository.save(NFT.builder()
@@ -80,8 +81,6 @@ public class CombiServiceImpl implements CombiService{
         if(userCollectionRepository.countByWalletAndJav(targetUser.getWallet_address(), serviceTarget.getJav_id())==0){
             UserCollection userCollection = UserCollection.builder()
                     .user(targetUser)
-                    .nft_address(combiReqDto.getNft_address())
-                    .img_address(serviceTarget.getJav_img_path())
                     .jav(serviceTarget)
                     .build();
 

@@ -32,11 +32,14 @@ public class DrawServiceImpl implements DrawService{
         logger.info("saveDrawNft serviceImpl - 호출");
         User targetUser = userRepository.findByWalletAddress(drawReqDto.getWallet_address());
 
+        logger.info(drawReqDto.getJav_code().substring(0,3));
+        String gene = drawReqDto.getJav_code().substring(0,3);
+
         // 전체 도감에 있는 자브종이 아닐 때 전체 도감에 자브종 저장
-        if(!serviceCollectionRepository.existsByJav_code(drawReqDto.getJav_code())){
+        if(!serviceCollectionRepository.existsByJav_code(gene)){
             serviceCollectionRepository.save(ServiceCollection.builder()
                             .discover_user_count(0)
-                            .jav_code(drawReqDto.getJav_code())
+                            .jav_code(gene)
                             .jav_img_path(drawReqDto.getImg_address())
                             .tier(drawReqDto.getTier())
                             .user(targetUser)
@@ -47,7 +50,7 @@ public class DrawServiceImpl implements DrawService{
             targetUser.updateFirstDiscoverCount(userCount+1);
         }
 
-        ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(drawReqDto.getJav_code());
+        ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(gene);
 
         // 뽑은 NFT 저장
         NFT savedNFT = nftRepository.save(NFT.builder()
@@ -67,8 +70,6 @@ public class DrawServiceImpl implements DrawService{
         if(userCollectionRepository.countByWalletAndJav(targetUser.getWallet_address(), serviceTarget.getJav_id())==0){
             UserCollection userCollection = UserCollection.builder()
                     .user(targetUser)
-                    .nft_address(drawReqDto.getNft_address())
-                    .img_address(serviceTarget.getJav_img_path())
                     .jav(serviceTarget)
                     .build();
 

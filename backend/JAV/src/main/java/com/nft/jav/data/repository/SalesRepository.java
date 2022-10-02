@@ -33,10 +33,10 @@ public interface SalesRepository extends JpaRepository<Sales, Long>, JpaSpecific
     @Query(value = "select S from Sales S")
     Page<Sales> findAllSale(Pageable pageable);
 
-    @Query("select S from Sales S where S.nft.jav_code=:jav_code and S.state=1")
+    @Query("select S from Sales S where S.nft.jav_code like CONCAT(:jav_code,'%') and S.state=1")
     List<Sales> findAllByJavCodeComplete(@Param("jav_code") String jav_code);
 
-    @Query("select S from Sales S where S.nft.jav_code=:jav_code and S.state=0")
+    @Query("select S from Sales S where S.nft.jav_code like CONCAT(:jav_code,'%') and S.state=0")
     List<Sales> findAllByJavCode(@Param("jav_code") String jav_code);
 
     List<Sales> findAll(Specification<Sales> spec);

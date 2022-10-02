@@ -220,16 +220,13 @@ public class SalesServiceImpl implements SalesService {
         targetNFT.updateUser(targetUser);
 
         // 구매자 유저 컬렉션에 저장
-//        ServiceCollection serviceTarget = serviceCollectionRepository.findById(purchaseReqDto.getService_collection_id())
-//                .orElseThrow(IllegalArgumentException::new);
-        ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(targetNFT.getJav_code());
+        String gene = targetNFT.getJav_code().substring(0,3);
+        ServiceCollection serviceTarget = serviceCollectionRepository.findByJav_code(gene);
 
         // 유저 도감에 없는 자브종일 때 추가
         if(userCollectionRepository.countByWalletAndJav(targetUser.getWallet_address(), serviceTarget.getJav_id())==0){
             UserCollection userCollection = UserCollection.builder()
                     .user(targetUser)
-                    .nft_address(targetNFT.getNft_address())
-                    .img_address(serviceTarget.getJav_img_path())
                     .jav(serviceTarget)
                     .build();
 
@@ -276,6 +273,7 @@ public class SalesServiceImpl implements SalesService {
         SalesResDto salesResDto = SalesResDto.builder()
                 .nft_id(sales.getNft().getNft_id())
                 .token_id(sales.getNft().getToken_id())
+                .jav_code(sales.getNft().getJav_code())
                 .buyer_wallet(sales.getBuyer_wallet())
                 .img_address(sales.getNft().getImg_address())
                 .contract_address(sales.getContract_address())
@@ -285,6 +283,7 @@ public class SalesServiceImpl implements SalesService {
                 .price(sales.getPrice())
                 .sale_id(sales.getSale_id())
                 .seller_wallet(sales.getSeller_wallet())
+                .seller_nickname(seller.getNickname())
                 .build();
         return salesResDto;
     }
@@ -320,7 +319,8 @@ public class SalesServiceImpl implements SalesService {
     @Override
     public List<SalesResDto> getSaleByJavCodeCompleted(String jav_code) {
 
-        List<Sales> salesLit = salesRepository.findAllByJavCodeComplete(jav_code);
+        String gene = jav_code.substring(0,3);
+        List<Sales> salesLit = salesRepository.findAllByJavCodeComplete(gene);
 
         List<SalesResDto> userSalesResDtoList = new ArrayList<>();
 

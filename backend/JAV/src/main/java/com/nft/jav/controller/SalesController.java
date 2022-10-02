@@ -3,7 +3,6 @@ package com.nft.jav.controller;
 import com.nft.jav.data.dto.*;
 import com.nft.jav.service.LikedService;
 import com.nft.jav.service.SalesService;
-import com.nft.jav.service.UserCollectionService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,7 +21,6 @@ public class SalesController {
     private final Logger logger = LoggerFactory.getLogger(SalesController.class);
 
     private final SalesService salesService;
-    private final UserCollectionService userCollectionService;
     private final LikedService likedService;
 
     @PostMapping("/purchase")

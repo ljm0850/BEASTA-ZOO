@@ -104,7 +104,9 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
 
     @Override
     public List<SalesResDto> getSaleByJavCode(String jav_code) {
-        List<Sales> salesLit = salesRepository.findAllByJavCode(jav_code);
+
+        String gene = jav_code.substring(0,3);
+        List<Sales> salesLit = salesRepository.findAllByJavCode(gene);
 
         List<SalesResDto> userSalesResDtoList = new ArrayList<>();
 
