@@ -24,7 +24,8 @@ import {
   BalanceOfJavToken,
 } from "../common/ABI";
 import { draw } from "./market";
-import { useState } from "react";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../utils/fbase";
 
 // export const myAddress = async() =>{
 //   const myWallet:string = await getWalletAddress()
@@ -91,12 +92,16 @@ const createNFT = async (myGenes: number[], myAcces: number[]) => {
     { src: face },
     { src: acc },
   ]);
-  // image를 src에 넣으면 이미지 확인 가능
+  console.log(myGenes.join("") + myAcces.join(""))
+
   const imageFile = dataURLtoFile(image, "JavNFT");
-  // IPFS 등록
-  const ipfs = await IPFS.create({ repo: "ok" + Math.random() });
-  const added = await ipfs.add(imageFile);
-  const url = `https://ipfs.io/ipfs/${added.path}`;
+  const storageRef = storage.ref("images/test/");
+  const imagesRef = storageRef.child(myGenes.join("") + myAcces.join("")); //파일명
+  const upLoadTask = imagesRef.put(imageFile);
+  // image를 src에 넣으면 이미지 확인 가능
+  // const upLoadTask = imagesRef.put(imageFile);
+  // console.log(upLoadTask);
+  const url = `https://firebasestorage.googleapis.com/v0/b/beastazoo.appspot.com/o/images%2Ftest%2F${myGenes.join("") + myAcces.join("")}?alt=media`
   console.log(url)
   return url;
 };
