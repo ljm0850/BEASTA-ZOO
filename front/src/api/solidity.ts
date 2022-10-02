@@ -198,9 +198,9 @@ NFT 판매 관련 함수
 - 판매 등록 취소 함수(cancelSaleNFT)
 */
 
-export const createSale = async (NFT_ID: number, price: number) => {
+export const createSale = async (tokenId: number, price: number) => {
   const address = await getWalletAddress();
-  const saleAddress = await CreateSale(address, NFT_ID, price);
+  const saleAddress = await CreateSale(address, tokenId, price);
   return saleAddress;
 };
 

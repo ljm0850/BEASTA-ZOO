@@ -40,6 +40,23 @@ const MyJavs = ({ account }: Props) => {
   const mounted = useRef(false);
   const size = 3;
 
+  // JAV info modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
+  const [modalData, setModalData] = useState<NFT>();
+
+  // JAV sale modal
+  const [saleModalOpen, setSaleModalOpen] = useState(false);
+  const saleModalOpenHandler = () => {
+    setSaleModalOpen(true);
+  };
+  const saleModalClose = () => setSaleModalOpen(false);
+  const [saleJavImg, setSaleJavImg] = useState("");
+  const [saleTokenId, setSaleTokenId] = useState<number | string>("");
+
   // 정렬 변경
   const sortHandleChange = (event: SelectChangeEvent) => {
     setSortOption(event.target.value as string);
@@ -73,8 +90,8 @@ const MyJavs = ({ account }: Props) => {
     }
   }, [sortOption, page, account]);
 
+  // 옵저버가 바뀔 때마다 실행되니 콜백함수로 선언 반복을 줄인다.
   const obsHandler = useCallback((entries: any) => {
-    console.log("```");
     //옵저버 콜백함수
     const target = entries[0];
     if (!endRef.current && target.isIntersecting && preventRef.current) {
@@ -84,6 +101,7 @@ const MyJavs = ({ account }: Props) => {
     }
   }, []);
 
+  // 옵저버 등록(스크롤 내릴 때마다 바뀐다.)
   useEffect(() => {
     const observer = new IntersectionObserver(obsHandler, { threshold: 0.5 });
     if (obsRef.current) observer.observe(obsRef.current);
@@ -91,23 +109,6 @@ const MyJavs = ({ account }: Props) => {
       observer.disconnect();
     };
   }, [obsHandler]);
-
-  // JAV info modal
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
-  const [modalData, setModalData] = useState<NFT>();
-
-  // JAV sale modal
-  const [saleModalOpen, setSaleModalOpen] = useState(false);
-  const saleModalOpenHandler = () => {
-    setSaleModalOpen(true);
-  };
-  const saleModalClose = () => setSaleModalOpen(false);
-  const [saleJavImg, setSaleJavImg] = useState("");
-  const [saleJavData, setSaleJavData] = useState("");
 
   return (
     <div>
@@ -184,7 +185,7 @@ const MyJavs = ({ account }: Props) => {
                     onClick={() => {
                       saleModalOpenHandler();
                       setSaleJavImg(contact.img_address);
-                      setSaleJavData(contact.nft_address);
+                      setSaleTokenId(contact.token_id!);
                     }}
                   >
                     판매하기
@@ -210,7 +211,7 @@ const MyJavs = ({ account }: Props) => {
       <SaleModal
         open={saleModalOpen}
         onClose={saleModalClose}
-        jav={saleJavData}
+        tokenId={String(saleTokenId)}
         imgAddr={saleJavImg}
       />
     </div>
