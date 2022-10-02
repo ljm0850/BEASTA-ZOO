@@ -1,5 +1,4 @@
 import mergeImages from "merge-images";
-import * as IPFS from "ipfs-core";
 import { ethers } from "ethers";
 import {
   ABI,
@@ -24,8 +23,8 @@ import {
   BalanceOfJavToken,
 } from "../common/ABI";
 import { draw } from "./market";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../utils/fbase";
+
 
 // export const myAddress = async() =>{
 //   const myWallet:string = await getWalletAddress()
@@ -98,27 +97,24 @@ const createNFT = async (myGenes: number[], myAcces: number[]) => {
   const storageRef = storage.ref("images/test/");
   const imagesRef = storageRef.child(myGenes.join("") + myAcces.join("")); //파일명
   const upLoadTask = imagesRef.put(imageFile);
-  // image를 src에 넣으면 이미지 확인 가능
-  // const upLoadTask = imagesRef.put(imageFile);
-  // console.log(upLoadTask);
   const url = `https://firebasestorage.googleapis.com/v0/b/beastazoo.appspot.com/o/images%2Ftest%2F${myGenes.join("") + myAcces.join("")}?alt=media`
   console.log(url)
   return url;
 };
 
-export const changeGene = (genes: string[]) => {
+export const changeGene = (genes: number[]) => {
   const myGenes: number[] = [];
-  genes.forEach((gene: string) => {
-    myGenes.push(parseInt(BigInt(gene).toString(16).slice(3, 4), 16));
+  genes.forEach((gene: number) => {
+    myGenes.push(Number(BigInt(gene).toString(16).slice(3, 4)));
   });
   return myGenes;
 };
 
-const changeAcces = (acces: string[]) => {
+const changeAcces = (acces: number[]) => {
   const myAcces: number[] = [];
-  acces.forEach((acce: string) => {
+  acces.forEach((acce: number) => {
     const num = Number(acce).toString(16);
-    myAcces.push(parseInt(num.slice(1, 3), 16));
+    myAcces.push(parseInt(num.slice(2, 3), 16));
   });
   return myAcces;
 };
@@ -132,15 +128,15 @@ export const pickup = async () => {
   const myGenes: number[] = changeGene(genes); // 이미지에서 본인 유전자만 쓰기 위해 사용
   const myAcces: number[] = changeAcces(acces);
   const url: string = await createNFT(myGenes, myAcces);
-  const tokenId = await PickUp(address, url, genes, acces);
+  const tokenId: string = await PickUp(address, url, genes, acces);
   let javCode = "";
   let tier = 3;
   myGenes.forEach((myGene: number) => {
-    tier += parseInt((myGene - 1 / 3).toString());
-    javCode += myGene.toString();
+    tier += parseInt((Number(myGene) - 1 / 3).toString());
+    javCode += myGene.toString(16);
   });
   myAcces.forEach((myAcce: number) => {
-    javCode += myAcce.toString();
+    javCode += myAcce.toString(16);
   });
   const nftData = {
     img_address: url,
@@ -148,19 +144,18 @@ export const pickup = async () => {
     nft_address: ABI.CONTRACT_ADDRESS.NFT_ADDRESS,
     tier: tier,
     wallet_address: address,
-    token_id: tokenId
+    token_id: tokenId,
   };
-  console.log(nftData);
   await draw(nftData);
   const genesStr = myGenes.join("");
-  return { genes: genesStr, url: url };
+  return { genes: genesStr, nftData: nftData };
 };
 
 // 조합
 export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   const address = await getWalletAddress();
   const genes = await getFusionGene(NFT_ID1, NFT_ID2);
-  await console.log(genes)
+  await console.log(genes);
   const acces = await randomAcce();
   const myGenes: number[] = await changeGene(genes);
   const myAcces: number[] = await changeAcces(acces);
@@ -178,7 +173,6 @@ export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   return tokenId;
 };
 
-
 interface JavDATA {
   genes: string[];
   acces: string[];
@@ -189,7 +183,6 @@ interface JavDATA {
 
 // NFT 조회
 export const javsData = async (NFT_ID: number) => {
-
   const data: JavDATA = {
     genes: await GetJavsGene(NFT_ID),
     acces: await GetJavsAccessory(NFT_ID),

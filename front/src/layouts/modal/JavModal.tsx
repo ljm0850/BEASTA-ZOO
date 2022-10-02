@@ -7,14 +7,13 @@ import Typography from "@mui/material/Typography";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 
-import OOZlogo from "../../image/OOZ.png"
+import OOZlogo from "../../image/OOZ.png";
 import styles from "./JavModal.module.scss";
 
 import { NFT } from "../../pages/profile/MyJavs";
 interface Props {
-  name: string | undefined;
   data: NFT | undefined;
   open: boolean;
   onClose: () => void;
@@ -29,7 +28,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const JavModal = ({ name, data, open, onClose }: Props) => {
+const JavModal = ({ data, open, onClose }: Props) => {
   const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -64,7 +63,7 @@ const JavModal = ({ name, data, open, onClose }: Props) => {
         <Fade in={open}>
           {/* <Box sx={style}> */}
           <div className={styles.modalBox}>
-            <Typography sx={{fontWeight: "700", fontSize: "1.3rem"}}>
+            <Typography sx={{ fontWeight: "700", fontSize: "1.3rem" }}>
               자브종 정보
             </Typography>
             {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -74,17 +73,25 @@ const JavModal = ({ name, data, open, onClose }: Props) => {
               spacing={{ xs: 2, md: 3 }}
               columns={{ xs: 4, sm: 8, md: 12, lg: 12, xl: 12 }}
             >
-              <Grid style={{display: "flex", justifyContent: "center"}} xs={4} sm={8} md={12} lg={6}>
+              <Grid
+                style={{ display: "flex", justifyContent: "center" }}
+                xs={4}
+                sm={8}
+                md={12}
+                lg={6}
+              >
                 <div className={styles.imgContainer}>
-                  <img
-                    src={data?.img_address}
-                    alt="자브종"
-                  />
+                  <img src={data?.img_address} alt="자브종" />
                 </div>
               </Grid>
-              <Grid style={{display: "flex", alignItems: "center"}} xs={4} sm={8} md={12} lg={6}>
+              <Grid
+                style={{ display: "flex", alignItems: "center" }}
+                xs={4}
+                sm={8}
+                md={12}
+                lg={6}
+              >
                 <div className={styles.modalInfo}>
-
                   <div className={styles.season}>
                     <div className={styles.title}>season</div>
                     <div className={styles.seasonPJT}>
@@ -95,12 +102,12 @@ const JavModal = ({ name, data, open, onClose }: Props) => {
 
                   <div className={styles.tokenInfo}>
                     <div>Token ID</div>
-                    <div># 21312312321313</div>
+                    <div>{data?.token_id}</div>
                   </div>
 
                   <div className={styles.tokenInfo}>
                     <div>Contract Address</div>
-                    <div>0x8a9ECe9d8806eB0CdE56Ac89cCB23a36E2C718cf</div>
+                    <div>{data?.nft_address}</div>
                   </div>
 
                   <div className={styles.tokenInfo}>
@@ -115,7 +122,7 @@ const JavModal = ({ name, data, open, onClose }: Props) => {
 
                   <div className={styles.tokenInfo}>
                     <div>Gene code</div>
-                    <div>3721881928378291</div>
+                    <div>{data?.jav_code}</div>
                   </div>
                 </div>
               </Grid>
