@@ -122,6 +122,7 @@ const Login = () => {
           sessionStorage.setItem("profileImgPath", profileImgPath);
           sessionStorage.setItem("bannerImgPath", bannerImgPath);
           sessionStorage.setItem("profileDescription", profileDescription);
+          sessionStorage.setItem("account", account);
           navigate("/");
           window.location.reload();
         })

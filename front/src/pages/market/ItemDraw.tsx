@@ -116,6 +116,7 @@ const ItemDraw = () => {
           img_address: img,
           user_id: 123,
           jav_code: 1231,
+          token_id: "123123",
         }}
       />
       <AlertDialog
