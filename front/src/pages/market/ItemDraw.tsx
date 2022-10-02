@@ -1,7 +1,6 @@
 import { Box, Card, Button } from "@mui/material/";
 
 import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 
 import { ReactComponent as Jav } from "../../image/JAV.svg";
 
@@ -10,9 +9,7 @@ import drawImg from "../../image/draw.svg";
 import { useState } from "react";
 import JavModal from "../../layouts/modal/JavModal";
 import AlertDialog from "../../layouts/dialog/AlertDialog";
-import _ from "lodash";
-// 뽑기함수
-import { draw } from "../../api/market";
+
 import { pickup } from "../../api/solidity";
 import Draw from "../../utils/Draw";
 import { NFT } from "../profile/MyJavs";

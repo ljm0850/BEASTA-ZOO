@@ -24,7 +24,6 @@ import {
   BalanceOfJavToken,
 } from "../common/ABI";
 import { draw } from "./market";
-import { useState } from "react";
 
 // export const myAddress = async() =>{
 //   const myWallet:string = await getWalletAddress()

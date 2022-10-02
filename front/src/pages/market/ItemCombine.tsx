@@ -90,7 +90,7 @@ const ItemCombine = () => {
     setLoad(true); //로딩 시작
     getMyNFTs(sessionStorage.getItem("account"), page, 10, 0)
       .then((res) => {
-        console.log(res)
+        console.log(res);
         setMyJAVList((prev) => [...prev, ...res]); //리스트 추가
         preventRef.current = true;
         setLoad(false);
@@ -105,7 +105,6 @@ const ItemCombine = () => {
         endRef.current = true;
       });
   }, [page]);
-
 
   // 백엔드, solidity에서 요구하는게 달라서 쓰는게 많아졌음.
   const [material1Img, setMaterial1Img] = useState("");
@@ -152,7 +151,7 @@ const ItemCombine = () => {
       handleClick();
     } else {
       const fusionData = await fusion(material1ID, material2ID);
-      const javData = await javsData(fusionData)
+      const javData = await javsData(fusionData);
       // console.log(javData)
       const NFTData = {
         img_address: javData.URI,
@@ -163,21 +162,23 @@ const ItemCombine = () => {
         tier: 0,
         token_id: fusionData,
         wallet_address: javData.owner,
-      }
-      console.log(NFTData)
+      };
+      console.log(NFTData);
       // 백엔드 통신
       await fusionNFT(NFTData);
       await setImg(NFTData.img_address);
       await setGenes(NFTData.jav_code);
-      setOpenItem(true)
-    } 
+      setOpenItem(true);
+    }
   };
 
   // 체크박스
 
   const [checkedImgInputs, setCheckedImgInputs] = useState([""]);
   const [checkedIDInputs, setCheckedIDInputs] = useState<Array<number>>([]);
-  const [checkedNFTIDInputs, setCheckedNFTIDInputs] = useState<Array<number>>([]);
+  const [checkedNFTIDInputs, setCheckedNFTIDInputs] = useState<Array<number>>(
+    []
+  );
 
   const check = (event: any, id: any, token_id: number, nft_id: number) => {
     console.log(id);
@@ -227,7 +228,11 @@ const ItemCombine = () => {
             <div className={styles.material}>
               <div className={styles.container}>
                 {material1Img ? (
-                  <img style={{objectFit: "cover"}} src={material1Img} alt="" />
+                  <img
+                    style={{ objectFit: "cover" }}
+                    src={material1Img}
+                    alt=""
+                  />
                 ) : (
                   <div className={styles.container}>
                     <div className={styles.centerPosition}>
@@ -239,7 +244,11 @@ const ItemCombine = () => {
               </div>
               <div className={styles.container}>
                 {material2Img ? (
-                  <img style={{objectFit: "cover"}} src={material2Img} alt="" />
+                  <img
+                    style={{ objectFit: "cover" }}
+                    src={material2Img}
+                    alt=""
+                  />
                 ) : (
                   <div className={styles.container}>
                     <div className={styles.centerPosition}>
@@ -276,11 +285,20 @@ const ItemCombine = () => {
             <div className={styles.javsHeader}>나의 자브종</div>
             <div className={styles.javList}>
               {myJAVList.map((contact, index) => (
-                <label className={styles.javLabel} key={index} htmlFor={contact.img_address}>
+                <label
+                  className={styles.javLabel}
+                  key={index}
+                  htmlFor={contact.img_address}
+                >
                   <img src={contact.img_address} alt="" />
                   <input
                     onChange={(e) => {
-                      check(e, contact.img_address, Number(contact.token_id), Number(contact.nft_id));
+                      check(
+                        e,
+                        contact.img_address,
+                        Number(contact.token_id),
+                        Number(contact.nft_id)
+                      );
                     }}
                     className={styles.jav}
                     id={contact.img_address}
@@ -290,7 +308,21 @@ const ItemCombine = () => {
                 </label>
               ))}
               <div ref={obsRef} style={{ height: "10px" }}></div>
-              {myJAVList.length === 0 && <div style={{display: "flex", justifyContent: "center", alignItems: "center", width: "430px", height: "750px", fontWeight: "700", color: "#DCDCDC"}}><div>소유한 자브종이 없습니다.</div></div> }
+              {myJAVList.length === 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "430px",
+                    height: "750px",
+                    fontWeight: "700",
+                    color: "#DCDCDC",
+                  }}
+                >
+                  <div>소유한 자브종이 없습니다.</div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -330,7 +362,6 @@ const ItemCombine = () => {
       <JavModal
         open={openItem}
         onClose={handleCloseItem}
-        name="이잼민"
         data={{
           nft_id: 123,
           nft_address:
