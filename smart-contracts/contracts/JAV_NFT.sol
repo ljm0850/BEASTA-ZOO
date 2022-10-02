@@ -106,8 +106,8 @@ contract JAV_NFT is ERC721 {
     }
 
     // 유전 알고리즘
-    uint[7] weight = [1, 1, 1, 1, 6, 6, 24];
-    uint[3] fusionWeight = [2, 2, 1];
+    uint[7] weight = [1, 1, 1, 1, 8, 8, 80];
+    uint[3] fusionWeight = [35, 35, 30];
     uint[3] colorWeight = [1, 1, 1];
     uint[3] gachaWeight = [1, 1, 1];
     uint temp;
@@ -309,7 +309,7 @@ contract JAV_NFT is ERC721 {
                 return res;
             }
         } else {
-            uint[3] memory fusionArray = [y, y, x];
+            uint[3] memory fusionArray = [x, x, y];
             uint res = _fusionWinner(fusionArray, _random);
             return res;
         }
