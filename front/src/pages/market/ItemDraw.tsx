@@ -77,7 +77,6 @@ const ItemDraw = () => {
             autoComplete="off"
           >
             <Card sx={{ minWidth: 275 }}>
-              <CardContent></CardContent>
               <CardActions
                 style={{ display: "flex", justifyContent: "center" }}
               >
@@ -94,6 +93,7 @@ const ItemDraw = () => {
                       width: "1.2rem",
                       height: "auto",
                       marginRight: "0.3rem",
+                      marginLeft: "0.8rem",
                     }}
                   />
                   100 JAV
@@ -116,6 +116,7 @@ const ItemDraw = () => {
           img_address: img,
           user_id: 123,
           jav_code: 1231,
+          token_id: "123123",
         }}
       />
       <AlertDialog

@@ -31,9 +31,27 @@ export interface NFTdata {
   nft_address: string;
   tier: number;
   wallet_address: string;
+  token_id: string;
 }
 
 export const draw = async (nftData: NFTdata) => {
   const { data } = await axios.post(`${ENDPOINT_URL}/draw`, nftData);
   return data;
 };
+
+
+export interface FusionData {
+  img_address: string;
+  jav_code: string;
+  nft_address: string;
+  nft_id_1: number;
+  nft_id_2: number;
+  tier: number;
+  token_id: string;
+  wallet_address: string;
+}
+
+export const fusionNFT = async (fusionData: FusionData) => {
+  const { data } = await axios.post(`${ENDPOINT_URL}/comb`, fusionData)
+  return data
+}

@@ -19,7 +19,8 @@ export interface NFT {
   nft_address: string;
   img_address: string;
   user_id: number;
-  jav_code: string | number | null;
+  jav_code: string | number ;
+  token_id: string;
 }
 
 interface NFTs extends Array<NFT> {}
