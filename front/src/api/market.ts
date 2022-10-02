@@ -31,6 +31,7 @@ export interface NFTdata {
   nft_address: string;
   tier: number;
   wallet_address: string;
+  token_id: string;
 }
 
 export const draw = async (nftData: NFTdata) => {

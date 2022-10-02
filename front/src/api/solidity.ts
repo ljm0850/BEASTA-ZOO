@@ -99,19 +99,19 @@ const createNFT = async (myGenes: number[], myAcces: number[]) => {
   return url;
 };
 
-export const changeGene = (genes: string[]) => {
+export const changeGene = (genes: number[]) => {
   const myGenes: number[] = [];
-  genes.forEach((gene: string) => {
-    myGenes.push(parseInt(BigInt(gene).toString(16).slice(3, 4), 16));
+  genes.forEach((gene: number) => {
+    myGenes.push(Number(BigInt(gene).toString(16).slice(3, 4)));
   });
   return myGenes;
 };
 
-const changeAcces = (acces: string[]) => {
+const changeAcces = (acces: number[]) => {
   const myAcces: number[] = [];
-  acces.forEach((acce: string) => {
+  acces.forEach((acce: number) => {
     const num = Number(acce).toString(16);
-    myAcces.push(parseInt(num.slice(1, 3), 16));
+    myAcces.push(parseInt(num.slice(2, 3), 16));
   });
   return myAcces;
 };
@@ -125,15 +125,15 @@ export const pickup = async () => {
   const myGenes: number[] = changeGene(genes); // 이미지에서 본인 유전자만 쓰기 위해 사용
   const myAcces: number[] = changeAcces(acces);
   const url: string = await createNFT(myGenes, myAcces);
-  const tokenId = await PickUp(address, url, genes, acces);
+  const tokenId: string = await PickUp(address, url, genes, acces);
   let javCode = "";
   let tier = 3;
   myGenes.forEach((myGene: number) => {
-    tier += parseInt((myGene - 1 / 3).toString());
-    javCode += myGene.toString();
+    tier += parseInt((Number(myGene) - 1 / 3).toString());
+    javCode += myGene.toString(16);
   });
   myAcces.forEach((myAcce: number) => {
-    javCode += myAcce.toString();
+    javCode += myAcce.toString(16);
   });
   const nftData = {
     img_address: url,
@@ -141,11 +141,11 @@ export const pickup = async () => {
     nft_address: ABI.CONTRACT_ADDRESS.NFT_ADDRESS,
     tier: tier,
     wallet_address: address,
+    token_id: tokenId,
   };
-  console.log(nftData);
   await draw(nftData);
   const genesStr = myGenes.join("");
-  return { genes: genesStr, url: url };
+  return { genes: genesStr, nftData: nftData };
 };
 
 // 조합

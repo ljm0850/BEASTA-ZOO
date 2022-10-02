@@ -15,6 +15,7 @@ import _ from "lodash";
 import { draw } from "../../api/market";
 import { pickup } from "../../api/solidity";
 import Draw from "../../utils/Draw";
+import { NFT } from "../profile/MyJavs";
 
 const ItemDraw = () => {
   /**
@@ -38,13 +39,13 @@ const ItemDraw = () => {
   const handleClickOpenAlert = () => setOpenAlert(true);
   const handleCloseAlert = () => setOpenAlert(false);
 
-  const [img, setImg] = useState("");
+  const [nftData, setNftData] = useState<NFT>();
   const [genes, setGenes] = useState("");
 
   // 뽑기 구현
   const javPickup = async () => {
     const data = await pickup();
-    setImg(data.url);
+    setNftData(data.nftData);
     setGenes(data.genes);
   };
 
@@ -105,19 +106,7 @@ const ItemDraw = () => {
       </div>
 
       {/* 뽑기 후 NFT 모달로 보여주기 */}
-      <JavModal
-        open={openItem}
-        onClose={handleCloseItem}
-        name="이잼민"
-        data={{
-          nft_id: 123,
-          nft_address:
-            "https://mblogthumb-phinf.pstatic.net/MjAyMTA1MTNfMjkz/MDAxNjIwOTEwNDQ3MjQ1.RjpPwu8qenTvn6uEdct9lXaDu6a-eaubruR2i06SjtUg.5izLqsFxNagkeTGMbhf6sGBbNE4adeUKdELQ-H4vozMg.PNG.ysg3355/image.png?type=w800",
-          img_address: img,
-          user_id: 123,
-          jav_code: 1231,
-        }}
-      />
+      <JavModal open={openItem} onClose={handleCloseItem} data={nftData} />
       <AlertDialog
         open={openAlert}
         onClose={handleCloseAlert}
