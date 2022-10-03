@@ -22,13 +22,14 @@ public class ServiceCollectionController {
     private final ServiceCollectionService serviceCollectionService;
 
     @GetMapping("")
-    @ApiOperation(value = "전체도감리스트", notes = "type이 0: 전체도감, 1: 유저가진 도감먼저")
+    @ApiOperation(value = "전체도감리스트", notes = "type이 0: 전체도감, 1: 유저가진 도감먼저\n" +
+            "sort 0: 먼저 발견된순, 1: 티어순")
     public ResponseEntity<List<ServiceCollectionResDto>> serviceCollectionList(
-            @RequestParam int page, @RequestParam int size, @RequestParam int type,
+            @RequestParam int page, @RequestParam int size, @RequestParam int sort, @RequestParam int type,
             @RequestParam(required = false) String wallet_address){
         logger.info("serviceCollectionList - 호출");
-        if(type==0 || wallet_address == null) return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(page,size, wallet_address), HttpStatus.OK);
-        else return new ResponseEntity<>(serviceCollectionService.firstUserCollectionList(page, size, wallet_address), HttpStatus.OK);
+        if(type==0 || wallet_address == null) return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(page, size, sort, wallet_address), HttpStatus.OK);
+        else return new ResponseEntity<>(serviceCollectionService.firstUserCollectionList(page, size, sort, wallet_address), HttpStatus.OK);
     }
 
     @GetMapping("/latest")
