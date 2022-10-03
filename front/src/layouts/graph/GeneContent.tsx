@@ -25,7 +25,6 @@ const GeneContent = ({tokenId}: Props) =>{
         Content_Name.push(totalName[i])
       }
     }
-    console.log(NFT_Content)
     setJavName(Content_Name)
     setGenes(NFT_Content)
   }
@@ -38,11 +37,10 @@ const GeneContent = ({tokenId}: Props) =>{
 
   return (
     <div>
-    <button onClick={getGenes}>test</button>
       <Chart
       type='donut'
-      width={400}
-      height={400}
+      width={250}
+      height={300}
       series={genes}
       options={{
         labels:javName,

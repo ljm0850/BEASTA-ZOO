@@ -13,6 +13,8 @@ import OOZlogo from "../../image/OOZ.png";
 import styles from "./JavModal.module.scss";
 
 import { NFT } from "../../pages/profile/MyJavs";
+
+import GeneContent from "../../layouts/graph/GeneContent"
 interface Props {
   data: NFT | undefined;
   open: boolean;
@@ -123,6 +125,10 @@ const JavModal = ({ data, open, onClose }: Props) => {
                   <div className={styles.tokenInfo}>
                     <div>Gene code</div>
                     <div>{data?.jav_code}</div>
+                  </div>
+                  <div className={styles.tokenInfo}>
+                    <div>Gene Content</div>
+                    <GeneContent tokenId={Number(data?.token_id)}/>
                   </div>
                 </div>
               </Grid>
