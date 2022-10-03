@@ -70,7 +70,12 @@ public class Sales {
         else this.state = 0;
     }
 
+    public void updateCompletedDate() {
+        this.sale_completed_date = LocalDateTime.now();
+    }
+
     public void updateBuyerWallet(String buyer_wallet) {
         this.buyer_wallet = buyer_wallet;
     }
+
 }
