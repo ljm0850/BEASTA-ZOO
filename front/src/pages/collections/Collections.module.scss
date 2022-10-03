@@ -42,6 +42,10 @@
         // opacity: 80%;
       }
       
+      .FD {
+        border: 4px solid #7eff2e;
+      }
+
       .lockCard {
         position: relative;
         
@@ -112,6 +116,11 @@
           position: relative;
           // filter: blur(2px);
           // opacity: 80%;
+        }
+
+        .FD {
+          border-color: #FFC42E;
+          border-width: 1rem;
         }
         
         .lockCard {
@@ -185,6 +194,11 @@
           position: relative;
           // filter: blur(2px);
           // opacity: 80%;
+        }
+
+        .FD {
+          border-color: #FFC42E;
+          border-width: 1rem;
         }
         
         .lockCard {
