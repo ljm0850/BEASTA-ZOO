@@ -204,10 +204,14 @@ export const javsGeneContent = async (NFT_ID: number) => {
     while (idx < 7) {
       const temp = num.slice(3 * idx + 1, 3 * idx + 4);
       const i = Number(temp) - 1;
-      ratio[i] += weight[6 - idx];
+      ratio[i] += weight[6 - idx] / 3;
       idx += 1;
     }
   });
+  for (let i = 0; i < ratio.length; i++) {
+    ratio[i] = Math.round(ratio[i] * 100) / 100;
+  }
+
   return ratio;
 };
 

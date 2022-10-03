@@ -15,7 +15,7 @@ interface AnimalParts {
 
 const PartsInfo = ({ javCode }: Props) => {
   const [nftParts, setNftParts] = useState<AnimalParts[]>([]);
-  const partName = ["귀", "머리", "입"];
+  const partName = ["머리", "귀", "입"];
 
   useEffect(() => {
     const partList: AnimalParts[] = [];
@@ -32,30 +32,27 @@ const PartsInfo = ({ javCode }: Props) => {
   }, [javCode]);
 
   return (
-    <div>
-      <Typography variant="h6">Body parts</Typography>
-      <Stack
-        direction="row"
-        spacing={2}
-        divider={<Divider orientation="vertical" flexItem />}
-        justifyContent="space-between"
-        width="100%"
-      >
-        {nftParts.map((nftPart, idx) => {
-          return (
-            <Stack direction="row" alignItems="center" key={nftPart.name}>
-              <img src={nftPart.url} style={{ width: "40%" }}></img>
-              <Stack>
-                <Typography>
-                  {nftPart.name} {partName[idx]}
-                </Typography>
-                <Typography>{nftPart.tier} 티어</Typography>
-              </Stack>
-            </Stack>
-          );
-        })}
-      </Stack>
-    </div>
+    <Stack
+      direction="row"
+      spacing={2}
+      divider={<Divider orientation="vertical" flexItem />}
+      justifyContent="space-between"
+      width="100%"
+    >
+      {nftParts.map((nftPart, idx) => {
+        return (
+          <Stack direction="row" alignItems="center" key={nftPart.name}>
+            <img src={nftPart.url} style={{ width: "40%" }}></img>
+            <div>
+              <div>
+                {nftPart.name} {partName[idx]}
+              </div>
+              <div>{nftPart.tier} 티어</div>
+            </div>
+          </Stack>
+        );
+      })}
+    </Stack>
   );
 };
 
