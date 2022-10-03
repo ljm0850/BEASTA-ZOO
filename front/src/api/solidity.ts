@@ -133,7 +133,7 @@ export const pickup = async () => {
   let javCode = "";
   let tier = 3;
   myGenes.forEach((myGene: number) => {
-    tier += parseInt((Number(myGene) - 1 / 3).toString());
+    tier += parseInt(((myGene - 1) / 3).toString());
     javCode += myGene.toString(16);
   });
   myAcces.forEach((myAcce: number) => {
@@ -194,22 +194,22 @@ export const javsData = async (NFT_ID: number) => {
 
   return data;
 };
-export const javsGeneContent = async(NFT_ID:number) => {
-  const weight = [1, 1, 1, 1, 8, 8, 80]  //solidity JAV_NFT의 weight에서 따옴
-  const ratio = [0,0,0,0,0,0,0,0,0] // 해당 동물의 index에 weight만큼 추가됨 
+export const javsGeneContent = async (NFT_ID: number) => {
+  const weight = [1, 1, 1, 1, 8, 8, 80]; //solidity JAV_NFT의 weight에서 따옴
+  const ratio = [0, 0, 0, 0, 0, 0, 0, 0, 0]; // 해당 동물의 index에 weight만큼 추가됨
   const data = await GetJavsGene(NFT_ID);
   data.forEach((gene: string) => {
     const num = BigInt(gene).toString(16);
-    let idx = 0
-    while (idx<7){
-      const temp = num.slice(3*idx+1,3*idx+4)
-      const i = Number(temp) -1
-      ratio[i] += weight[6-idx]
-      idx += 1 
+    let idx = 0;
+    while (idx < 7) {
+      const temp = num.slice(3 * idx + 1, 3 * idx + 4);
+      const i = Number(temp) - 1;
+      ratio[i] += weight[6 - idx];
+      idx += 1;
     }
   });
-  return ratio
-}
+  return ratio;
+};
 
 /* 
 NFT 판매 관련 함수
@@ -220,6 +220,10 @@ NFT 판매 관련 함수
 
 export const createSale = async (tokenId: number, price: number) => {
   const myAddress: string = await getWalletAddress();
+  const approve = await isApprove(myAddress);
+  if (!approve) {
+    await approveSale();
+  }
   const saleAddress: string = await CreateSale(myAddress, tokenId, price);
   const data = { myAddress: myAddress, saleAddress: saleAddress };
   return data;
@@ -247,6 +251,7 @@ export const approveSale = async () => {
   SetApproveAll(myAddress);
 };
 
+// 인증되어있으면 True 아니면 False
 export const isApprove = async (userAddress: string) => {
   const data: boolean = await IsApproved(userAddress);
   return data;

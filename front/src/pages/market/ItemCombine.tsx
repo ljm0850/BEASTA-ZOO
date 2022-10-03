@@ -369,7 +369,7 @@ const ItemCombine = () => {
           img_address: img,
           user_id: 123,
           jav_code: 1231,
-          token_id: "123123",
+          token_id: 123123,
         }}
       />
     </div>

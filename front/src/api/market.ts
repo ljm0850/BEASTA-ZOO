@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ENDPOINT_URL } from ".";
+import { SaleData } from "../layouts/modal/SaleModal";
 
 export const fetchItems = async (
   page: number,
@@ -31,14 +32,13 @@ export interface NFTdata {
   nft_address: string;
   tier: number;
   wallet_address: string;
-  token_id: string;
+  token_id: number;
 }
 
 export const draw = async (nftData: NFTdata) => {
   const { data } = await axios.post(`${ENDPOINT_URL}/draw`, nftData);
   return data;
 };
-
 
 export interface FusionData {
   img_address: string;
@@ -52,6 +52,11 @@ export interface FusionData {
 }
 
 export const fusionNFT = async (fusionData: FusionData) => {
-  const { data } = await axios.post(`${ENDPOINT_URL}/comb`, fusionData)
-  return data
-}
+  const { data } = await axios.post(`${ENDPOINT_URL}/comb`, fusionData);
+  return data;
+};
+
+export const saleRegister = async (saleData: SaleData) => {
+  const { data } = await axios.post(`${ENDPOINT_URL}/market/sale`, saleData);
+  return data;
+};
