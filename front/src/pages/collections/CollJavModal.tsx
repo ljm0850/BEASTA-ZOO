@@ -102,8 +102,8 @@ const JavModal = ({ name, data, open, onClose }: Props) => {
                   </div>
 
                   <div className={styles.tokenInfo}>
-                    <div>Contract Address</div>
-                    <div>0x8a9ECe9d8806eB0CdE56Ac89cCB23a36E2C718cf</div>
+                    <div>First Discoverer</div>
+                    <div>{data?.user_id}</div>
                   </div>
 
                   {/* <div className={styles.tokenInfo}>
@@ -118,14 +118,14 @@ const JavModal = ({ name, data, open, onClose }: Props) => {
 
                   {data &&
                   <div>
-                    <div className={styles.divTitle}>body parts</div>
+                    <div className={styles.divTitle}>Body Parts</div>
                     <div className={styles.bodyParts}>
                       <div className={styles.partsLabel}>
-                        <img className={styles.partsImg} src={require(`../../image/parts/ears/${data?.jav_code[0]}.svg`)} alt="" />
+                        <img className={styles.partsImg} src={require(`../../image/parts/head/${data?.jav_code[0]}.svg`)} alt="" />
                         <div className={styles.partsDescription}>{FetchAnimal(Number(data?.jav_code[0])).name}</div>
                       </div>
                       <div className={styles.partsLabel}>
-                        <img className={styles.partsImg} src={require(`../../image/parts/head/${data?.jav_code[1]}.svg`)} alt="" />
+                        <img className={styles.partsImg} src={require(`../../image/parts/ears/${data?.jav_code[1]}.svg`)} alt="" />
                         <div className={styles.partsDescription}>{FetchAnimal(Number(data?.jav_code[1])).name}</div>
                       </div>
                       <div className={styles.partsLabel}>
