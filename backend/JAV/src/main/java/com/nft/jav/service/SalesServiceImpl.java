@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -215,7 +216,7 @@ public class SalesServiceImpl implements SalesService {
         NFT targetNFT = nftRepository.findById(purchaseReqDto.getNft_id())
                 .orElseThrow(IllegalArgumentException::new);
 
-        User targetUser = userRepository.findByWalletAddress(purchaseReqDto.getWallet_address());
+        User targetUser = userRepository.findByWalletAddress(purchaseReqDto.getBuyer_wallet_address());
 
         targetNFT.updateUser(targetUser);
 
@@ -239,6 +240,7 @@ public class SalesServiceImpl implements SalesService {
 
         targetSale.updateBuyerWallet(targetUser.getWallet_address());
         targetSale.updateState();
+        targetSale.updateCompletedDate();
 
         PurchaseResDto purchaseResDto = PurchaseResDto.builder()
                 .nft_id(targetNFT.getNft_id())
@@ -252,20 +254,18 @@ public class SalesServiceImpl implements SalesService {
 
     @Override
     public SalesResDto saleNFT(SalesReqDto salesReqDto) {
-        User seller = userRepository.findById(salesReqDto.getUser_id())
-                .orElseThrow(IllegalArgumentException::new);
+        User seller = userRepository.findByWalletAddress(salesReqDto.getSeller_wallet());
         NFT sellNFT = nftRepository.findById(salesReqDto.getNft_id())
                 .orElseThrow(IllegalArgumentException::new);
 
         Sales sales = Sales.builder()
                 .user(seller)
                 .contract_address(salesReqDto.getContract_address())
-                .sale_start_date(salesReqDto.getSale_start_date())
+                .sale_start_date(LocalDateTime.now())
                 .price(salesReqDto.getPrice())
                 .seller_wallet(salesReqDto.getSeller_wallet())
                 .state(0)
                 .nft(sellNFT)
-                .sale_completed_date(salesReqDto.getSale_completed_date())
                 .build();
 
         salesRepository.save(sales);
