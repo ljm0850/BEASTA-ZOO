@@ -18,6 +18,9 @@ public interface ServiceCollectionRepository extends JpaRepository<ServiceCollec
     @Query("select S from ServiceCollection S order by S.create_date")
     Page<ServiceCollection> findDiscoverJav(PageRequest pageRequest);
 
+    @Query("select S from ServiceCollection S order by S.tier desc")
+    Page<ServiceCollection> findDiscoverJavOrderByTier(PageRequest pageRequest);
+
     @Query("select S from ServiceCollection S order by S.create_date desc")
     Page<ServiceCollection> findLatest(PageRequest pageRequest);
 

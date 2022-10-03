@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,10 +30,15 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
     private final SalesRepository salesRepository;
 
     @Override
-    public List<ServiceCollectionResDto> serviceCollectionList(int page, int size, String wallet_address) {
+    public List<ServiceCollectionResDto> serviceCollectionList(int page, int size, int sort, String wallet_address) {
         logger.info("serviceCollectionList - 호출");
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<ServiceCollection> findAll = serviceCollectionRepository.findDiscoverJav(pageRequest);
+        Page<ServiceCollection> findAll;
+        if (sort == 0) {
+            findAll = serviceCollectionRepository.findDiscoverJav(pageRequest);
+        } else {
+            findAll = serviceCollectionRepository.findDiscoverJavOrderByTier(pageRequest);
+        }
 
         List<ServiceCollectionResDto> findAllDto = new ArrayList<>();
         for(ServiceCollection serviceCollection : findAll){
@@ -61,9 +67,15 @@ public class ServiceCollectionServiceImpl implements ServiceCollectionService{
     }
 
     @Override
-    public List<ServiceCollectionResDto> firstUserCollectionList(int page, int size, String wallet_address) {
+    public List<ServiceCollectionResDto> firstUserCollectionList(int page, int size, int sort, String wallet_address) {
         logger.info("firstUserCollectionList - 호출");
-        List<ServiceCollection> findAll = serviceCollectionRepository.findAll();
+        List<ServiceCollection> findAll;
+        if(sort==0){
+            findAll = serviceCollectionRepository.findAll();
+        } else {
+            findAll = serviceCollectionRepository.findAll(Sort.by(Sort.Direction.DESC, "tier"));
+        }
+
 
         List<ServiceCollectionResDto> found = new ArrayList<>();
         List<ServiceCollectionResDto> notFound = new ArrayList<>();
