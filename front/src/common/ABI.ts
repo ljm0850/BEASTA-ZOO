@@ -1596,7 +1596,7 @@ export const ABI = {
 function randomNums(n: Number) {
   const value = [];
   for (let i = 0; i < n; i++) {
-    value.push(Math.floor(Math.random() * 100));
+    value.push(Math.floor(Math.random() * 300));
   }
   return value;
 }
