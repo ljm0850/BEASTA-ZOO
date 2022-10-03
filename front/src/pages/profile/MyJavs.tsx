@@ -21,7 +21,7 @@ export interface NFT {
   user_id?: number;
   jav_code: string | number | null;
   tier?: number;
-  token_id?: number | string;
+  token_id?: number;
 }
 
 interface NFTs extends Array<NFT> {}
@@ -38,7 +38,7 @@ const MyJavs = ({ account }: Props) => {
   const preventRef = useRef(true); //옵저버 중복 실행 방지
   const endRef = useRef(false); //모든 글 로드 확인
   const mounted = useRef(false);
-  const size = 3;
+  const size = 36;
 
   // JAV info modal
   const [open, setOpen] = useState(false);
@@ -55,7 +55,8 @@ const MyJavs = ({ account }: Props) => {
   };
   const saleModalClose = () => setSaleModalOpen(false);
   const [saleJavImg, setSaleJavImg] = useState("");
-  const [saleTokenId, setSaleTokenId] = useState<number | string>("");
+  const [saleNftId, setSaleNftId] = useState<number>(0);
+  const [saleTokenId, setSaleTokenId] = useState<number>(0);
 
   // 정렬 변경
   const sortHandleChange = (event: SelectChangeEvent) => {
@@ -67,37 +68,40 @@ const MyJavs = ({ account }: Props) => {
   // 정렬이 바뀌면 첫페이지로
   useEffect(() => {
     // 마운트 될 땐 실행되지 않도록 설정
-    if (mounted.current) {
-      // MyNFTs()
-      getMyNFTs(account, page, size, Number(sortOption))
-        .then((res) => {
-          setItemCount(res[0].count);
-          setList((prev) => [...prev, ...res]); //리스트 추가
-          preventRef.current = true;
-          if (page === res[0].total_page - 1) {
-            endRef.current = true;
-          }
-          setLoad(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoad(false);
+    // if (mounted.current) {
+    // MyNFTs()
+    console.log(account, page, size, Number(sortOption));
+    getMyNFTs(account, page, size, Number(sortOption))
+      .then((res) => {
+        console.log(res);
+        setItemCount(res[0].count);
+        setList((prev) => [...prev, ...res]); //리스트 추가
+        preventRef.current = true;
+        if (page === res[0].total_page - 1) {
           endRef.current = true;
-        });
-      endRef.current = false;
-    } else {
-      mounted.current = true;
-    }
+        }
+        setLoad(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoad(false);
+        endRef.current = true;
+      });
+    endRef.current = false;
   }, [sortOption, page, account]);
 
   // 옵저버가 바뀔 때마다 실행되니 콜백함수로 선언 반복을 줄인다.
   const obsHandler = useCallback((entries: any) => {
-    //옵저버 콜백함수
     const target = entries[0];
     if (!endRef.current && target.isIntersecting && preventRef.current) {
       //옵저버 중복 실행 방지
       preventRef.current = false;
-      setPage((prev) => prev + 1); //페이지 값 증가
+      if (mounted.current) {
+        //옵저버 콜백함수
+        setPage((prev) => prev + 1); //페이지 값 증가
+      } else {
+        mounted.current = true;
+      }
     }
   }, []);
 
@@ -185,6 +189,7 @@ const MyJavs = ({ account }: Props) => {
                     onClick={() => {
                       saleModalOpenHandler();
                       setSaleJavImg(contact.img_address);
+                      setSaleNftId(contact.nft_id!);
                       setSaleTokenId(contact.token_id!);
                     }}
                   >
@@ -211,7 +216,8 @@ const MyJavs = ({ account }: Props) => {
       <SaleModal
         open={saleModalOpen}
         onClose={saleModalClose}
-        tokenId={String(saleTokenId)}
+        tokenId={saleTokenId}
+        nftId={saleNftId}
         imgAddr={saleJavImg}
       />
     </div>
