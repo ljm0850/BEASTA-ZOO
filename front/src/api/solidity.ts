@@ -25,7 +25,6 @@ import {
 import { draw } from "./market";
 import { storage } from "../utils/fbase";
 
-
 // export const myAddress = async() =>{
 //   const myWallet:string = await getWalletAddress()
 //   return myWallet
@@ -91,14 +90,16 @@ const createNFT = async (myGenes: number[], myAcces: number[]) => {
     { src: face },
     { src: acc },
   ]);
-  console.log(myGenes.join("") + myAcces.join(""))
+  console.log(myGenes.join("") + myAcces.join(""));
 
   const imageFile = dataURLtoFile(image, "JavNFT");
   const storageRef = storage.ref("images/test/");
   const imagesRef = storageRef.child(myGenes.join("") + myAcces.join("")); //파일명
   const upLoadTask = imagesRef.put(imageFile);
-  const url = `https://firebasestorage.googleapis.com/v0/b/beastazoo.appspot.com/o/images%2Ftest%2F${myGenes.join("") + myAcces.join("")}?alt=media`
-  console.log(url)
+  const url = `https://firebasestorage.googleapis.com/v0/b/beastazoo.appspot.com/o/images%2Ftest%2F${
+    myGenes.join("") + myAcces.join("")
+  }?alt=media`;
+  console.log(url);
   return url;
 };
 
@@ -128,7 +129,7 @@ export const pickup = async () => {
   const myGenes: number[] = changeGene(genes); // 이미지에서 본인 유전자만 쓰기 위해 사용
   const myAcces: number[] = changeAcces(acces);
   const url: string = await createNFT(myGenes, myAcces);
-  const tokenId: string = await PickUp(address, url, genes, acces);
+  const tokenId: number = await PickUp(address, url, genes, acces);
   let javCode = "";
   let tier = 3;
   myGenes.forEach((myGene: number) => {
@@ -202,9 +203,10 @@ NFT 판매 관련 함수
 */
 
 export const createSale = async (tokenId: number, price: number) => {
-  const address = await getWalletAddress();
-  const saleAddress = await CreateSale(address, tokenId, price);
-  return saleAddress;
+  const myAddress: string = await getWalletAddress();
+  const saleAddress: string = await CreateSale(myAddress, tokenId, price);
+  const data = { myAddress: myAddress, saleAddress: saleAddress };
+  return data;
 };
 
 export const purchaseNFT = async (saleAddress: string) => {
