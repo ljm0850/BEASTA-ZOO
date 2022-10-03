@@ -424,6 +424,7 @@ const Profile = () => {
               />
               <Tab
                 label="Favorited"
+                disabled
                 style={{
                   textTransform: "none",
                   fontWeight: "600",

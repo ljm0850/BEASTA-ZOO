@@ -7,7 +7,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 
 import styles from "./ItemCombine.module.scss";
 import HOS from "../../image/HOS.svg";
-import { getMyNFTs } from "../../api/connect";
+import { ableCombineNFTs, getMyNFTs } from "../../api/connect";
 import { NFT } from "../profile/MyJavs";
 import { Divider } from "@mui/material";
 import { fusion, javsData } from "../../api/solidity";
@@ -89,21 +89,24 @@ const ItemCombine = () => {
     //글 불러오기
 
     setLoad(true); //로딩 시작
-    getMyNFTs(sessionStorage.getItem("account"), page, 10, 0)
-      .then((res) => {
-        setMyJAVList((prev) => [...prev, ...res]); //리스트 추가
-        preventRef.current = true;
-        setLoad(false);
-        if (page === res[0].total_page) {
-          endRef.current = true;
-          setLoad(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoad(false);
-        endRef.current = true;
-      });
+    // getMyNFTs(sessionStorage.getItem("account"), page, 10, 0)
+    //   .then((res) => {
+    //     setMyJAVList((prev) => [...prev, ...res]); //리스트 추가
+    //     preventRef.current = true;
+    //     setLoad(false);
+    //     if (page === res[0].total_page) {
+    //       endRef.current = true;
+    //       setLoad(false);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setLoad(false);
+    //     endRef.current = true;
+    //   });
+
+    const NFTLIST = await ableCombineNFTs(sessionStorage.getItem("account")!);
+    setMyJAVList(NFTLIST)
   }, [page]);
 
   // 백엔드, solidity에서 요구하는게 달라서 쓰는게 많아졌음.
@@ -138,12 +141,13 @@ const ItemCombine = () => {
 
   // 뽑기 모달
   const [openItem, setOpenItem] = useState(false);
-  const handleOpenItem = () => setOpenItem(true);
   const handleCloseItem = () => setOpenItem(false);
 
   ///
   const [img, setImg] = useState("");
   const [genes, setGenes] = useState("");
+  const [tokenID, setTokenID] = useState("");
+  const [NFTAddr, setNFTAddr] = useState("");
 
   const Combine = async () => {
     if (!!material1Img === false || !!material2Img == false) {
@@ -161,6 +165,8 @@ const ItemCombine = () => {
       await fusionNFT(option);
       await setImg(fusionData.img_address);
       await setGenes(fusionData.jav_code);
+      setTokenID(fusionData.token_id)
+      setNFTAddr(fusionData.nft_address)
       setOpenItem(true);
       setCombineLoad(false)
 
@@ -220,9 +226,6 @@ const ItemCombine = () => {
 
   return (
     <div>
-      <div>{material1NFTID}</div>
-      <div>{material2NFTID}</div>
-
       <div className={styles.mainContainer}>
         <div className={styles.space}>
           <div>
@@ -393,13 +396,10 @@ const ItemCombine = () => {
         open={openItem}
         onClose={handleCloseItem}
         data={{
-          nft_id: 123,
-          nft_address:
-            "https://mblogthumb-phinf.pstatic.net/MjAyMTA1MTNfMjkz/MDAxNjIwOTEwNDQ3MjQ1.RjpPwu8qenTvn6uEdct9lXaDu6a-eaubruR2i06SjtUg.5izLqsFxNagkeTGMbhf6sGBbNE4adeUKdELQ-H4vozMg.PNG.ysg3355/image.png?type=w800",
+          nft_address: NFTAddr,
           img_address: img,
-          user_id: 123,
-          jav_code: 1231,
-          token_id: "123123",
+          jav_code: genes,
+          token_id: tokenID,
         }}
       />
     </div>

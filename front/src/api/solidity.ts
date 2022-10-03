@@ -90,16 +90,14 @@ const createNFT = async (myGenes: number[], myAcces: number[]) => {
     { src: face },
     { src: acc },
   ]);
-  console.log(myGenes.join("") + myAcces.join(""));
 
   const imageFile = dataURLtoFile(image, "JavNFT");
   const storageRef = storage.ref("images/test/");
   const imagesRef = storageRef.child(myGenes.join("") + myAcces.join("")); //파일명
-  const upLoadTask = imagesRef.put(imageFile);
+  imagesRef.put(imageFile);
   const url = `https://firebasestorage.googleapis.com/v0/b/beastazoo.appspot.com/o/images%2Ftest%2F${
     myGenes.join("") + myAcces.join("")
   }?alt=media`;
-  console.log(url);
   return url;
 };
 
@@ -156,11 +154,9 @@ export const pickup = async () => {
 export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   const address = await getWalletAddress();
   const genes = await getFusionGene(NFT_ID1, NFT_ID2);
-  await console.log("genes", genes);
   const acces = await randomAcce();
   const myGenes: number[] = await changeGene(genes);
   const myAcces: number[] = await changeAcces(acces);
-  await console.log("myGenes", myGenes);
   const url: string = await createNFT(myGenes, myAcces);
   const tokenId = await FusionJavs(
     address,
