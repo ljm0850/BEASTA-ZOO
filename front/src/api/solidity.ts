@@ -178,6 +178,22 @@ export const javsData = async (NFT_ID: number) => {
   };
   return data;
 };
+export const javsGeneContent = async(NFT_ID:number) => {
+  const weight = [1, 1, 1, 1, 8, 8, 80]  //solidity JAV_NFT의 weight에서 따옴
+  const ratio = [0,0,0,0,0,0,0,0,0] // 해당 동물의 index에 weight만큼 추가됨 
+  const data = await GetJavsGene(NFT_ID);
+  data.forEach((gene: string) => {
+    const num = BigInt(gene).toString(16);
+    let idx = 0
+    while (idx<7){
+      const temp = num.slice(3*idx+1,3*idx+4)
+      const i = Number(temp) -1
+      ratio[i] += weight[6-idx]
+      idx += 1 
+    }
+  });
+  return ratio
+}
 
 /* 
 NFT 판매 관련 함수

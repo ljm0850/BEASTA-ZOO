@@ -42,5 +42,9 @@ export default function Router() {
       element: <MainLayout />,
       children: [{ path: "", element: <Collections /> }],
     },
+    {
+      path: "/test",
+      element: <Test />
+    }
   ]);
 }
