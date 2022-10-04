@@ -43,4 +43,7 @@ public interface SalesRepository extends JpaRepository<Sales, Long>, JpaSpecific
 
     @Query("select S from Sales S where S.contract_address=:contract_address")
     Sales findByContractAddress(@Param("contract_address") String contract_address);
+
+    @Query(value = "select S from Sales S where S.user =:user and S.nft =:nft")
+    Sales findByWalletAndJav(@Param("user") User user, @Param("nft") NFT nft);
 }
