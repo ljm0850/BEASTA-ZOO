@@ -245,6 +245,7 @@ const ItemFilterContainer = ({
       search: "0000000",
       completed: haveCompleted,
       sort: sort,
+      page: searchParams.get("page"),
     });
   };
 
@@ -252,8 +253,9 @@ const ItemFilterContainer = ({
   const completedToggle = () => {
     setSearchParams({
       search: search,
-      sort: sort,
       completed: 1 - haveCompleted,
+      sort: sort,
+      page: searchParams.get("page"),
     });
   };
 
@@ -261,8 +263,9 @@ const ItemFilterContainer = ({
   const sortFilter = (choice: Number) => {
     setSearchParams({
       search: search,
-      sort: choice,
       completed: haveCompleted,
+      sort: choice,
+      page: searchParams.get("page"),
     });
   };
 
