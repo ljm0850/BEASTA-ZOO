@@ -13,16 +13,21 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { MotionContainer, varBounceIn } from "../../components/animate";
 import { motion } from "framer-motion";
 import AlertDialog from "../../layouts/dialog/AlertDialog";
-import { fetchItemDetail, purchaseRegister } from "../../api/market";
+import {
+  fetchItemDetail,
+  purchaseRegister,
+  saleCancel,
+} from "../../api/market";
 import { Product } from "../../layouts/items/ItemsCard";
 import PartsInfo from "../../layouts/items/PartsInfo";
-import { purchaseNFT } from "../../api/solidity";
+import { cancelSaleNFT, purchaseNFT } from "../../api/solidity";
 import { BalanceOfJavToken, getWalletAddress } from "../../common/ABI";
 import GeneContent from "../../layouts/graph/GeneContent";
+import DateFormatter from "../../utils/DateFormatter";
 
 // 이미지 스타일
 const ImgStyle = styled("img")({
@@ -45,9 +50,7 @@ const ItemPurchase = () => {
   const symbol = "JAV";
   const [balance, setBalance] = useState(0);
   const [myWallet, setMyWallet] = useState("");
-  let moment = require("moment");
-  const currentTime = parseInt((moment() / 1000).toFixed(0));
-
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   // 구매 alert
@@ -57,49 +60,69 @@ const ItemPurchase = () => {
 
   useEffect(() => {
     getItemDetail();
-    getWalletAddress().then((address) => {
-      setMyWallet(address);
-      BalanceOfJavToken(address).then((money) => {
-        setBalance(money);
-      });
-    });
+    getWalletAddress()
+      .then((address) => {
+        setMyWallet(address);
+        BalanceOfJavToken(address).then((money) => {
+          setBalance(money);
+        });
+      })
+      .catch((e) => console.log(e));
   }, []);
 
-  const getItemDetail = async () => {
+  const getItemDetail = () => {
     if (saleId) {
       setLoading(true);
-      await fetchItemDetail(saleId).then((res: any) => {
-        setItem({
-          saleId: res.sale_id,
-          url: res.img_address,
-          nftId: res.nft_id,
-          javCode: res.jav_code,
-          sellerWallet: res.seller_wallet,
-          sellerNickname: res.seller_nickname,
-          buyerWallet: res.buyer_wallet,
-          buyerNickname: res.buyer_nickname,
-          price: res.price,
-          saleStartDate: res.sale_start_date,
-          saleCompleteDate: res.sale_complete_date,
-          contractAddress: res.contract_address,
-          state: res.state,
-          tokenId: res.token_id,
-        });
-      });
+      fetchItemDetail(saleId)
+        .then((res) => {
+          setItem({
+            saleId: res.sale_id,
+            url: res.img_address,
+            nftId: res.nft_id,
+            javCode: res.jav_code,
+            sellerWallet: res.seller_wallet,
+            sellerNickname: res.seller_nickname,
+            buyerWallet: res.buyer_wallet,
+            buyerNickname: res.buyer_nickname,
+            price: res.price,
+            saleStartDate: res.sale_start_date,
+            saleCompletedDate: res.sale_completed_date,
+            contractAddress: res.contract_address,
+            state: res.state,
+            tokenId: res.token_id,
+          });
+        })
+        .catch((e) => console.log(e));
       setLoading(false);
     }
   };
 
   const tryPurchase = async () => {
     setLoading(true);
-    await purchaseNFT(item!.contractAddress);
-    await purchaseRegister({
-      buyer_wallet_address: myWallet,
-      nft_id: item!.nftId,
-      sale_id: item!.saleId,
-    });
-    await getItemDetail();
+    try {
+      await purchaseNFT(item!.contractAddress);
+      await purchaseRegister({
+        buyer_wallet_address: myWallet,
+        nft_id: item!.nftId,
+        sale_id: item!.saleId,
+      });
+      getItemDetail();
+    } catch (e) {
+      console.error(e);
+    }
     setLoading(false);
+  };
+
+  const tryCancel = async () => {
+    setLoading(true);
+    try {
+      await cancelSaleNFT(item!.contractAddress);
+      await saleCancel(item!.contractAddress);
+      getItemDetail();
+      navigate(-1);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -133,7 +156,11 @@ const ItemPurchase = () => {
                     </Grid>
                   </Grid>
                   <Divider />
-                  <Stack direction="row" sx={{ mt: 4 }}>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    sx={{ mt: 4 }}
+                  >
                     <Typography sx={{ fontSize: 18 }}>
                       판매자 :
                       <Link
@@ -144,8 +171,35 @@ const ItemPurchase = () => {
                         &nbsp;{item.sellerNickname}
                       </Link>
                     </Typography>
+                    <Typography>
+                      등록 날짜: {DateFormatter(item.saleStartDate)}
+                    </Typography>
                   </Stack>
                   <Divider />
+                  {item.state === 1 && (
+                    <>
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        sx={{ mt: 4 }}
+                      >
+                        <Typography sx={{ fontSize: 18 }}>
+                          구매자 :
+                          <Link
+                            underline="none"
+                            to={`/user/${item.sellerWallet}`}
+                            component={RouterLink}
+                          >
+                            &nbsp;{item.buyerNickname}
+                          </Link>
+                        </Typography>
+                        <Typography>
+                          구매 날짜: {DateFormatter(item.saleCompletedDate)}
+                        </Typography>
+                      </Stack>
+                      <Divider />
+                    </>
+                  )}
                   <Stack direction="row" sx={{ mt: 4 }}>
                     <Typography sx={{ fontSize: 18 }}>구매가 :</Typography>
                     <Typography sx={{ ml: 1 }} variant="h6">
@@ -154,15 +208,28 @@ const ItemPurchase = () => {
                   </Stack>
                   <Divider />
 
-                  {/*
-                   * PJT Ⅲ - 과제 3: 거래 진행
-                   * 판매 중인 상태인 경우 거래를 위한 버튼을 추가합니다.
-                   *
-                   * Req. 3-F1 제안하기
-                   * Req. 3-F2 구매하기
-                   */}
                   {item.state === 0 ? (
-                    <>
+                    item.sellerWallet === myWallet ? (
+                      <Box sx={{ mt: 5 }}>
+                        <Button
+                          fullWidth
+                          size="large"
+                          variant="contained"
+                          sx={{ mb: 3, fontSize: 18 }}
+                          onClick={handleClickOpenAlert}
+                          color="error"
+                        >
+                          판매 취소
+                        </Button>
+
+                        <AlertDialog
+                          open={openAlert}
+                          onClose={handleCloseAlert}
+                          setAgree={tryCancel}
+                          content="판매취소하겠습니까?"
+                        />
+                      </Box>
+                    ) : (
                       <Box sx={{ mt: 5 }}>
                         <Button
                           fullWidth
@@ -181,7 +248,7 @@ const ItemPurchase = () => {
                           content="구매하시겠습니까?"
                         />
                       </Box>
-                    </>
+                    )
                   ) : (
                     <Box sx={{ mt: 5 }}>
                       <Button

@@ -69,3 +69,10 @@ export const purchaseRegister = async (purchaseData: PurchaseData) => {
   );
   return data;
 };
+
+export const saleCancel = async (contractAddress: string) => {
+  const { data } = await axios.delete(
+    `${ENDPOINT_URL}/market/${contractAddress}`
+  );
+  return data;
+};

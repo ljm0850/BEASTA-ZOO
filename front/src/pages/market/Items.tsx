@@ -44,7 +44,7 @@ const Items = ({ page, size, search, haveCompleted, sort }: Props) => {
           buyerNickname: item.buyer_nickname,
           price: item.price,
           saleStartDate: item.sale_start_date,
-          saleCompleteDate: item.sale_complete_date,
+          saleCompletedDate: item.sale_completed_date,
           contractAddress: item.contract_address,
           state: item.state,
         })
