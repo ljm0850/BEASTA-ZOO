@@ -9,7 +9,7 @@ import Qmark from '../../image/mainPage/Qmark.png';
 
 export default function FAQ() {
   return (
-    <div>
+    <div style={{margin: "90px 0 90px 0"}}>
       <p className={styles.FAQTitle}>FAQ</p>
       <Accordion className={styles.accordion}>
         <AccordionSummary

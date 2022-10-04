@@ -10,7 +10,7 @@ const ItemsList = ({ products, ...others }: Props) => {
   return (
     <Grid container spacing={6} {...others}>
       {products.map((product) => (
-        <Grid sx={{ mb: 5 }} key={product.saleId} item xs={12} sm={6} md={3}>
+        <Grid sx={{}} key={product.saleId} item xs={12} sm={6} md={3}>
           <ItemsCard product={product} />
         </Grid>
       ))}
