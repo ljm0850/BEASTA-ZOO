@@ -5,6 +5,7 @@ import com.nft.jav.data.entity.NFT;
 import com.nft.jav.data.entity.Sales;
 import com.nft.jav.data.entity.User;
 import com.nft.jav.data.repository.NFTRepository;
+import com.nft.jav.data.repository.SalesRepository;
 import com.nft.jav.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,7 @@ import java.util.List;
 public class NFTServiceImpl implements NFTService {
 
     private final UserRepository userRepository;
-
+    private final SalesRepository salesRepository;
     private final NFTRepository nftRepository;
 
     @Override
@@ -39,8 +40,10 @@ public class NFTServiceImpl implements NFTService {
         }
 
         List<NFTResDto> userNFTResDtoList = new ArrayList<>();
+
         for(NFT targetNFT : userNFTList) {
-            userNFTResDtoList.add(NFTResDto.builder()
+
+            NFTResDto nftResDto = NFTResDto.builder()
                     .count(userNFTList.getTotalElements())
                     .total_page(userNFTList.getTotalPages())
                     .nft_id(targetNFT.getNft_id())
@@ -49,9 +52,15 @@ public class NFTServiceImpl implements NFTService {
                     .user_id(targetUser.getUser_id())
                     .jav_code(targetNFT.getJav_code())
                     .img_address(targetNFT.getImg_address())
-                    .build());
-        }
+                    .build();
 
+            Sales sale = salesRepository.findByWalletAndJav(targetUser, targetNFT);
+
+            if(sale != null) {
+                if(sale.getState()==0) nftResDto.setSale(true);
+            }
+            userNFTResDtoList.add(nftResDto);
+        }
         return userNFTResDtoList;
     }
 }
