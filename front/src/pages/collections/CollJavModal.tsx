@@ -32,7 +32,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const JavModal = ({ name, data, open, onClose }: Props) => {
+const CollJavModal = ({ name, data, open, onClose }: Props) => {
   const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -182,4 +182,4 @@ const JavModal = ({ name, data, open, onClose }: Props) => {
   );
 };
 
-export default JavModal;
+export default CollJavModal;
