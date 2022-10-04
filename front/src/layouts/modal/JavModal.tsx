@@ -14,40 +14,15 @@ import styles from "./JavModal.module.scss";
 
 import { NFT } from "../../pages/profile/MyJavs";
 
-import GeneContent from "../../layouts/graph/GeneContent"
+import GeneContent from "../../layouts/graph/GeneContent";
+import PartsInfo from "../items/PartsInfo";
 interface Props {
   data: NFT | undefined;
   open: boolean;
   onClose: () => void;
 }
 
-// Grid
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
-
 const JavModal = ({ data, open, onClose }: Props) => {
-  const style = {
-    position: "absolute" as "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    maxHeight: "80vh",
-    // width: 800,
-    bgcolor: "background.paper",
-    border: "2px solid #DCDCDC",
-    borderRadius: 5,
-    boxShadow: 24,
-    p: 4,
-    "&:focus": {
-      outline: 0,
-    },
-  };
-
   return (
     <div>
       <Modal
@@ -95,7 +70,7 @@ const JavModal = ({ data, open, onClose }: Props) => {
               >
                 <div className={styles.modalInfo}>
                   <div className={styles.season}>
-                    <div className={styles.title}>season</div>
+                    <div className={styles.title}>시즌</div>
                     <div className={styles.seasonPJT}>
                       <img className={styles.logoImg} src={OOZlogo} alt="OOZ" />
                       <div>Season 1 - OOZ Project</div>
@@ -103,12 +78,12 @@ const JavModal = ({ data, open, onClose }: Props) => {
                   </div>
 
                   <div className={styles.tokenInfo}>
-                    <div>Token ID</div>
+                    <div>토큰 ID</div>
                     <div>{data?.token_id}</div>
                   </div>
 
                   <div className={styles.tokenInfo}>
-                    <div>Contract Address</div>
+                    <div>컨트랙트 주소</div>
                     <div>{data?.nft_address}</div>
                   </div>
 
@@ -121,14 +96,17 @@ const JavModal = ({ data, open, onClose }: Props) => {
                     <div>BlockChain</div>
                     <div>SSF Network</div>
                   </div>
-
                   <div className={styles.tokenInfo}>
-                    <div>Gene code</div>
-                    <div>{data?.jav_code}</div>
+                    <div>파츠</div>
+                    <div className={styles.partsInfo}>
+                      <PartsInfo javCode={String(data?.jav_code!)} />
+                    </div>
                   </div>
                   <div className={styles.tokenInfo}>
-                    <div>Gene Content</div>
-                    <GeneContent tokenId={Number(data?.token_id)}/>
+                    <div>유전자 비율</div>
+                    <div>
+                      <GeneContent tokenId={Number(data?.token_id)} />
+                    </div>
                   </div>
                 </div>
               </Grid>

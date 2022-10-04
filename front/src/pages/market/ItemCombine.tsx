@@ -106,7 +106,7 @@ const ItemCombine = () => {
     //   });
 
     const NFTLIST = await ableCombineNFTs(sessionStorage.getItem("account")!);
-    setMyJAVList(NFTLIST)
+    setMyJAVList(NFTLIST);
   }, [page]);
 
   // 백엔드, solidity에서 요구하는게 달라서 쓰는게 많아졌음.
@@ -154,7 +154,7 @@ const ItemCombine = () => {
       setNotice("자브종이 충분히 선택되지 않았습니다.");
       handleClick();
     } else {
-      setCombineLoad(true)
+      setCombineLoad(true);
       const fusionData = await fusion(material1ID, material2ID);
       const option = {
         ...fusionData,
@@ -165,10 +165,10 @@ const ItemCombine = () => {
       await fusionNFT(option);
       await setImg(fusionData.img_address);
       await setGenes(fusionData.jav_code);
-      setTokenID(fusionData.token_id)
-      setNFTAddr(fusionData.nft_address)
+      setTokenID(fusionData.token_id);
+      setNFTAddr(fusionData.nft_address);
       setOpenItem(true);
-      setCombineLoad(false)
+      setCombineLoad(false);
 
       // 소유 JAV 초기화 후 다시 로딩
       await setMyJAVList([]);
@@ -230,7 +230,13 @@ const ItemCombine = () => {
         <div className={styles.space}>
           <div>
             <div className={styles.combineLogo}>
-              <img src={HOS} alt="" className={`${!combineLoad && styles.hos} ${combineLoad && styles.spin}`} />
+              <img
+                src={HOS}
+                alt=""
+                className={`${!combineLoad && styles.hos} ${
+                  combineLoad && styles.spin
+                }`}
+              />
               <div>조합</div>
             </div>
 
@@ -342,7 +348,7 @@ const ItemCombine = () => {
                       style={{
                         display: "flex",
                         justifyContent: "center",
-                        alignItems: "center"
+                        alignItems: "center",
                       }}
                       className={styles.refresh}
                       onClick={() => {
