@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { getUserInfo, updateUserInfo, UserInfo } from "../../api/connect";
@@ -16,6 +16,7 @@ const style = {
   bgcolor: "background.paper",
   borderRadius: "10px",
   boxShadow: 24,
+  outline: "none",
   p: 4,
 };
 
@@ -23,11 +24,13 @@ interface Props {
   openModal: boolean;
   modalHandleClose: () => void;
   drawerClose: () => void;
+  customValue?: UserInfo;
+  customFuntion? : Dispatch<SetStateAction<UserInfo>>;
 }
 
 const UpdateUserInfo = (props: Props) => {
   const navigate = useNavigate();
-  const { openModal, modalHandleClose, drawerClose } = props;
+  const { openModal, modalHandleClose, drawerClose, customFuntion, customValue } = props;
 
   const [myNickname, setMyNickname] = useState<string>("");
   const [myDescription, setMyDescription] = useState<string>("");
@@ -51,6 +54,12 @@ const UpdateUserInfo = (props: Props) => {
     }
     await updateUserInfo(sessionStorage.getItem("account")!, option)
     drawerClose()
+    customFuntion!({
+      ...customValue!,
+      nickname: myNickname,
+      profile_description: myDescription,
+    })
+    modalHandleClose()
     navigate(`/user/${sessionStorage.getItem("account")}`)
   };
 
@@ -95,8 +104,7 @@ const UpdateUserInfo = (props: Props) => {
                 onChange={(e) => {
                   setMyDescription(e.target.value);
                 }}
-              >
-                {myDescription}
+                value={myDescription}>
               </textarea>
             </div>
             <div className={styles.updateBtn}>
