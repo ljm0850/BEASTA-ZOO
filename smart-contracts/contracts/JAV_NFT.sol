@@ -3,21 +3,12 @@ pragma solidity ^0.8.4;
 
 import "./token/ERC721/ERC721.sol";
 // import "./JavToken.sol";
-/**
- * PJT Ⅰ - 과제 2) NFT Creator 구현
- * 상태 변수나 함수의 시그니처는 구현에 따라 변경할 수 있습니다.
- */
+
 contract JAV_NFT is ERC721 {
-    mapping(address => bool) god;
-    address saleAdmin;
 
     // JavToken public JavTokenContract;
     constructor() ERC721("javjongNFT","JNFT"){
         // JavTokenContract = JavToken(_JavTokenAddress);
-        god[msg.sender] = true;
-        god[0x56D82916e1857f0B030296B165Fe35415a40e9a7] = true;
-        god[0xc8e19B765DCa7382F2b334f2CfAE1525c0015ab5] = true;
-        god[0x06F2b947B41e20aB58b8c3e36b6bdEB97eC3e8B5] = true;
     }
     
     // 저장된 데이터들
@@ -57,11 +48,6 @@ contract JAV_NFT is ERC721 {
     }
     
     // 판매기록 관련
-    function setSaleAdmin(address _saleFactory) public {
-        require(god[msg.sender] == true);
-        saleAdmin = _saleFactory;
-    }
-
     function getSaleData(uint256 tokenId) public view returns(uint[] memory) {
         return saleTracking[tokenId];
     }
@@ -114,13 +100,13 @@ contract JAV_NFT is ERC721 {
     }
 
     // 유전 알고리즘
-    uint[7] weight = [1, 1, 1, 1, 6, 6, 24];
-    uint[3] fusionWeight = [2, 2, 1];
+    uint[7] weight = [1, 1, 1, 1, 8, 8, 80];
+    uint[3] fusionWeight = [35, 35, 30];
     uint[3] colorWeight = [1, 1, 1];
     uint[3] gachaWeight = [1, 1, 1];
     uint temp;
 
-    function gacha(uint[15] memory _nums) public view returns (uint[3] memory) {
+    function gacha(uint[15] memory _nums) public pure returns (uint[3] memory) {
         uint[3] memory color = [_colorPicker(_nums[0]),_colorPicker(_nums[1]),_colorPicker(_nums[2])];
         uint[3] memory self = [_gacha(_nums[3]),_gacha(_nums[4]),_gacha(_nums[5])];
         uint[3] memory mother = [_gacha(_nums[6]),_gacha(_nums[7]),_gacha(_nums[8])];
@@ -149,8 +135,8 @@ contract JAV_NFT is ERC721 {
         uint[7] memory arrayX;
         uint[7] memory arrayY;
         for (uint i = 0; i < weight.length; i++) {
-            arrayX[6-i] = _geneX % 4096;
-            arrayY[6-i] = _geneY % 4096;
+            arrayX[i] = _geneX % 4096;
+            arrayY[i] = _geneY % 4096;
             _geneX /= 4096;
             _geneY /= 4096;
         }
@@ -175,10 +161,10 @@ contract JAV_NFT is ERC721 {
 
     function getAcce(uint[4] memory _nums) public pure returns (uint[4] memory){
         uint[4] memory acce;
-        acce[0] = 1*256 + _nums[0] % 16 +1; // 눈
+        acce[0] = 1*256 + _nums[0] % 15 +1; // 눈
         acce[1] = 2*256 + _nums[1] % 12 +1; // 바디
-        acce[2] = 3*256 + _nums[2] % 12 +1; // 악세
-        acce[3] = 4*256 + _nums[3] % 12 +1; // 배경
+        acce[2] = 3*256 + _nums[2] % 12 +1; // 배경
+        acce[3] = 4*256 + _nums[3] % 12 +1; // 악세
         return acce;
     }
 
@@ -188,7 +174,7 @@ contract JAV_NFT is ERC721 {
         for (uint i = 0; i < 7; i++) {
             weightSum += weight[i];
 
-            if (_random < weightSum * 5 / 2) {
+            if (_random < weightSum) {
                 return _array[i];
             }
         }
@@ -317,7 +303,7 @@ contract JAV_NFT is ERC721 {
                 return res;
             }
         } else {
-            uint[3] memory fusionArray = [y, y, x];
+            uint[3] memory fusionArray = [x, x, y];
             uint res = _fusionWinner(fusionArray, _random);
             return res;
         }
@@ -329,7 +315,7 @@ contract JAV_NFT is ERC721 {
         for (uint i = 0; i < 3; i++) {
             weightSum += fusionWeight[i];
 
-            if (_random < weightSum * 100 / 5) {
+            if (_random < weightSum) {
                 return _array[i];
             }
         }
@@ -341,6 +327,6 @@ contract JAV_NFT is ERC721 {
     }
 
     function _gacha(uint _random) private pure returns (uint) {
-        return _random %3 + 1;
+        return _random % 3 + 1;
     }
 }

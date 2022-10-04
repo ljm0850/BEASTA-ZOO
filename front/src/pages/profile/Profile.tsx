@@ -8,7 +8,6 @@ import * as IPFS from "ipfs-core";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
-import Divider from "@mui/material/Divider";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import EditIcon from "@mui/icons-material/Edit";
@@ -120,7 +119,8 @@ const Profile = () => {
         profile_img_path: url,
       };
 
-      console.log(url);
+      sessionStorage.setItem("profileImgPath", url)
+
       updateUserInfo(loginedAccount, option)
         .then((res) => {
           setUser({
@@ -176,10 +176,6 @@ const Profile = () => {
     horizontal: "center",
   });
   const { vertical, horizontal, open } = state;
-
-  const handleClick = (newState: SnackbarOrigin) => () => {
-    setState({ open: true, ...newState });
-  };
 
   const handleClose = () => {
     setState({ ...state, open: false });
@@ -428,6 +424,7 @@ const Profile = () => {
               />
               <Tab
                 label="Favorited"
+                disabled
                 style={{
                   textTransform: "none",
                   fontWeight: "600",

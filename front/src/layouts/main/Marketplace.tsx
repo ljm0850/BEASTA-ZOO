@@ -13,7 +13,12 @@ const Marketplace = () => {
           <p className={styles.MPTitle}>Marketplace</p>
           <p className={styles.MPDetail}>Jav를 자유롭게 거래해보세요</p>
         </div>
-        <button onClick={() => { navigate("/market");}} className={styles.marketNav}>
+        <button
+          onClick={() => {
+            navigate("/market");
+          }}
+          className={styles.marketNav}
+        >
           View all
         </button>
       </div>

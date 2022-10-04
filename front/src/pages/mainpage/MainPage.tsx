@@ -1,9 +1,5 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-
-import Login from "../../layouts/Login"
-// import Draw from "../Draw";
 import { useEffect, useState } from "react";
 import styles from "./MainPage.module.scss";
 
@@ -22,26 +18,10 @@ const MainPage = () => {
   
   const userNickname = sessionStorage.getItem('nickname');
 
-  // 임시 프로필 이동 버튼 
-  const [ account, setAccount ] = useState("")
-  
-  const getAccount = async () => {
-    const accounts = await window.ethereum.request({ method: "eth_accounts" });
-    setAccount(accounts[0]);
-  };
-
-  useEffect(() => {
-    getAccount()
-  }, [])
-
-  const profileMoveHandler = () => {
-    navigate(`user/${account}`)
-  }
-
 
   return (
     <div className={styles.mainBody}>
-      <Box sx={{ width: "75%", margin: "5% 15% 0 15%" }}>
+      <Box sx={{ width: "75%", margin: "1% 12.5% 3% 12.5%" }}>
         { sessionStorage.getItem("isLogined") && <p className={styles.welcome}>Welcome, {userNickname}</p>}
         <div className={styles.mainBanner}>
           <img src={banner} alt="banner" onClick={() => {navigate("/market/draw")}} className={styles.banner} />

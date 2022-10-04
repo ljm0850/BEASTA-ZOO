@@ -20,7 +20,7 @@ export function connectAPI(account: string, balance: string, chain: string) {
     });
   }
 
-  export const getUserInfo = async (account: string | undefined) => {
+  export const getUserInfo = async (account: string | null | undefined) => {
     const { data } = await axios.get(`${ENDPOINT_URL}/user/info/${account}`)
     return data
   }
@@ -36,7 +36,7 @@ export function connectAPI(account: string, balance: string, chain: string) {
     return data
   }
 
-  interface UserInfo {
+  export interface UserInfo {
     banner_img_path: string | null;
     first_discover_count: number;
     nickname: string | null;
@@ -53,7 +53,7 @@ export function connectAPI(account: string, balance: string, chain: string) {
   }
 
   // 내 NFT 목록
-  export const getMyNFTs = async (account: string | undefined, page: number, size: number, sort: number) => {
+  export const getMyNFTs = async (account: string | null | undefined, page: number, size: number, sort: number) => {
     const option = {
       params: {
         page: page,
@@ -65,3 +65,7 @@ export function connectAPI(account: string, balance: string, chain: string) {
     return data
   }
 
+  export const ableCombineNFTs = async (account: string) => {
+    const { data } = await axios.get(`${ENDPOINT_URL}/comb/${account}`)
+    return data
+  }

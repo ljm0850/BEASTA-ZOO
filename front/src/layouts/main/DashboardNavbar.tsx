@@ -14,6 +14,7 @@ import ListItem from "@mui/material/ListItem";
 import Tooltip from "@mui/material/Tooltip";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 import Login from "../Login";
 import Metamask from "../../image/WalletLogo/Metamask_logo.svg";
@@ -25,6 +26,9 @@ import BEASTAZOO_logo from "../../image/BEASTAZOO_logo.svg";
 import JAV from "../../image/JAV.svg";
 import styles from "./DashboardNavbar.module.scss";
 import NavHamburger from "./NavHamburger";
+import { getWalletAddress } from "../../common/ABI";
+import { myJavToken, receiveJavToken } from "../../api/solidity";
+import convertToAccountingFormat from "../../utils/NumberFormatter";
 
 const actions = [{ icon: <Logout />, name: "Logout" }];
 
@@ -32,7 +36,7 @@ const actions = [{ icon: <Logout />, name: "Logout" }];
 const DashboardNavbar = () => {
   const navigate = useNavigate();
   const [account, setAccount] = useState("");
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState("");
   const [copy, setCopy] = useState("copy");
 
   const isLogined = sessionStorage.getItem("isLogined");
@@ -49,29 +53,41 @@ const DashboardNavbar = () => {
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
+        event.type === "keydown" 
+        &&
+        (event as React.KeyboardEvent).key !== "Escape"
       ) {
         return;
       }
       setDrawerState(open);
     };
 
-  ///
+  const drawerHandler = () => {
+    setDrawerState(false)
+  }
 
+  const receiveToken = async () => {
+    await receiveJavToken();
+    const money = await myJavToken();
+    setBalance(money);
+  };
+
+  // 계정 정보 및 잔액 받아오기
   const getAccount = async () => {
-    const accounts = await window.ethereum.request({ method: "eth_accounts" });
-    setAccount(accounts[0]);
-    getBalance(accounts[0]);
+    const address = await getWalletAddress();
+    setAccount(address);
+    const money = await myJavToken();
+    const myBalance = convertToAccountingFormat(money)
+    setBalance(myBalance);
   };
 
-  const getBalance = async (account: string) => {
-    // console.log(account);
-    // const response = await SSFTokenContract.methods.balanceOf(account).call();
-    // setBalance(response);
-  };
+  const refreshBalance = async () => {
+    const money = await myJavToken();
+    const myBalance = convertToAccountingFormat(money)
+    setBalance(myBalance)
+  }
 
+  // 로그인 시 계정정보 받아오기
   useEffect(() => {
     if (isLogined) {
       getAccount();
@@ -94,12 +110,12 @@ const DashboardNavbar = () => {
                   height: 35,
                   borderRadius: 100,
                   objectFit: "cover",
+                  background: "#fff",
                 }}
                 src={profileImgPath}
                 alt=""
               />
             ) : (
-              // <Avatar alt="Travis Howard" src={profileExample} />
               <AccountCircleIcon sx={{ fontSize: 35, color: "black" }} />
             )}
             <div>My wallet</div>
@@ -136,18 +152,28 @@ const DashboardNavbar = () => {
       </List>
 
       {isLogined === "true" ? (
-        <div className={styles.balanceTable}>
-          <div className={styles.myBalance}>
-            <div className={styles.Btable}>
-              <div className={styles.balance}>
-                <div>My JAV</div>
-                <div>
-                  <img src={JAV} alt="" />
-                  <div>{balance} ETH</div>
+        <div>
+          <div className={styles.refreshBtn} onClick={refreshBalance}>
+            <div className={styles.refresh}>
+              <div>새로고침</div>
+              <RefreshIcon />
+            </div>
+          </div>
+          <div className={styles.balanceTable}>
+            <div className={styles.myBalance}>
+              <div className={styles.Btable}>
+                <div className={styles.balance}>
+                  <div>My JAV</div>
+                  <div>
+                    <img src={JAV} alt="" />
+                    <div>{convertToAccountingFormat(balance)} JAV</div>
+                  </div>
                 </div>
               </div>
+              <div className={styles.charge} onClick={receiveToken}>
+                충전하기
+              </div>
             </div>
-            <div className={styles.charge}>충전하기</div>
           </div>
         </div>
       ) : (
@@ -185,7 +211,7 @@ const DashboardNavbar = () => {
                       Metamask
                     </div>
                   </div>
-                  <Login />
+                  <Login drawerClose={drawerHandler} />
                 </div>
               </ListItem>
               <Divider sx={{ border: "1px solid #E5E8EB" }} />
@@ -273,7 +299,6 @@ const DashboardNavbar = () => {
         >
           마켓
         </Link>
-        <div>조합</div>
         <Link
           to={`/market/draw`}
           color="inherit"
@@ -282,7 +307,22 @@ const DashboardNavbar = () => {
         >
           뽑기
         </Link>
-        <div>도감</div>
+        <Link
+          to={`/market/combine`}
+          color="inherit"
+          underline="hover"
+          component={RouterLink}
+        >
+          조합
+        </Link>
+        <Link
+          to={`/collections`}
+          color="inherit"
+          underline="hover"
+          component={RouterLink}
+        >
+          도감
+        </Link>
 
         {isLogined === "true" ? (
           <SpeedDial
@@ -290,7 +330,7 @@ const DashboardNavbar = () => {
             sx={{
               "& .MuiFab-primary": { width: 35, height: 35 },
               position: "relative",
-              top: "32px",
+              top: "36px",
             }}
             icon={
               <img
@@ -303,12 +343,13 @@ const DashboardNavbar = () => {
                   borderRadius: 100,
                   objectFit: "cover",
                 }}
+                className={styles.navProfile}
                 src={
-                  profileImgPath
+                  profileImgPath !== null
                     ? profileImgPath
-                    : "https://mblogthumb-phinf.pstatic.net/MjAxODAzMDNfMTc5/MDAxNTIwMDQxNzQwODYx.qQDg_PbRHclce0n3s-2DRePFQggeU6_0bEnxV8OY1yQg.4EZpKfKEOyW_PXOVvy7wloTrIUzb71HP8N2y-YFsBJcg.PNG.osy2201/1_%2835%ED%8D%BC%EC%84%BC%ED%8A%B8_%ED%9A%8C%EC%83%89%29_%ED%9A%8C%EC%83%89_%EB%8B%A8%EC%83%89_%EB%B0%B0%EA%B2%BD%ED%99%94%EB%A9%B4_180303.png?type=w800"
+                    : "https://picsum.photos/200"
                 }
-                alt=""
+                alt="왜 안나와"
               />
             }
             direction="down"

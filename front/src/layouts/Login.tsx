@@ -1,19 +1,47 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"
+import { useState, forwardRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { checkUser, createUser } from "../api/connect";
+import { checkUser, createUser, getUserInfo } from "../api/connect";
 
 import Button from "@mui/material/Button";
+import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import { ABI } from "../common/ABI";
+import UpdateUserInfo from "./modal/UpdateUserInfo";
 
-const Login = () => {
-  const navigate = useNavigate()
+export interface State extends SnackbarOrigin {
+  openSnackbar: boolean;
+}
+
+interface UserInfo {
+  banner_img_path: string;
+  first_discover_count: number;
+  nickname: string;
+  profile_description: string;
+  profile_img_path: string;
+  tier: number;
+  token: number;
+}
+
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+interface Props {
+  drawerClose: () => void;
+}
+
+const Login = (props: Props) => {
+  const { drawerClose } = props;
+
+  const navigate = useNavigate();
   const onboarding = new MetaMaskOnboarding();
-  const [account, setAccount] = useState(""); // 지갑
-
-  const [ssfBalance, setSsfBalance] = useState(""); // SSF
-  const [network, setNetwork] = useState(""); // 네트워크
-
   const web3 = new Web3(window.ethereum);
 
   const isMetaMaskInstalled = () => {
@@ -33,13 +61,10 @@ const Login = () => {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      setAccount(accounts[0]);
       // 얻은 지갑을 이용 로그인 과정
-      await getUserInfo(accounts[0]);
+      await get_UserInfo(accounts[0]);
 
       const chainId = 31221;
-      const rpcurl = "http://20.196.209.2:8545";
-
       await window.ethereum.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: web3.utils.toHex(chainId) }],
@@ -51,7 +76,7 @@ const Login = () => {
           params: {
             type: "ERC20",
             options: {
-              address: "0xD915163c2687a2AB79862606BEf50E0503282Eb6",
+              address: ABI.CONTRACT_ADDRESS.TOKEN_ADDRESS,
               symbol: "JAV",
               decimals: 0,
               image:
@@ -71,10 +96,9 @@ const Login = () => {
     }
   };
 
-
   // 계정 정보 얻어오기
   // 기존에 계정 정보가 없을 경우 createUserInfo를 통해 해당 지갑에 대한 새 계정을 생성한다.
-  const getUserInfo = async (account: string) => {
+  const get_UserInfo = async (account: string) => {
     // try {
     checkUser(account)
       .then((res) => {
@@ -84,101 +108,109 @@ const Login = () => {
         const profileDescription = res.profile_description;
 
         sessionStorage.setItem("isLogined", "true");
-        sessionStorage.setItem("nickname", nickname === null ? "Javjoung" : nickname);
-        sessionStorage.setItem("profileImgPath", profileImgPath === null ? "default image" : profileImgPath);
-        sessionStorage.setItem("bannerImgPath", bannerImgPath === null ? "default image" : bannerImgPath);
+        sessionStorage.setItem(
+          "nickname",
+          nickname === null ? "Javjoung" : nickname
+        );
+        sessionStorage.setItem(
+          "profileImgPath",
+          profileImgPath === null ? "https://placehold.jp/E6E6E6/E6E6E6/150x150.png" : profileImgPath
+        );
+        sessionStorage.setItem(
+          "bannerImgPath",
+          bannerImgPath === null ? "default image" : bannerImgPath
+        );
         sessionStorage.setItem("profileDescription", profileDescription);
-        window.location.reload();
-        navigate('/')
+        sessionStorage.setItem("account", account);
+        navigate("/");
       })
       .catch((err) => {
-        alert("처음 접속하시는군요! 회원가입을 진행합니다.");
+        setSnackbarOpen(true);
         createUserInfo(account);
       });
   };
 
   // 계정 정보 생성
   const createUserInfo = async (account: string) => {
-    try {
-      createUser(account)
-        .then((res) => {
-          const profileImgPath = res.profile_img_path;
-          const bannerImgPath = res.banner_img_path;
-          const nickname = res.nickname;
-          const profileDescription = res.profile_description;
-          
-          sessionStorage.setItem("isLogined", "true");
-          sessionStorage.setItem("nickname", nickname);
-          sessionStorage.setItem("profileImgPath", profileImgPath);
-          sessionStorage.setItem("bannerImgPath", bannerImgPath);
-          sessionStorage.setItem("profileDescription", profileDescription);
-          navigate('/')
-          window.location.reload();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    await createUser(account)
+      .then((res) => {
+        const profileImgPath = "https://placehold.jp/E6E6E6/E6E6E6/150x150.png";
+        const bannerImgPath = res.banner_img_path;
+        const nickname = res.nickname;
+        const profileDescription = res.profile_description;
 
-  // useEffect(() => {
-  //   if (account) {
-  //     getBalance();
-  //     // getSsfbalance()
-  //   }
-  // }, [account]);
-
-
-  // 현재 잔고 가져오기
-  // const getBalance = async () => {
-  //   try {
-  //     const balance = await window.ethereum.request({
-  //       method: "eth_getBalance",
-  //       params: [account, "latest"],
-  //     });
-  //     // console.log(balance);
-  //     let dec = parseInt(balance);
-  //     setBalance(dec);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-
-  // JAV 토큰으로 변환하기
-  // 현재 SSF 가져오기
-  const getSsfBalance = async () => {
-    // try {
-    //   const ssafyToken = new web3.eth.Contract(
-    //     // ABI.CONTRACT_ABI.ERC_ABI,
-    //     process.env.REACT_APP_ERC2_CA,
-    //   )
-    //   console.log(ssafyToken)
-    //   await ssafyToken.methods
-    //     .balanceOf(account)
-    //     .call()
-    //     .then((result: string) => {
-    //       console.log(result)
-    //       setSsfBalance(result)
-    //     }).catch((err: any) => {console.log('ssafyToken blance of error', err)})
-    // } catch(err) {
-    //   console.log(err)
-    // }
+        sessionStorage.setItem("isLogined", "true");
+        sessionStorage.setItem("nickname", nickname);
+        sessionStorage.setItem("profileImgPath", profileImgPath);
+        sessionStorage.setItem("bannerImgPath", bannerImgPath);
+        sessionStorage.setItem("profileDescription", profileDescription);
+        sessionStorage.setItem("account", account);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    
+    await setModalOpen(true)
   };
 
   const onClickInstall = () => {
     onboarding.startOnboarding();
   };
 
+  // 첫 로그인 시 사용할 snackbar
+  const [openSnackbar, setSnackbarOpen] = useState(false);
+  const snackbarHandleClick = () => {
+    setSnackbarOpen(true);
+  };
+
+  const sanckbarHandleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  // 회원정보 수정 모달
+  const [openModal, setModalOpen] = useState(false);
+  const modalHandleClose = () => {
+    setModalOpen(false)
+  };
+
   return (
     <div>
-      <Button variant="contained" onClick={onClickLoginButton} sx={{background: "#FFC42E", "&:hover": {
-        background: "#FDB909"
-      }}}>
+      <Button
+        variant="contained"
+        onClick={onClickLoginButton}
+        sx={{
+          background: "#FFC42E",
+          "&:hover": {
+            background: "#FDB909",
+          },
+        }}
+      >
         로그인
       </Button>
+      <Snackbar
+        open={openSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={3000}
+        onClose={sanckbarHandleClose}
+        style={{zIndex: "2000"}}
+      >
+        <Alert
+          onClose={sanckbarHandleClose}
+          severity="info"
+          sx={{ width: "100%", zIndex: "2000"}}
+        >
+          첫 로그인이시군요! 회원정보를 입력해주세요!
+        </Alert>
+      </Snackbar>
+
+      <UpdateUserInfo openModal={openModal} modalHandleClose={modalHandleClose} drawerClose={drawerClose}/>
+
     </div>
   );
 };

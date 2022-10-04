@@ -1,14 +1,6 @@
 import axios from "axios";
 import { ENDPOINT_URL } from ".";
-import mergeImages from 'merge-images';
-import * as IPFS from "ipfs-core"
-import {
-  ABI,
-  getWalletAddress,
-  PickUp,
-  randomAcce,
-  randomGene,
-} from "../common/ABI";
+import { SaleData } from "../layouts/modal/SaleModal";
 
 export const fetchItems = async (
   page: number,
@@ -34,18 +26,37 @@ export const fetchItemDetail = async (saleId: string) => {
   return data;
 };
 
-export const draw = async (
-  img_address: string, jav_code: string,
-  nft_address: string, tier: number,
-  wallet_address : string
-  ) => {
-    const data = {
-      img_address: img_address,
-      jav_code: jav_code,
-      nft_address:nft_address,
-      tier: tier,
-      wallet_address: wallet_address
-    }
-    console.log(data)
-    axios.post(`${ENDPOINT_URL}/draw}`,JSON.stringify(data))
-  }
+export interface NFTdata {
+  img_address: string;
+  jav_code: string;
+  nft_address: string;
+  tier: number;
+  wallet_address: string;
+  token_id: number;
+}
+
+export const draw = async (nftData: NFTdata) => {
+  const { data } = await axios.post(`${ENDPOINT_URL}/draw`, nftData);
+  return data;
+};
+
+export interface FusionData {
+  img_address: string;
+  jav_code: string;
+  nft_address: string;
+  nft_id_1: number;
+  nft_id_2: number;
+  tier: number;
+  token_id: string;
+  wallet_address: string;
+}
+
+export const fusionNFT = async (fusionData: FusionData) => {
+  const { data } = await axios.post(`${ENDPOINT_URL}/comb`, fusionData);
+  return data;
+};
+
+export const saleRegister = async (saleData: SaleData) => {
+  const { data } = await axios.post(`${ENDPOINT_URL}/market/sale`, saleData);
+  return data;
+};

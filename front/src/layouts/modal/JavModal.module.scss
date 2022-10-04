@@ -1,5 +1,3 @@
-
-
 .modalBox {
   position: absolute;
   top: 50%;
@@ -9,8 +7,8 @@
   max-height: 80vh;
   overflow-y: auto;
   -ms-overflow-style: none;
-  &::-webkit-scrollbar{
-    display:none;
+  &::-webkit-scrollbar {
+    display: none;
   }
   background-color: #fff;
   // border: 2px solid #DCDCDC;
@@ -18,7 +16,7 @@
   box-shadow: 2;
   padding: 50px;
   &:focus {
-    outline: 0,
+    outline: 0;
   }
 }
 
@@ -28,19 +26,19 @@
     min-width: 290px;
     max-width: 400px;
     width: 20vw;
-
+    border-radius: 10px;
     height: auto;
   }
 }
 .modalInfo {
-  white-space:pre-line;
-  word-break:break-all;
-  
+  white-space: pre-line;
+  word-break: break-all;
+
   .season {
     .title {
       font-size: 0.8rem;
       font-weight: 700;
-      color: #5A718B;
+      color: #5a718b;
     }
 
     .seasonPJT {
@@ -65,13 +63,22 @@
     div:first-child {
       font-size: 0.8rem;
       font-weight: 700;
-      color: #5A718B;
+      color: #5a718b;
     }
     div:last-child {
       font-size: 1rem;
       font-weight: 700;
       margin: 7px 0 0 0;
       line-height: 15px;
+    }
+    .partsInfo {
+      div > div > div:first-child {
+        font-size: 0.8rem;
+        color: black;
+      }
+      div > div > div:last-child {
+        font-size: 0.6rem;
+      }
     }
   }
 }

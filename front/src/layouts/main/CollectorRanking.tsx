@@ -13,10 +13,10 @@ const Marketplace = () => {
   const [rankList, setRankList] = useState<Ranking[]>([]);
 
   useEffect(() => {
-    userRank().then((res :Ranking[]) => {
-      setRankList(res)
-    })
-  }, [])
+    userRank().then((res: Ranking[]) => {
+      setRankList(res);
+    });
+  }, []);
 
   return (
     <div className={styles.CRBody}>
@@ -33,7 +33,7 @@ const Marketplace = () => {
         <tbody>
           {rankList.map((item, idx) => {
             return (
-              <tr>
+              <tr key={item.user_id}>
                 <td>{idx + 1}</td>
                 <td>{item.user_id}</td>
                 <td>{item.grade}</td>

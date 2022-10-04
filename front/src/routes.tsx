@@ -5,9 +5,11 @@ import MainPage from "./pages/mainpage/MainPage";
 import ItemDraw from "./pages/market/ItemDraw";
 import ItemCombine from "./pages/market/ItemCombine";
 import Profile from "./pages/profile/Profile";
-import SaleRegistration from "./pages/market/SaleRegistration";
 import ItemPurchase from "./pages/market/ItemPurchase";
 import MarketMain from "./pages/market/MarketMain";
+import Collections from "./pages/collections/Collections";
+
+import Test from "./pages/soliditytest"
 
 export default function Router() {
   return useRoutes([
@@ -26,7 +28,7 @@ export default function Router() {
       children: [
         { path: "", element: <MarketMain /> },
         { path: "draw", element: <ItemDraw /> },
-        { path:'combine', element: <ItemCombine /> },
+        { path: "combine", element: <ItemCombine /> },
         { path: "buy/:saleId", element: <ItemPurchase /> },
       ],
     },
@@ -35,5 +37,14 @@ export default function Router() {
       element: <MainLayout />,
       children: [{ path: ":account", element: <Profile /> }],
     },
+    {
+      path: "/collections",
+      element: <MainLayout />,
+      children: [{ path: "", element: <Collections /> }],
+    },
+    {
+      path: "/test",
+      element: <Test />
+    }
   ]);
 }
