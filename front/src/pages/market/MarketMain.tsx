@@ -8,7 +8,7 @@ const MarketMain = () => {
   const [search, setSearch] = useState<string>("0000000");
   const [haveCompleted, setHaveCompleted] = useState(0);
   const [sort, setSort] = useState(0);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const size = 8;
