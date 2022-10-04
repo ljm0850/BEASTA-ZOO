@@ -51,11 +51,11 @@ const MarketMain = () => {
       <Grid container spacing={6}>
         <Grid item xs={12} sm={3}>
           <ItemFilterContainer
-            searchParams={searchParams}
             setSearchParams={setSearchParams}
             search={search}
             haveCompleted={haveCompleted}
             sort={sort}
+            page={page}
           />
         </Grid>
         <Grid item xs={12} sm={9}>

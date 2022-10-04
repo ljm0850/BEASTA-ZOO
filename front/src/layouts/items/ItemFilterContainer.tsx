@@ -119,7 +119,7 @@ interface Props {
   search: string;
   haveCompleted: number;
   sort: number;
-  searchParams: URLSearchParams;
+  page: number;
   setSearchParams: Function;
 }
 
@@ -127,7 +127,7 @@ const ItemFilterContainer = ({
   search,
   haveCompleted,
   sort,
-  searchParams,
+  page,
   setSearchParams,
 }: Props) => {
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -226,15 +226,16 @@ const ItemFilterContainer = ({
   const selectFilter = (index: number, choice: number) => {
     if (parseInt(search[index], 16) !== choice) {
       setSearchParams({
+        search: search.changeIndex(index, choice.toString(16)),
         completed: haveCompleted,
         sort: sort,
-        search: search.changeIndex(index, choice.toString(16)),
       });
     } else {
       setSearchParams({
         search: search.changeIndex(index, "0"),
         completed: haveCompleted,
         sort: sort,
+        page: page,
       });
     }
   };
@@ -245,7 +246,7 @@ const ItemFilterContainer = ({
       search: "0000000",
       completed: haveCompleted,
       sort: sort,
-      page: searchParams.get("page"),
+      page: page,
     });
   };
 
@@ -255,7 +256,7 @@ const ItemFilterContainer = ({
       search: search,
       completed: 1 - haveCompleted,
       sort: sort,
-      page: searchParams.get("page"),
+      page: page,
     });
   };
 
@@ -265,7 +266,7 @@ const ItemFilterContainer = ({
       search: search,
       completed: haveCompleted,
       sort: choice,
-      page: searchParams.get("page"),
+      page: page,
     });
   };
 
