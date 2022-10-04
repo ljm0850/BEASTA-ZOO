@@ -57,6 +57,7 @@ const MyJavs = ({ account }: Props) => {
   const [saleJavImg, setSaleJavImg] = useState("");
   const [saleNftId, setSaleNftId] = useState<number>(0);
   const [saleTokenId, setSaleTokenId] = useState<number>(0);
+  const [saleJavCode, setSaleJavCode] = useState<string|number|null>();
 
   // 정렬 변경
   const sortHandleChange = (event: SelectChangeEvent) => {
@@ -191,6 +192,7 @@ const MyJavs = ({ account }: Props) => {
                       setSaleJavImg(contact.img_address);
                       setSaleNftId(contact.nft_id!);
                       setSaleTokenId(contact.token_id!);
+                      setSaleJavCode(contact.jav_code!);
                     }}
                   >
                     판매하기
@@ -219,6 +221,7 @@ const MyJavs = ({ account }: Props) => {
         tokenId={saleTokenId}
         nftId={saleNftId}
         imgAddr={saleJavImg}
+        jav_code={saleJavCode}
       />
     </div>
   );
