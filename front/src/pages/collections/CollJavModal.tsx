@@ -103,7 +103,7 @@ const JavModal = ({ name, data, open, onClose }: Props) => {
 
                   <div className={styles.tokenInfo}>
                     <div>First Discoverer</div>
-                    <div>{data?.user_id}</div>
+                    <div>{data?.nickname}</div>
                   </div>
 
                   {/* <div className={styles.tokenInfo}>

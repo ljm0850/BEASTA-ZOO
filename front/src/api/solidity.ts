@@ -90,16 +90,14 @@ const createNFT = async (myGenes: number[], myAcces: number[]) => {
     { src: face },
     { src: acc },
   ]);
-  console.log(myGenes.join("") + myAcces.join(""));
 
   const imageFile = dataURLtoFile(image, "JavNFT");
   const storageRef = storage.ref("images/test/");
   const imagesRef = storageRef.child(myGenes.join("") + myAcces.join("")); //파일명
-  const upLoadTask = imagesRef.put(imageFile);
+  imagesRef.put(imageFile);
   const url = `https://firebasestorage.googleapis.com/v0/b/beastazoo.appspot.com/o/images%2Ftest%2F${
     myGenes.join("") + myAcces.join("")
   }?alt=media`;
-  console.log(url);
   return url;
 };
 
@@ -156,12 +154,9 @@ export const pickup = async () => {
 export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   const address = await getWalletAddress();
   const genes = await getFusionGene(NFT_ID1, NFT_ID2);
-  await console.log(genes);
   const acces = await randomAcce();
   const myGenes: number[] = await changeGene(genes);
   const myAcces: number[] = await changeAcces(acces);
-  await console.log(myGenes);
-  await console.log(myAcces);
   const url: string = await createNFT(myGenes, myAcces);
   const tokenId = await FusionJavs(
     address,
@@ -171,7 +166,28 @@ export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
     genes,
     acces
   );
-  return tokenId;
+
+  let javCode = "";
+  let tier = 3;
+  myGenes.forEach((myGene: number) => {
+    tier += parseInt((Number(myGene) - 1 / 3).toString());
+    javCode += myGene.toString(16);
+  });
+  myAcces.forEach((myAcce: number) => {
+    javCode += myAcce.toString(16);
+  });
+
+  // return tokenId;
+  return {
+    img_address: url,
+    jav_code: javCode,
+    nft_address: ABI.CONTRACT_ADDRESS.NFT_ADDRESS,
+    nft_id_1: NFT_ID1,
+    nft_id_2: NFT_ID2,
+    tier: tier,
+    token_id: tokenId,
+    wallet_address: address,
+  };
 };
 
 interface JavDATA {
@@ -192,6 +208,7 @@ export const javsData = async (NFT_ID: number) => {
     URI: await GetJavsURI(NFT_ID),
   };
 
+  console.log(data);
   return data;
 };
 export const javsGeneContent = async (NFT_ID: number) => {

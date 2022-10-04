@@ -11,7 +11,6 @@ const Logout = () => {
     sessionStorage.removeItem("nickname");
     sessionStorage.removeItem("bannerImgPath");
     navigate("/");
-    window.location.reload();
   };
 
   return <LogoutIcon onClick={onClickLogoutButton}></LogoutIcon>;
