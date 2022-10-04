@@ -11,7 +11,6 @@ export const Collection = async (
   const { data } = await axios.get(`${ENDPOINT_URL}/collection`, {
     params: { page, size, sort, type, wallet_address },
   });
-  console.log(data)
   return data;
 };
 

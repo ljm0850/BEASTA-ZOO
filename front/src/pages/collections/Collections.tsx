@@ -19,6 +19,7 @@ export interface Coll {
   total_page: number;
   user_id: number;
   owner: boolean;
+  nickname: string;
 }
 
 export interface Wallet {
