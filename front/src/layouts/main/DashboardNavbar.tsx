@@ -53,8 +53,7 @@ const DashboardNavbar = () => {
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === "keydown" 
-        &&
+        event.type === "keydown" &&
         (event as React.KeyboardEvent).key !== "Escape"
       ) {
         return;
@@ -63,8 +62,8 @@ const DashboardNavbar = () => {
     };
 
   const drawerHandler = () => {
-    setDrawerState(false)
-  }
+    setDrawerState(false);
+  };
 
   const receiveToken = async () => {
     await receiveJavToken();
@@ -77,15 +76,15 @@ const DashboardNavbar = () => {
     const address = await getWalletAddress();
     setAccount(address);
     const money = await myJavToken();
-    const myBalance = convertToAccountingFormat(money)
+    const myBalance = convertToAccountingFormat(money);
     setBalance(myBalance);
   };
 
   const refreshBalance = async () => {
     const money = await myJavToken();
-    const myBalance = convertToAccountingFormat(money)
-    setBalance(myBalance)
-  }
+    const myBalance = convertToAccountingFormat(money);
+    setBalance(myBalance);
+  };
 
   // 로그인 시 계정정보 받아오기
   useEffect(() => {

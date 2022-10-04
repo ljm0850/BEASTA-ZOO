@@ -6,6 +6,7 @@ import Pagination from "@mui/material/Pagination";
 import styles from "./Collections.module.scss";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Skeleton from "@mui/material/Skeleton";
 
 import locked from "../../image/collections/locked.png";
 
@@ -38,7 +39,8 @@ const Collections = () => {
   const [modalData, setModalData] = useState<Coll>();
   const [myWall, setMyWall] = useState<Wallet>();
   const [walletAddress, setWalletAddress] = useState("");
-  const [alignment, setAlignment] = React.useState('번호');
+  const [alignment, setAlignment] = React.useState("번호");
+  const [isLodding, setIsLodding] = React.useState(true);
 
   const getAccount = async () => {
     const accounts = await window.ethereum.request({ method: "eth_accounts" });
@@ -50,6 +52,7 @@ const Collections = () => {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+  const handleLodding = () => setIsLodding(!isLodding);
 
   const handleChangeSortMethod = (
     event: React.MouseEvent<HTMLElement>,
@@ -72,8 +75,6 @@ const Collections = () => {
     setAlignment(newAlignment);
   };
 
-
-
   useEffect(() => {
     if (sessionStorage.getItem("isLogined") === "true") {
       getAccount();
@@ -83,13 +84,13 @@ const Collections = () => {
       myCollCount(walletAddress).then((res: Wallet) => {
         setMyWall(res);
       });
-      Collection(page - 1, 24, sortMethod, typeSort, walletAddress).then(
-        (res: Coll[]) => {
-          setCollList(res);
-        }
-      );
     }
 
+    Collection(page - 1, 24, sortMethod, typeSort, walletAddress).then(
+      (res: Coll[]) => {
+        setCollList(res);
+      }
+    );
     totalCount().then((res) => {
       setTotal(res);
     });
@@ -116,6 +117,7 @@ const Collections = () => {
           </p>
         )}
       </div>
+      <button onClick={handleLodding}>click</button>
       <div>
         <div className={styles.JAVS}>
           {collList.map((item, idx) => {
@@ -130,25 +132,33 @@ const Collections = () => {
                   }
                 }}
               >
-                {item.owner ? (
-                  <img
-                    key={item.discover_time}
-                    className={`${styles.JAVImg} ${styles.FD}`}
-                    src={item.jav_img_path}
-                    alt=""
-                  />
+                {isLodding ? (
+                  <div className={styles.skeletonContainer}>
+                    <div className={styles.skeleton}></div>
+                  </div>
                 ) : (
-                  <div className={styles.lockCard}>
-                    <img
-                      key={item.discover_time}
-                      className={styles.JAVImgFalse}
-                      src={item.jav_img_path}
-                      alt=""
-                    />
-                    <img className={styles.lockImg} src={locked} alt="" />
+                  <div className={styles.JAVContainer}>
+                    {item.owner ? (
+                      <img
+                        key={item.discover_time}
+                        className={`${styles.JAVImg} ${styles.FD}`}
+                        src={item.jav_img_path}
+                        alt=""
+                      />
+                    ) : (
+                      <div className={styles.lockCard}>
+                        <img
+                          key={item.discover_time}
+                          className={styles.JAVImgFalse}
+                          src={item.jav_img_path}
+                          alt=""
+                        />
+                        <img className={styles.lockImg} src={locked} alt="" />
+                      </div>
+                    )}
+                  <p className={styles.javId}>{item.jav_id}</p>
                   </div>
                 )}
-                <p className={styles.javId}>{item.jav_id}</p>
               </div>
             );
           })}
