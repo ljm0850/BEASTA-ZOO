@@ -49,7 +49,7 @@ const MarketMain = () => {
   return (
     <Box sx={{ mx: 5 }}>
       <Grid container spacing={6}>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={4} md={3}>
           <ItemFilterContainer
             setSearchParams={setSearchParams}
             search={search}
@@ -58,7 +58,7 @@ const MarketMain = () => {
             page={page}
           />
         </Grid>
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12} sm={8} md={9}>
           <Items
             page={page}
             size={size}
