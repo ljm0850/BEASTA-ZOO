@@ -57,7 +57,14 @@ const ItemDraw = () => {
     >
       <div>
         <img src={drawImg} alt="" />
-        <Draw genes={genes} handleOpenItem={handleOpenItem}></Draw>
+        <div
+          style={{
+            height: "250px",
+            overflow: "hidden",
+          }}
+        >
+          <Draw genes={genes} handleOpenItem={handleOpenItem}></Draw>
+        </div>
         <div
           style={{
             display: "flex",
