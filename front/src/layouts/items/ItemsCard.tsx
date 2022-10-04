@@ -13,9 +13,10 @@ export interface Product {
   sellerNickname: string;
   saleId: number;
   saleStartDate: string;
-  saleCompleteDate: string;
+  saleCompletedDate: string;
   contractAddress: string;
   state: number;
+  tokenId?: number;
 }
 
 const ImgStyle = styled("img")({

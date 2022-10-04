@@ -257,7 +257,7 @@ export const purchaseNFT = async (saleAddress: string) => {
 };
 // SC 좀 수정해야함
 export const cancelSaleNFT = async (saleAddress: string) => {
-  CancelSale(saleAddress);
+  await CancelSale(saleAddress);
 };
 
 export const saleRecord = async (tokenId: number) => {

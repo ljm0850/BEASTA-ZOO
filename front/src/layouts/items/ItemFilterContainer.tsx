@@ -365,7 +365,6 @@ const ItemFilterContainer = ({
           />
         </RadioGroup>
       </FormControl>
-      <p>{search}</p>
     </div>
   );
 };

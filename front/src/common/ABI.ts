@@ -1737,7 +1737,7 @@ export const Purchase = async (address: string, saleAddress: string) => {
 };
 
 export const CancelSale = async (saleAddress: string) => {
-  const address = getWalletAddress();
+  const address = await getWalletAddress();
   const Sale_Contract = new web3.eth.Contract(
     ABI.CONTRACT_ABI.SALE_ABI,
     saleAddress
