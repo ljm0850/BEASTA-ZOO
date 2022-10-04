@@ -124,6 +124,18 @@
   }
 }
 
+.charging {
+  height: 58px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  color: #fff;
+  background: #15dd51;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
 .noLogined {
   font-weight: 400;
   font-size: 16px;
