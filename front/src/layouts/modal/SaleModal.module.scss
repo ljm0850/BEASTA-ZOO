@@ -4,12 +4,33 @@
   left: 50%;
   transform: translate(-50%, -50%);
   // min-width: 450px;
-  // width: 400px;
+  // width: 1000px;
+  max-height: 80vh;
   overflow-y: auto;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 2;
   padding: 50px;
+  
+  .cardImg {
+    min-width: 290px;
+    max-width: 400px;
+    // width: 20vw;
+    border-radius: 10px;
+    height: auto;
+    margin: 0 5px 0 0;
+  }
+  
+
+  .partsInfo{
+
+    div > div > div:first-child {
+      font-size: 0.8rem;
+      color: black;
+    }
+    div > div > div:last-child {
+      font-size: 0.6rem;
+    }}
 
   &:focus {
     outline: 0,
