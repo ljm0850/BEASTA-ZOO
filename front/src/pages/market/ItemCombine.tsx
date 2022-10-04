@@ -7,10 +7,10 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 
 import styles from "./ItemCombine.module.scss";
 import HOS from "../../image/HOS.svg";
-import { ableCombineNFTs, getMyNFTs } from "../../api/connect";
+import { ableCombineNFTs } from "../../api/connect";
 import { NFT } from "../profile/MyJavs";
 import { Divider } from "@mui/material";
-import { fusion, javsData } from "../../api/solidity";
+import { fusion } from "../../api/solidity";
 import { fusionNFT } from "../../api/market";
 import JavModal from "../../layouts/modal/JavModal";
 
@@ -39,54 +39,39 @@ const ItemCombine = () => {
      * 11. 백엔드에 token Id와 owner_address를 포함한 정보를 등록 요청합니다.  
     */
 
-  const [myAccount, setMyAccount] = useState("");
   const [myJAVList, setMyJAVList] = useState<NFTs>([]);
-  const [load, setLoad] = useState(false);
+  // const [load, setLoad] = useState(false);
   const [combineLoad, setCombineLoad] = useState(false);
-  const [page, setPage] = useState(-1);
+  // const [page, setPage] = useState(-1);
   const obsRef = useRef(null); //observer Element
-  const preventRef = useRef(true); //옵저버 중복 실행 방지
-  const endRef = useRef(false); //모든 글 로드 확인
-
-  // 내 지갑정보 가져오기
-  const getAccount = async () => {
-    const accounts = await window.ethereum.request({ method: "eth_accounts" });
-    setMyAccount(accounts[0]);
-  };
-
-  useEffect(() => {
-    getAccount();
-  }, []);
-
-  useEffect(() => {
-    getPost();
-  }, [myAccount, page]);
+  // const preventRef = useRef(true); //옵저버 중복 실행 방지
+  // const endRef = useRef(false); //모든 글 로드 확인
 
   // 내 소유 자브종 가져오기 + 무한 스크롤
 
-  useEffect(() => {
-    //옵저버 생성
-    const observer = new IntersectionObserver(obsHandler, { threshold: 0.5 });
-    if (obsRef.current) observer.observe(obsRef.current);
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  // useEffect(() => {
+  //   //옵저버 생성
+  //   const observer = new IntersectionObserver(obsHandler, { threshold: 0.5 });
+  //   if (obsRef.current) observer.observe(obsRef.current);
+  //   return () => {
+  //     observer.disconnect();
+  //   };
+  // }, []);
 
-  const obsHandler = (entries: any) => {
-    //옵저버 콜백함수
-    const target = entries[0];
-    if (!endRef.current && target.isIntersecting && preventRef.current) {
-      //옵저버 중복 실행 방지
-      preventRef.current = false; //옵저버 중복 실행 방지
-      setPage((prev) => prev + 1); //페이지 값 증가
-    }
-  };
+  // const obsHandler = (entries: any) => {
+  //   //옵저버 콜백함수
+  //   const target = entries[0];
+  //   if (!endRef.current && target.isIntersecting && preventRef.current) {
+  //     //옵저버 중복 실행 방지
+  //     preventRef.current = false; //옵저버 중복 실행 방지
+  //     setPage((prev) => prev + 1); //페이지 값 증가
+  //   }
+  // };
 
   const getPost = useCallback(async () => {
     //글 불러오기
 
-    setLoad(true); //로딩 시작
+    // setLoad(true); //로딩 시작
     // getMyNFTs(sessionStorage.getItem("account"), page, 10, 0)
     //   .then((res) => {
     //     setMyJAVList((prev) => [...prev, ...res]); //리스트 추가
@@ -105,7 +90,11 @@ const ItemCombine = () => {
 
     const NFTLIST = await ableCombineNFTs(sessionStorage.getItem("account")!);
     setMyJAVList(NFTLIST)
-  }, [page]);
+  }, []);
+
+  useEffect(() => {
+    getPost();
+  }, [getPost]);
 
   // 백엔드, solidity에서 요구하는게 달라서 쓰는게 많아졌음.
   const [material1Img, setMaterial1Img] = useState("");
@@ -148,7 +137,7 @@ const ItemCombine = () => {
   const [NFTAddr, setNFTAddr] = useState("");
 
   const Combine = async () => {
-    if (!!material1Img === false || !!material2Img == false) {
+    if (!!material1Img === false || !!material2Img === false) {
       setNotice("자브종이 충분히 선택되지 않았습니다.");
       handleClick();
     } else {
@@ -170,7 +159,7 @@ const ItemCombine = () => {
 
       // 소유 JAV 초기화 후 다시 로딩
       await setMyJAVList([]);
-      await setPage(-1);
+      // await setPage(-1);
       await setMaterial1Img("");
       await setMaterial2Img("");
       await setMaterial1ID(0);
@@ -344,7 +333,7 @@ const ItemCombine = () => {
                       }}
                       className={styles.refresh}
                       onClick={() => {
-                        setPage(0);
+                        // setPage(0);
                         getPost();
                       }}
                     >
