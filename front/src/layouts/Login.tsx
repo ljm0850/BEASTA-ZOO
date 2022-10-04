@@ -2,13 +2,11 @@ import { useState, forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { checkUser, createUser, getUserInfo } from "../api/connect";
+import { checkUser, createUser } from "../api/connect";
 
 import Button from "@mui/material/Button";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
 import { ABI } from "../common/ABI";
 import UpdateUserInfo from "./modal/UpdateUserInfo";
 
@@ -17,11 +15,11 @@ export interface State extends SnackbarOrigin {
 }
 
 interface UserInfo {
-  banner_img_path: string;
+  banner_img_path: string | null;
   first_discover_count: number;
-  nickname: string;
-  profile_description: string;
-  profile_img_path: string;
+  nickname: string | null;
+  profile_description: string | null;
+  profile_img_path: string | null;
   tier: number;
   token: number;
 }
@@ -38,6 +36,16 @@ interface Props {
 }
 
 const Login = (props: Props) => {
+
+  const [ dummy, setDummy ] = useState<UserInfo>({
+    banner_img_path: "",
+    first_discover_count: 0,
+    nickname: "",
+    profile_description: "",
+    profile_img_path: "",
+    tier: 0,
+    token: 0,
+  });
   const { drawerClose } = props;
 
   const navigate = useNavigate();
@@ -159,10 +167,6 @@ const Login = (props: Props) => {
 
   // 첫 로그인 시 사용할 snackbar
   const [openSnackbar, setSnackbarOpen] = useState(false);
-  const snackbarHandleClick = () => {
-    setSnackbarOpen(true);
-  };
-
   const sanckbarHandleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -209,7 +213,7 @@ const Login = (props: Props) => {
         </Alert>
       </Snackbar>
 
-      <UpdateUserInfo openModal={openModal} modalHandleClose={modalHandleClose} drawerClose={drawerClose}/>
+      <UpdateUserInfo openModal={openModal} modalHandleClose={modalHandleClose} drawerClose={drawerClose} customFuntion={setDummy} customValue={dummy}/>
 
     </div>
   );
