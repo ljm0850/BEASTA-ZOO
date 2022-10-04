@@ -119,7 +119,8 @@ const Profile = () => {
         profile_img_path: url,
       };
 
-      console.log(url);
+      sessionStorage.setItem("profileImgPath", url)
+
       updateUserInfo(loginedAccount, option)
         .then((res) => {
           setUser({
@@ -423,6 +424,7 @@ const Profile = () => {
               />
               <Tab
                 label="Favorited"
+                disabled
                 style={{
                   textTransform: "none",
                   fontWeight: "600",

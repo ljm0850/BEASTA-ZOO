@@ -3,16 +3,18 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 import styles from "./ItemCombine.module.scss";
 import HOS from "../../image/HOS.svg";
-import { getMyNFTs } from "../../api/connect";
+import { ableCombineNFTs, getMyNFTs } from "../../api/connect";
 import { NFT } from "../profile/MyJavs";
 import { Divider } from "@mui/material";
 import { fusion, javsData } from "../../api/solidity";
 import { ABI } from "../../common/ABI";
 import { fusionNFT } from "../../api/market";
 import JavModal from "../../layouts/modal/JavModal";
+import { style } from "@mui/system";
 
 interface NFTs extends Array<NFT> {}
 
@@ -42,6 +44,7 @@ const ItemCombine = () => {
   const [myAccount, setMyAccount] = useState("");
   const [myJAVList, setMyJAVList] = useState<NFTs>([]);
   const [load, setLoad] = useState(false);
+  const [combineLoad, setCombineLoad] = useState(false);
   const [page, setPage] = useState(-1);
   const obsRef = useRef(null); //observer Element
   const preventRef = useRef(true); //옵저버 중복 실행 방지
@@ -58,9 +61,7 @@ const ItemCombine = () => {
   }, []);
 
   useEffect(() => {
-    if (myAccount) {
-      getPost();
-    }
+    getPost();
   }, [myAccount, page]);
 
   // 내 소유 자브종 가져오기 + 무한 스크롤
@@ -88,22 +89,24 @@ const ItemCombine = () => {
     //글 불러오기
 
     setLoad(true); //로딩 시작
-    getMyNFTs(sessionStorage.getItem("account"), page, 10, 0)
-      .then((res) => {
-        console.log(res);
-        setMyJAVList((prev) => [...prev, ...res]); //리스트 추가
-        preventRef.current = true;
-        setLoad(false);
-        if (page === res[0].total_page) {
-          endRef.current = true;
-          setLoad(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoad(false);
-        endRef.current = true;
-      });
+    // getMyNFTs(sessionStorage.getItem("account"), page, 10, 0)
+    //   .then((res) => {
+    //     setMyJAVList((prev) => [...prev, ...res]); //리스트 추가
+    //     preventRef.current = true;
+    //     setLoad(false);
+    //     if (page === res[0].total_page) {
+    //       endRef.current = true;
+    //       setLoad(false);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setLoad(false);
+    //     endRef.current = true;
+    //   });
+
+    const NFTLIST = await ableCombineNFTs(sessionStorage.getItem("account")!);
+    setMyJAVList(NFTLIST)
   }, [page]);
 
   // 백엔드, solidity에서 요구하는게 달라서 쓰는게 많아졌음.
@@ -138,37 +141,48 @@ const ItemCombine = () => {
 
   // 뽑기 모달
   const [openItem, setOpenItem] = useState(false);
-  const handleOpenItem = () => setOpenItem(true);
   const handleCloseItem = () => setOpenItem(false);
 
   ///
   const [img, setImg] = useState("");
   const [genes, setGenes] = useState("");
+  const [tokenID, setTokenID] = useState("");
+  const [NFTAddr, setNFTAddr] = useState("");
 
   const Combine = async () => {
     if (!!material1Img === false || !!material2Img == false) {
       setNotice("자브종이 충분히 선택되지 않았습니다.");
       handleClick();
     } else {
+      setCombineLoad(true)
       const fusionData = await fusion(material1ID, material2ID);
-      const javData = await javsData(fusionData);
-      // console.log(javData)
-      const NFTData = {
-        img_address: javData.URI,
-        jav_code: javData.created_at,
-        nft_address: ABI.CONTRACT_ADDRESS.NFT_ADDRESS,
+      const option = {
+        ...fusionData,
         nft_id_1: material1NFTID,
         nft_id_2: material2NFTID,
-        tier: 0,
-        token_id: fusionData,
-        wallet_address: javData.owner,
       };
-      console.log(NFTData);
-      // 백엔드 통신
-      await fusionNFT(NFTData);
-      await setImg(NFTData.img_address);
-      await setGenes(NFTData.jav_code);
+      // // 백엔드 통신
+      await fusionNFT(option);
+      await setImg(fusionData.img_address);
+      await setGenes(fusionData.jav_code);
+      setTokenID(fusionData.token_id)
+      setNFTAddr(fusionData.nft_address)
       setOpenItem(true);
+      setCombineLoad(false)
+
+      // 소유 JAV 초기화 후 다시 로딩
+      await setMyJAVList([]);
+      await setPage(-1);
+      await setMaterial1Img("");
+      await setMaterial2Img("");
+      await setMaterial1ID(0);
+      await setMaterial2ID(0);
+      await setMaterial1NFTID(0);
+      await setMaterial2NFTID(0);
+      await setCheckedImgInputs([""]);
+      await setCheckedIDInputs([]);
+      await setCheckedNFTIDInputs([]);
+      await getPost();
     }
   };
 
@@ -181,8 +195,6 @@ const ItemCombine = () => {
   );
 
   const check = (event: any, id: any, token_id: number, nft_id: number) => {
-    console.log(id);
-
     if (event.currentTarget.checked) {
       setCheckedImgInputs([...checkedImgInputs, id]);
       setCheckedIDInputs([...checkedIDInputs, token_id]);
@@ -214,14 +226,11 @@ const ItemCombine = () => {
 
   return (
     <div>
-      <div>{material1NFTID}</div>
-      <div>{material2NFTID}</div>
-
       <div className={styles.mainContainer}>
         <div className={styles.space}>
           <div>
             <div className={styles.combineLogo}>
-              <img src={HOS} alt="" className={styles.hos} />
+              <img src={HOS} alt="" className={`${!combineLoad && styles.hos} ${combineLoad && styles.spin}`} />
               <div>조합</div>
             </div>
 
@@ -320,7 +329,31 @@ const ItemCombine = () => {
                     color: "#DCDCDC",
                   }}
                 >
-                  <div>소유한 자브종이 없습니다.</div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>소유한 자브종이 없습니다.</div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                      className={styles.refresh}
+                      onClick={() => {
+                        setPage(0);
+                        getPost();
+                      }}
+                    >
+                      <RefreshIcon style={{ fontSize: "1.3rem" }} />
+                      새로고침
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -363,13 +396,10 @@ const ItemCombine = () => {
         open={openItem}
         onClose={handleCloseItem}
         data={{
-          nft_id: 123,
-          nft_address:
-            "https://mblogthumb-phinf.pstatic.net/MjAyMTA1MTNfMjkz/MDAxNjIwOTEwNDQ3MjQ1.RjpPwu8qenTvn6uEdct9lXaDu6a-eaubruR2i06SjtUg.5izLqsFxNagkeTGMbhf6sGBbNE4adeUKdELQ-H4vozMg.PNG.ysg3355/image.png?type=w800",
+          nft_address: NFTAddr,
           img_address: img,
-          user_id: 123,
-          jav_code: 1231,
-          token_id: "123123",
+          jav_code: genes,
+          token_id: tokenID,
         }}
       />
     </div>

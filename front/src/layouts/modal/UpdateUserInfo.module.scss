@@ -1,0 +1,78 @@
+.title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.nickname {
+
+  input {
+    padding: 0.8rem;
+    border: 2px solid rgb(200, 200, 200);
+    font-family: "pretendard variable";
+    border-radius: 8px;
+    margin: 0.5rem 0 0.5rem 0;
+    font-weight: 700;
+    transition: all 0.3s;
+    &:hover {
+      box-shadow: 0px 1px 5px 2px rgba(0, 0, 0, 0.15);
+    }
+
+    &:focus {
+      outline: none;
+      border: 2px solid rgb(112, 112, 112);
+    }
+  }
+}
+
+.description {
+  margin: 0.5rem 0 0.5rem 0;
+
+  textarea {
+    padding: 0.8rem;
+    border: 2px solid rgb(200, 200, 200);
+    font-family: "pretendard variable";
+    border-radius: 8px;
+    margin: 0.5rem 0 0.5rem 0;
+    font-weight: 700;
+    transition: all 0.5s;
+    width: 400px;
+    height: 100px;
+    resize: none;
+    
+    &:hover {
+      box-shadow: 0px 1px 5px 2px rgba(0, 0, 0, 0.15);
+    }
+
+    &:focus {
+      outline: none;
+      border: 2px solid rgb(112, 112, 112);
+    }
+  }
+}
+.updateLabel {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.updateBtn {
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    border: 0px;
+    border-radius: 10px;
+    padding: 0.8rem 1.2rem 0.8rem 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    font-family: "pretendard variable";
+    background-color: #ffbe19;
+    transition: all 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f9c238;
+    }
+  }
+}
