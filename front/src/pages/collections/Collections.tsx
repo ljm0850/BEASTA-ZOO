@@ -121,7 +121,6 @@ const Collections = () => {
           </p>
         )}
       </div>
-      <button onClick={handleLodding}>click</button>
       <div>
         <div className={styles.JAVS}>
           {collList.map((item, idx) => {
