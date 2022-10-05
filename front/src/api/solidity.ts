@@ -209,7 +209,6 @@ export const javsData = async (NFT_ID: number) => {
     URI: await GetJavsURI(NFT_ID),
   };
 
-  console.log(data);
   return data;
 };
 export const javsGeneContent = async (NFT_ID: number) => {

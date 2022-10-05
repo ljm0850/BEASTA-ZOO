@@ -71,7 +71,6 @@ const SaleModal = ({
       price: price,
       seller_wallet: data.myAddress,
     });
-    console.log(x);
   };
 
   return (
