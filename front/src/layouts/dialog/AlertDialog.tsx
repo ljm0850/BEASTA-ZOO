@@ -4,6 +4,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { ReactComponent as Jav } from "../../image/JAV.svg";
 
 interface Props {
   title: string | undefined;
@@ -27,6 +28,13 @@ const AlertDialog = (props: Props) => {
         <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
+            <Jav
+              style={{
+                width: "1.2rem",
+                height: "auto",
+                marginRight: "0.3rem",
+              }}
+            />
             {props.content}
           </DialogContentText>
         </DialogContent>

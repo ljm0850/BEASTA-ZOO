@@ -6,7 +6,7 @@ import { ReactComponent as Jav } from "../../image/JAV.svg";
 
 import drawImg from "../../image/draw.svg";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import JavModal from "../../layouts/modal/JavModal";
 import AlertDialog from "../../layouts/dialog/AlertDialog";
 
@@ -25,20 +25,13 @@ const ItemDraw = () => {
   const handleOpenItem = () => setOpenItem(true);
   const handleCloseItem = () => setOpenItem(false);
 
-  // 잔액 가져오기
-  const [balance, setBalance] = useState(0);
-  useEffect(() => {
-    myJavToken().then((money) => {
-      setBalance(money);
-    });
-  }, []);
-
   // 뽑기 alert or Modal
   // 뽑을 수 없으면 잔액이 부족하다는 modal을 띄운다.
   const [openAlert, setOpenAlert] = useState(false);
   const [openAlertModal, setOpenAlertModal] = useState(false);
 
   const handleClickOpenAlert = async () => {
+    const balance = await myJavToken();
     if (balance >= 100) {
       setOpenAlert(true);
     } else {
@@ -54,9 +47,6 @@ const ItemDraw = () => {
     const data = await pickup();
     setNftData(data.nftData);
     setGenes(data.genes);
-    myJavToken().then((money) => {
-      setBalance(money);
-    });
   };
 
   return (

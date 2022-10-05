@@ -70,7 +70,7 @@ const MarketMain = () => {
         </Grid>
       </Grid>
       <Pagination
-        sx={{ display: "flex", justifyContent: "center" }}
+        sx={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
         count={totalPage}
         page={page}
         color="primary"
