@@ -22,7 +22,7 @@ const Marketplace = () => {
           View all
         </button>
       </div>
-      <Items page={0} size={4} search={"0000000"} haveCompleted={0} sort={0} />
+      <Items page={1} size={4} search={"0000000"} haveCompleted={0} sort={0} />
     </div>
   );
 };

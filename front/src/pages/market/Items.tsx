@@ -12,9 +12,17 @@ interface Props {
   search: string;
   haveCompleted: number;
   sort: number;
+  setTotalPage?: Function;
 }
 
-const Items = ({ page, size, search, haveCompleted, sort }: Props) => {
+const Items = ({
+  page,
+  size,
+  search,
+  haveCompleted,
+  sort,
+  setTotalPage,
+}: Props) => {
   const [item, setItem] = useState<Product[]>([]);
   const [isCollection, setIsCollection] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -30,8 +38,11 @@ const Items = ({ page, size, search, haveCompleted, sort }: Props) => {
     // TODO
     setLoading(true);
 
-    fetchItems(page, size, search, haveCompleted, sort).then((res) => {
+    fetchItems(page - 1, size, search, haveCompleted, sort).then((res) => {
       const resultList = [] as Product[];
+      if (setTotalPage) {
+        setTotalPage(res[0].total_page);
+      }
       res.map((item: any) =>
         resultList.push({
           saleId: item.sale_id,
@@ -44,12 +55,13 @@ const Items = ({ page, size, search, haveCompleted, sort }: Props) => {
           buyerNickname: item.buyer_nickname,
           price: item.price,
           saleStartDate: item.sale_start_date,
-          saleCompleteDate: item.sale_complete_date,
+          saleCompletedDate: item.sale_completed_date,
           contractAddress: item.contract_address,
           state: item.state,
         })
       );
       setItem(resultList);
+
       setLoading(false);
       setIsCollection(true);
     });
@@ -57,7 +69,7 @@ const Items = ({ page, size, search, haveCompleted, sort }: Props) => {
 
   useEffect(() => {
     getItem();
-  }, [search, haveCompleted, sort]);
+  }, [search, haveCompleted, sort, page]);
 
   return (
     <div>

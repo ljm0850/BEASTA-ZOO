@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ENDPOINT_URL } from ".";
 import { SaleData } from "../layouts/modal/SaleModal";
+import { PurchaseData } from "../pages/market/ItemPurchase";
 
 export const fetchItems = async (
   page: number,
@@ -58,5 +59,20 @@ export const fusionNFT = async (fusionData: FusionData) => {
 
 export const saleRegister = async (saleData: SaleData) => {
   const { data } = await axios.post(`${ENDPOINT_URL}/market/sale`, saleData);
+  return data;
+};
+
+export const purchaseRegister = async (purchaseData: PurchaseData) => {
+  const { data } = await axios.post(
+    `${ENDPOINT_URL}/market/purchase`,
+    purchaseData
+  );
+  return data;
+};
+
+export const saleCancel = async (contractAddress: string) => {
+  const { data } = await axios.delete(
+    `${ENDPOINT_URL}/market/${contractAddress}`
+  );
   return data;
 };
