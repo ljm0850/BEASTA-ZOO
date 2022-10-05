@@ -57,7 +57,10 @@ public class NFTServiceImpl implements NFTService {
             Sales sale = salesRepository.findByWalletAndJav(targetUser, targetNFT);
 
             if(sale != null) {
-                if(sale.getState()==0) nftResDto.setSale(true);
+                if(sale.getState()==0) {
+                    nftResDto.setSale_id(sale.getSale_id());
+                    nftResDto.setSale(true);
+                }
             }
             userNFTResDtoList.add(nftResDto);
         }
