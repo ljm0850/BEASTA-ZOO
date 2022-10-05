@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { getUserInfo, updateUserInfo } from "../../api/connect";
 
@@ -17,11 +17,13 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 import ethereum_logo from "../../image/ethereum_logo.svg";
 
 import styles from "./Profile.module.scss";
 import MyJavs from "./MyJavs";
+import UpdateUserInfo from "../../layouts/modal/UpdateUserInfo";
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -87,11 +89,11 @@ const Profile = () => {
     }
   };
 
-  const get_UserInfo = async () => {
+  const get_UserInfo = useCallback(async () => {
     await getUserInfo(account).then((res) => {
       setUser({ ...res });
     });
-  };
+  }, [account])
 
   useEffect(() => {
     get_UserInfo();
@@ -103,7 +105,7 @@ const Profile = () => {
     if (account !== undefined) {
       setReduceAccount(account.slice(0, 6) + "..." + account.slice(38, 42));
     }
-  }, []);
+  }, [account, get_UserInfo]);
 
   // ipfs 사용 부분
   // 프로필 사진 변경
@@ -188,6 +190,13 @@ const Profile = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+  };
+
+
+  // update user modal
+  const [openModal, setModalOpen] = useState(false);
+  const modalHandleClose = () => {
+    setModalOpen(false)
   };
 
   return (
@@ -378,8 +387,9 @@ const Profile = () => {
       </div>
 
       <div style={{ marginTop: "80px", marginLeft: "50px", marginRight: "50px" }}>
-        <div style={{ fontSize: "2rem", fontWeight: "bold" }}>
-          {!user.nickname ? "unknown Javjong" : user.nickname}
+        <div className={styles.myProfile} style={{  }}>
+          <div>{!user.nickname ? "unknown Javjong" : user.nickname}</div>
+          {loginedAccount == sessionStorage.getItem("account") && <div className={styles.optionLogo} onClick={() => {setModalOpen(true)}}><ManageAccountsIcon/></div>}
         </div>
 
         <BootstrapTooltip title={<div>{copy}</div>}>
@@ -451,6 +461,7 @@ const Profile = () => {
           <TabPanel value="3">Item Three</TabPanel>
         </TabContext>
       </Box>
+      <UpdateUserInfo openModal={openModal} modalHandleClose={modalHandleClose} drawerClose={() => {}} customFuntion={setUser} customValue={user} />
     </div>
   );
 };

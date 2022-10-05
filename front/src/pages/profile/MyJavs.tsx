@@ -2,13 +2,14 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { getMyNFTs } from "../../api/connect";
 import JavModal from "../../layouts/modal/JavModal";
 import SaleModal from "../../layouts/modal/SaleModal";
-
+import { Link as RouterLink } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import CircularProgress from "@mui/material/CircularProgress";
 import MenuItem from "@mui/material/MenuItem";
 
 import styles from "./MyJavs.module.scss";
+import { Link } from "@mui/material";
 
 interface Props {
   account: string | undefined;
@@ -22,6 +23,8 @@ export interface NFT {
   jav_code: string | number | null;
   tier?: number;
   token_id?: number;
+  sale?: boolean;
+  sale_id?: number | null;
 }
 
 interface NFTs extends Array<NFT> {}
@@ -57,6 +60,7 @@ const MyJavs = ({ account }: Props) => {
   const [saleJavImg, setSaleJavImg] = useState("");
   const [saleNftId, setSaleNftId] = useState<number>(0);
   const [saleTokenId, setSaleTokenId] = useState<number>(0);
+  const [saleJavCode, setSaleJavCode] = useState<string | number | null>();
 
   // 정렬 변경
   const sortHandleChange = (event: SelectChangeEvent) => {
@@ -184,17 +188,30 @@ const MyJavs = ({ account }: Props) => {
                     }}
                     alt=""
                   />
-                  <div
-                    className={styles.sale}
-                    onClick={() => {
-                      saleModalOpenHandler();
-                      setSaleJavImg(contact.img_address);
-                      setSaleNftId(contact.nft_id!);
-                      setSaleTokenId(contact.token_id!);
-                    }}
-                  >
-                    판매하기
-                  </div>
+
+                  {!contact.sale ? (
+                    <div
+                      className={styles.sale}
+                      onClick={() => {
+                        saleModalOpenHandler();
+                        setSaleJavImg(contact.img_address);
+                        setSaleNftId(contact.nft_id!);
+                        setSaleTokenId(contact.token_id!);
+                        setSaleJavCode(contact.jav_code!);
+                      }}
+                    >
+                      판매하기
+                    </div>
+                  ) : (
+                    <Link
+                      to={`/market/buy/${contact.sale_id}`}
+                      color="inherit"
+                      underline="none"
+                      component={RouterLink}
+                    >
+                      <div className={styles.sale}>판매 페이지로</div>
+                    </Link>
+                  )}
                 </div>
               </Grid>
             ))}
@@ -208,7 +225,7 @@ const MyJavs = ({ account }: Props) => {
           )}
         </div>
       ) : (
-        <div>no item</div>
+        <div className={styles.noItem}>가지고 있는 자브종이 없습니다.</div>
       )}
       <div ref={obsRef}></div>
       {/* modal */}
@@ -219,6 +236,7 @@ const MyJavs = ({ account }: Props) => {
         tokenId={saleTokenId}
         nftId={saleNftId}
         imgAddr={saleJavImg}
+        jav_code={saleJavCode}
       />
     </div>
   );

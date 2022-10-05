@@ -38,7 +38,8 @@ const Collections = () => {
   const [modalData, setModalData] = useState<Coll>();
   const [myWall, setMyWall] = useState<Wallet>();
   const [walletAddress, setWalletAddress] = useState("");
-  const [alignment, setAlignment] = React.useState('번호');
+  const [alignment, setAlignment] = React.useState("번호");
+  const [isLodding, setIsLodding] = React.useState(false);
 
   const getAccount = async () => {
     const accounts = await window.ethereum.request({ method: "eth_accounts" });
@@ -49,6 +50,9 @@ const Collections = () => {
   const handleClose = () => setOpen(false);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
+  };
+  const handleLodding = () => {
+    setIsLodding(!isLodding)
   };
 
   const handleChangeSortMethod = (
@@ -72,9 +76,10 @@ const Collections = () => {
     setAlignment(newAlignment);
   };
 
-
-
   useEffect(() => {
+    setIsLodding(true)
+    console.log(1)
+    // setTimeout(() => setIsLodding(!isLodding), 10000)
     if (sessionStorage.getItem("isLogined") === "true") {
       getAccount();
     }
@@ -83,13 +88,13 @@ const Collections = () => {
       myCollCount(walletAddress).then((res: Wallet) => {
         setMyWall(res);
       });
-      Collection(page - 1, 24, sortMethod, typeSort, walletAddress).then(
-        (res: Coll[]) => {
-          setCollList(res);
-        }
-      );
     }
 
+    Collection(page - 1, 24, sortMethod, typeSort, walletAddress).then(
+      (res: Coll[]) => {
+        setCollList(res);
+      }
+    );
     totalCount().then((res) => {
       setTotal(res);
     });
@@ -130,25 +135,39 @@ const Collections = () => {
                   }
                 }}
               >
-                {item.owner ? (
-                  <img
-                    key={item.discover_time}
-                    className={`${styles.JAVImg} ${styles.FD}`}
-                    src={item.jav_img_path}
-                    alt=""
-                  />
-                ) : (
-                  <div className={styles.lockCard}>
-                    <img
-                      key={item.discover_time}
-                      className={styles.JAVImgFalse}
-                      src={item.jav_img_path}
-                      alt=""
-                    />
-                    <img className={styles.lockImg} src={locked} alt="" />
+                {isLodding && 
+                  <div className={styles.skeletonContainer}>
+                    <div className={styles.skeleton}></div>
+                  </div>}
+                  <div className={isLodding ? styles.loadJAV : styles.JAVContainer}>
+                    {item.owner ? (
+                      <img
+                        key={item.discover_time}
+                        className={item.nickname === sessionStorage.getItem('nickname') ? `${styles.JAVImg} ${styles.FD}` : styles.JAVImg}
+                        onLoad={() => {
+                          if (idx === collList.length - 1) {
+                            setIsLodding(false)
+                          }}}
+                          src={item.jav_img_path}
+                          alt=""
+                          />
+                    ) : (
+                      <div className={isLodding ? styles.loadJAV : styles.lockCard}>
+                        <img
+                          key={item.discover_time}
+                          className={styles.JAVImgFalse}
+                          onLoad={() => {
+                            if (idx === collList.length - 1) {
+                              setIsLodding(false)
+                            }}}
+                          src={item.jav_img_path}
+                          alt=""
+                          />
+                        <img className={styles.lockImg} src={locked} alt="" />
+                      </div>
+                    )}
+                  <p className={styles.javId}>{item.jav_id}</p>
                   </div>
-                )}
-                <p className={styles.javId}>{item.jav_id}</p>
               </div>
             );
           })}

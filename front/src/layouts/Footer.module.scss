@@ -1,0 +1,12 @@
+.footerName {
+  display: flex;
+  
+  div:first-child {
+    color: #FFC42E;
+    font-weight: 700;
+  }
+
+  div:last-child {
+    color: gray;
+  }
+}

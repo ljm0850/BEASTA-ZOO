@@ -103,10 +103,10 @@ contract JAV_NFT is ERC721 {
     uint[7] weight = [1, 1, 1, 1, 8, 8, 80];
     uint[3] fusionWeight = [35, 35, 30];
     uint[3] colorWeight = [1, 1, 1];
-    uint[3] gachaWeight = [1, 1, 1];
+    uint[6] gachaWeight = [32, 32, 32, 1, 1, 1];
     uint temp;
 
-    function gacha(uint[15] memory _nums) public pure returns (uint[3] memory) {
+    function gacha(uint[15] memory _nums) public view returns (uint[3] memory) {
         uint[3] memory color = [_colorPicker(_nums[0]),_colorPicker(_nums[1]),_colorPicker(_nums[2])];
         uint[3] memory self = [_gacha(_nums[3]),_gacha(_nums[4]),_gacha(_nums[5])];
         uint[3] memory mother = [_gacha(_nums[6]),_gacha(_nums[7]),_gacha(_nums[8])];
@@ -326,7 +326,16 @@ contract JAV_NFT is ERC721 {
         return (_random % 3) +1;
     }
 
-    function _gacha(uint _random) private pure returns (uint) {
-        return _random % 3 + 1;
+    function _gacha(uint _random) private view returns (uint) {
+        uint weightSum;
+        _random %= 99;
+        for (uint i = 0; i < 6; i++) {
+            weightSum += gachaWeight[i];
+
+            if (_random < weightSum) {
+                return i + 1;
+            }
+        }
+        return 0;
     }
 }

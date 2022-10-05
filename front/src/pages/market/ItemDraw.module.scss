@@ -1,0 +1,19 @@
+.cautionContainer {
+  margin: 0 5vw 0 5vw;
+
+  .caution {
+    margin: 30px 2vw 50px 2vw;
+    div {
+      font-weight: 700;
+      font-size: 16px;
+      color: #ff7a00;
+    }
+
+    li {
+      font-weight: 500;
+      font-size: 16px;
+      color: #a6a6a6;
+      margin: 5px;
+    }
+  }
+}

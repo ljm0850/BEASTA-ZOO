@@ -72,3 +72,11 @@
   }
 }
 
+.noItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  color: rgb(177, 177, 177);
+  height: 25rem;
+}

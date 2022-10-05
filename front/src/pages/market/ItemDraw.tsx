@@ -1,4 +1,4 @@
-import { Box, Card, Button } from "@mui/material/";
+import { Box, Card, Button, Divider } from "@mui/material/";
 
 import CardActions from "@mui/material/CardActions";
 
@@ -10,34 +10,37 @@ import { useState } from "react";
 import JavModal from "../../layouts/modal/JavModal";
 import AlertDialog from "../../layouts/dialog/AlertDialog";
 
-import { pickup } from "../../api/solidity";
+import { myJavToken, pickup } from "../../api/solidity";
 import Draw from "../../utils/Draw";
 import { NFT } from "../profile/MyJavs";
+import AlertModal from "../../layouts/modal/AlertModal";
+import styles from "./ItemDraw.module.scss";
 
 const ItemDraw = () => {
-  /**
-   * 프로젝트 구현
-   * 1. 뽑기 버튼을 눌렀을 경우 경고창 모달과 함께 뽑기를 할 것인지 승인 여부를 묻습니다.
-   * 2. 랜덤으로 뽑아진 아이템에 따라 해당 NFT의 대한 정보가 자동으로 입력되며, 등록 승인 (개인키 입력)을 위한 창이 열립니다.
-   * 3. 해당 창에서 개인키를 입력하면 getAddressFrom() 함수를 통해 공개키가 반환되며, 공개키가 유효한 경우 해당 아이템 정보가 유지됩니다.
-   * 4. 해당 NFT를 IPFS에 업로드합니다.
-   * 5. 업로드 완료 후 얻은 정보로 해당 NFT의 메타데이터(Metadata)를 구성하여 IPFS에 업로드합니다.
-   * 6. 메타데이터 업로드 완료 후 얻은 정보를 tokenURI로 하여 NFT 생성을 위한 스마트 컨트랙트의 함수를 호출합니다.
-   * 7. 정상적으로 트랜잭션이 완결된 후 token Id가 반환됩니다.
-   * 8. 백엔드에 token Id와 owner_address를 포함한 정보를 등록 요청합니다.
-   */
+  const [nftData, setNftData] = useState<NFT>();
+  const [genes, setGenes] = useState("");
 
   // 뽑기 모달
   const [openItem, setOpenItem] = useState(false);
   const handleOpenItem = () => setOpenItem(true);
   const handleCloseItem = () => setOpenItem(false);
-  // 뽑기 alert
-  const [openAlert, setOpenAlert] = useState(false);
-  const handleClickOpenAlert = () => setOpenAlert(true);
-  const handleCloseAlert = () => setOpenAlert(false);
 
-  const [nftData, setNftData] = useState<NFT>();
-  const [genes, setGenes] = useState("");
+  // 뽑기 alert or Modal
+  // 뽑을 수 없으면 잔액이 부족하다는 modal을 띄운다.
+  const [openAlert, setOpenAlert] = useState(false);
+  const [openAlertModal, setOpenAlertModal] = useState(false);
+
+  const handleClickOpenAlert = async () => {
+    const balance = await myJavToken();
+    if (balance >= 100) {
+      setOpenAlert(true);
+    } else {
+      setOpenAlertModal(true);
+    }
+  };
+
+  const handleCloseAlert = () => setOpenAlert(false);
+  const handleCloseAlertModal = () => setOpenAlertModal(false);
 
   // 뽑기 구현
   const javPickup = async () => {
@@ -49,66 +52,97 @@ const ItemDraw = () => {
   return (
     <div
       style={{
-        height: "100vh",
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <div>
-        <img src={drawImg} alt="" />
-        <Draw genes={genes} handleOpenItem={handleOpenItem}></Draw>
-        <div
-          style={{
+      <img src={drawImg} alt="" />
+      <Draw genes={genes} handleOpenItem={handleOpenItem}></Draw>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Box
+          component="form"
+          sx={{
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            "& > :not(style)": { m: 1, width: "25ch" },
           }}
+          noValidate
+          autoComplete="off"
         >
-          <Box
-            component="form"
-            sx={{
-              display: "flex",
-              "& > :not(style)": { m: 1, width: "25ch" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <Card sx={{ minWidth: 275 }}>
-              <CardActions
-                style={{ display: "flex", justifyContent: "center" }}
+          <Card sx={{ minWidth: 275 }}>
+            <CardActions style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                sx={{ fontWeight: "bold" }}
+                variant="contained"
+                size="small"
+                color="primary"
+                onClick={handleClickOpenAlert}
               >
-                <Button
-                  sx={{ fontWeight: "bold" }}
-                  variant="contained"
-                  size="small"
-                  color="primary"
-                  onClick={handleClickOpenAlert}
-                >
-                  1회 뽑기
-                  <Jav
-                    style={{
-                      width: "1.2rem",
-                      height: "auto",
-                      marginRight: "0.3rem",
-                      marginLeft: "0.8rem",
-                    }}
-                  />
-                  100 JAV
-                </Button>
-              </CardActions>
-            </Card>
-          </Box>
+                뽑기
+                <Jav
+                  style={{
+                    width: "1.2rem",
+                    height: "auto",
+                    marginRight: "0.3rem",
+                    marginLeft: "0.8rem",
+                  }}
+                />
+                100 JAV
+              </Button>
+            </CardActions>
+          </Card>
+        </Box>
+      </div>
+      <div className={styles.cautionContainer}>
+        <Divider />
+        <div className={styles.caution}>
+          <div>주의 사항!</div>
+          <ul>
+            <li>
+              자브종은 BEASTAZOO에서 뽑기, 조합을 통해 얻을 수 있는 모든
+              캐릭터를 의미합니다.
+            </li>
+            <li>
+              뽑기 시 꼭 서명이 필요합니다. 메타마스크 지갑이 자동으로 열리지
+              않는 경우는 확장 프로그램을 클릭해주세요.
+            </li>
+            <li>
+              중간에 홈페이지를 끄꺼나 이탈할 경우 자브종은 인벤토리로 들어가지
+              않으며, 이때 소모된 JAV, 자브종은 환불되지 않습니다.{" "}
+            </li>
+            <li>
+              해당 뽑기는 1, 2티어 자브종이 출현합니다. 2티어 자브종은 파츠별로
+              3% 확률로 뽑힙니다.
+            </li>
+            <li>
+              BEASTAZOO는 시즌제로 운영됩니다. 현재 시즌은 OOZ Project이며 이번
+              시즌이 지나면 해당 자브종은 얻을 수 없습니다.
+            </li>
+          </ul>
         </div>
       </div>
-
       {/* 뽑기 후 NFT 모달로 보여주기 */}
       <JavModal open={openItem} onClose={handleCloseItem} data={nftData} />
       <AlertDialog
         open={openAlert}
         onClose={handleCloseAlert}
-        setAgree={javPickup}
+        setAgree={() => {
+          setGenes("0000000");
+          javPickup();
+        }}
         content="뽑으시겠습니까?"
+      />
+      <AlertModal
+        open={openAlertModal}
+        onClose={handleCloseAlertModal}
+        content={"JAV가 부족합니다."}
       />
     </div>
   );

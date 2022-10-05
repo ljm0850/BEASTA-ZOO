@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ItemFilterContainer from "../../layouts/items/ItemFilterContainer";
@@ -8,7 +8,10 @@ const MarketMain = () => {
   const [search, setSearch] = useState<string>("0000000");
   const [haveCompleted, setHaveCompleted] = useState(0);
   const [sort, setSort] = useState(0);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState<number>(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const size = 8;
   /**
    * 프로젝트 구현
    * 1. API를 호출하고 응답 데이터를 화면에 표시합니다.
@@ -28,30 +31,51 @@ const MarketMain = () => {
     if (query) {
       setSort(Number(query));
     }
+    query = searchParams.get("page");
+    if (query) {
+      setPage(Number(query));
+    }
   }, [searchParams]);
 
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setSearchParams({
+      search: search,
+      completed: String(haveCompleted),
+      sort: String(sort),
+      page: String(value),
+    });
+  };
+
   return (
-    <Box sx={{ mx: 5 }}>
+    <Box sx={{ mx: 5, mb: 3 }}>
       <Grid container spacing={6}>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={4} md={3}>
           <ItemFilterContainer
-            searchParams={searchParams}
             setSearchParams={setSearchParams}
             search={search}
             haveCompleted={haveCompleted}
             sort={sort}
+            page={page}
           />
         </Grid>
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12} sm={8} md={9}>
           <Items
-            page={0}
-            size={10}
+            page={page}
+            size={size}
             search={search}
             haveCompleted={haveCompleted}
             sort={sort}
+            setTotalPage={setTotalPage}
           />
         </Grid>
       </Grid>
+      <Pagination
+        sx={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+        count={totalPage}
+        page={page}
+        color="primary"
+        onChange={handleChange}
+      />
     </Box>
   );
 };

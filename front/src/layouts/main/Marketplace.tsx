@@ -7,7 +7,7 @@ const Marketplace = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div style={{margin: "90px 0 90px 0"}}>
       <div className={styles.MPBody}>
         <div className={styles.MPContainer}>
           <p className={styles.MPTitle}>Marketplace</p>
@@ -22,7 +22,7 @@ const Marketplace = () => {
           View all
         </button>
       </div>
-      <Items page={0} size={4} search={"0000000"} haveCompleted={0} sort={0} />
+      <Items page={1} size={4} search={"0000000"} haveCompleted={0} sort={0} />
     </div>
   );
 };

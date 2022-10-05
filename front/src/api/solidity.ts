@@ -24,6 +24,7 @@ import {
 } from "../common/ABI";
 import { draw } from "./market";
 import { storage } from "../utils/fbase";
+import { number } from "yup";
 
 // export const myAddress = async() =>{
 //   const myWallet:string = await getWalletAddress()
@@ -208,7 +209,6 @@ export const javsData = async (NFT_ID: number) => {
     URI: await GetJavsURI(NFT_ID),
   };
 
-  console.log(data);
   return data;
 };
 export const javsGeneContent = async (NFT_ID: number) => {
@@ -257,11 +257,16 @@ export const purchaseNFT = async (saleAddress: string) => {
 };
 // SC 좀 수정해야함
 export const cancelSaleNFT = async (saleAddress: string) => {
-  CancelSale(saleAddress);
+  await CancelSale(saleAddress);
 };
 
 export const saleRecord = async (tokenId: number) => {
-  return GetSaleData(tokenId);
+  const numRecords:number[] = []
+  const strRecords:string[] = await GetSaleData(tokenId)
+  strRecords.forEach((record)=>{
+    numRecords.push(Number(record)/1000)
+  })
+  return numRecords
 };
 
 /*
