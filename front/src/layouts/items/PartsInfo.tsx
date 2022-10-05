@@ -2,6 +2,7 @@ import { Divider, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import FetchAnimal from "../../utils/FetchAnimal";
+import styles from "./PartsInfo.module.scss";
 
 interface Props {
   javCode: string;
@@ -47,7 +48,19 @@ const PartsInfo = ({ javCode }: Props) => {
               <div>
                 {nftPart.name} {partName[idx]}
               </div>
-              <div>{nftPart.tier} 티어</div>
+              <div>{nftPart.tier === 1 && <div>{nftPart.tier} 티어</div>}</div>
+              <div>
+                {nftPart.tier === 2 && (
+                  <div style={{ color: "#38E54D" }}>{nftPart.tier} 티어</div>
+                )}
+              </div>
+              <div>
+                {nftPart.tier === 3 && (
+                  <div className={styles.tierAnimation}>
+                    {nftPart.tier} 티어
+                  </div>
+                )}
+              </div>
             </div>
           </Stack>
         );
