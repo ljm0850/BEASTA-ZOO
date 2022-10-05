@@ -74,11 +74,11 @@ const Draw = ({ genes, handleOpenItem }: Props) => {
 
   useEffect(() => {
     if (genes) {
-      rouletteHandler();
+      rouletteHandler(genes);
     }
   }, [genes]);
 
-  const rouletteHandler = () => {
+  const rouletteHandler = (picks: string) => {
     document.getElementsByClassName(
       `${styles.digitsDiv}`
     )[0].className = `${styles.digitsDiv}`;
@@ -88,12 +88,10 @@ const Draw = ({ genes, handleOpenItem }: Props) => {
     document.getElementsByClassName(
       `${styles.digitsDiv}`
     )[2].className = `${styles.digitsDiv}`;
-    // document.getElementsByClassName(`${styles.digitsDiv}`)[3].className = `${styles.digitsDiv}`;
 
-    let spin0 = "spin" + genes.charAt(0);
-    let spin1 = "spin" + genes.charAt(1);
-    let spin2 = "spin" + genes.charAt(2);
-    // let spin3 = "spin" + rand.charAt(3);
+    let spin0 = "spin" + picks.charAt(0);
+    let spin1 = "spin" + picks.charAt(1);
+    let spin2 = "spin" + picks.charAt(2);
 
     // 룰렛 돌리기
     document.getElementsByClassName(
@@ -105,16 +103,20 @@ const Draw = ({ genes, handleOpenItem }: Props) => {
     document.getElementsByClassName(
       `${styles.digitsDiv}`
     )[2].className = `${styles.digitsDiv} ${styles[spin2]}`;
-
-    setTimeout(() => {
-      handleOpenItem();
-    }, 5000);
+    if (genes !== "0000000") {
+      setTimeout(() => {
+        handleOpenItem();
+      }, 3000);
+    }
   };
 
   return (
     <div>
       <div className={styles.counter}>
-        <div className={styles.digitsContainer}>
+        <div
+          className={styles.digitsContainer}
+          style={{ overflow: "hidden", height: "200px" }}
+        >
           <div className={styles.digitsDiv}>
             <span>-</span>
             {headList.map((head) => {
@@ -126,7 +128,10 @@ const Draw = ({ genes, handleOpenItem }: Props) => {
             })}
           </div>
         </div>
-        <div className={styles.digitsContainer}>
+        <div
+          className={styles.digitsContainer}
+          style={{ overflow: "hidden", height: "200px" }}
+        >
           <div className={styles.digitsDiv}>
             <span>-</span>
             {earsList.map((ears) => {
@@ -138,7 +143,10 @@ const Draw = ({ genes, handleOpenItem }: Props) => {
             })}
           </div>
         </div>
-        <div className={styles.digitsContainer}>
+        <div
+          className={styles.digitsContainer}
+          style={{ overflow: "hidden", height: "200px" }}
+        >
           <div className={styles.digitsDiv}>
             <span>-</span>
             {mouthList.map((mouth) => {
