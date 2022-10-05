@@ -132,7 +132,7 @@ const ItemPurchase = () => {
   return (
     <div>
       {item !== null ? (
-        <div style={{ margin: "5rem 10rem 5rem 10rem" }}>
+        <div style={{ margin: "5vw 10vw 5vw 10vw" }}>
           <Grid container sx={{ mt: 4 }}>
             <Grid item xs={12} lg={5}>
               <Card>
