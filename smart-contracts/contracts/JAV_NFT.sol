@@ -328,7 +328,7 @@ contract JAV_NFT is ERC721 {
 
     function _gacha(uint _random) private view returns (uint) {
         uint weightSum;
-
+        _random %= 99;
         for (uint i = 0; i < 6; i++) {
             weightSum += gachaWeight[i];
 
