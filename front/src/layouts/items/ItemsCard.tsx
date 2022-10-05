@@ -42,7 +42,9 @@ const ItemsCard = ({ product }: { product: Product }) => {
       underline="none"
       component={RouterLink}
     >
-      <Card sx={{ borderRadius: "10px" }}>
+      <Card sx={{ borderRadius: "10px", transition: "all 0.5s", boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)", "&:hover": {
+        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.25)"
+      } }}>
         <Box sx={{ pt: "100%", position: "relative", overflow: "hidden" }}>
           <ImgStyle src={url} />
         </Box>
@@ -52,19 +54,19 @@ const ItemsCard = ({ product }: { product: Product }) => {
             <div style={{fontSize: "0.8rem", fontWeight: "700", color: "gray"}}>#{nftId}</div>
           </div>
 
-          <Typography variant="subtitle1" noWrap sx={{fontSize: "0.9rem"}}>
+          <Typography noWrap sx={{fontSize: "0.9rem"}}>
             {sellerNickname}
           </Typography>
 
-          <Typography variant="subtitle1" noWrap sx={{fontSize: "0.8rem", fontWeight: "700", color: "gray", marginTop: "2rem"}}>
+          <Typography component={'div'} noWrap sx={{fontSize: "0.8rem", fontWeight: "700", color: "gray", marginTop: "2rem"}}>
             가격
           </Typography>
 
-          <Typography noWrap sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-            <Typography variant="subtitle1" sx={{ display: "flex" , fontSize: "1.2rem", fontWeight: "700", alignItems: "center"}}>
+          <Typography component={'div'} noWrap sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+            <Typography component={'div'} sx={{ display: "flex" , fontSize: "1.2rem", fontWeight: "700", alignItems: "center"}}>
               <img style={{width: "1.3rem", marginRight: "0.5rem"}} src={JAV} alt="" /> {price} {symbol}
             </Typography>
-            <Typography noWrap sx={state === 0 ? { color: "#B6B6B6", fontWeight: "700" } : { color: "#FFC42E", fontWeight: "700" }}>
+            <Typography component={'div'} noWrap sx={state === 0 ? { color: "#B6B6B6", fontWeight: "700" } : { color: "#FFC42E", fontWeight: "700" }}>
               {state === 0 ? "판매 중" : "품절"}
             </Typography>
           </Typography>

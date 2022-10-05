@@ -23,9 +23,13 @@
   font-weight: lighter;
   border-left: solid 4px #f7f8f8;
   margin-top: 15px;
+
+  &:focus {
+    font-weight: 700;
+  }
 }
 .accordion:hover {
-  background: #ffd260;
+  // background: #ffd260;
 }
 // .accordion:after {
 //   content: "❯";
