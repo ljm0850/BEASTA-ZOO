@@ -7,7 +7,7 @@ const Marketplace = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div style={{margin: "90px 0 90px 0"}}>
       <div className={styles.MPBody}>
         <div className={styles.MPContainer}>
           <p className={styles.MPTitle}>Marketplace</p>

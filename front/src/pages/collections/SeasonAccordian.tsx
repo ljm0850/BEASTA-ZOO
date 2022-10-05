@@ -42,16 +42,7 @@ const SeasonAccordian = () => {
           sx={{ height: "5rem" }}
         >
           <img src={OOZ_logo} alt="" />
-          <Typography
-            sx={{
-              marginLeft: "1rem",
-              display: "flex",
-              justifyContent: "start",
-              alignItems: "center",
-            }}
-          >
-            Season 1 - OOZ Project
-          </Typography>
+          <Typography sx={{ marginLeft: "1rem", display: "flex", justifyContent: "start", alignItems: "center", fontWeight: 700}}>Season 1 - OOZ Project</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <div className={styles.accordianDiv}>

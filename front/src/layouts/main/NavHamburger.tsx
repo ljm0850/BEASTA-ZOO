@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
@@ -46,7 +45,7 @@ export default function NavHamburger({walletDrawer, account}: Props) {
         <ListItem
           disablePadding
           onClick={() => {
-            console.log(123);
+            navigate(`/market/draw`)
           }}
         >
           <ListItemButton sx={{ display: "flex", justifyContent: "center" }}>
@@ -56,7 +55,7 @@ export default function NavHamburger({walletDrawer, account}: Props) {
         <ListItem
           disablePadding
           onClick={() => {
-            console.log(123);
+            navigate(`/market/combine`)
           }}
         >
           <ListItemButton sx={{ display: "flex", justifyContent: "center" }}>
@@ -66,7 +65,7 @@ export default function NavHamburger({walletDrawer, account}: Props) {
         <ListItem
           disablePadding
           onClick={() => {
-            console.log(123);
+            navigate(`/market`);
           }}
         >
           <ListItemButton sx={{ display: "flex", justifyContent: "center" }}>
@@ -76,7 +75,7 @@ export default function NavHamburger({walletDrawer, account}: Props) {
         <ListItem
           disablePadding
           onClick={() => {
-            console.log(123);
+            navigate(`/market/collections`);
           }}
         >
           <ListItemButton sx={{ display: "flex", justifyContent: "center" }}>
