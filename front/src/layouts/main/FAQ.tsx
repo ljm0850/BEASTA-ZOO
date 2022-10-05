@@ -33,8 +33,19 @@ export default function FAQ() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            <br />
+            <div>
+              NFT란 대체불가 토큰(Non-Fungible Token)의 약자로 디지털 형태를
+              갖춘 암호화 자산입니다.
+            </div>
+            <br />
+            <div>대체 가능한 비트코인과 달리 각 NFT 토큰은 고유합니다.</div>
+            <br />
+            <div>
+              NFT는 암호화된 거래내역을 블록체인에 영구적으로 남김으로써
+              고유성을 보장합니다.
+            </div>
+            <br />
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -60,8 +71,12 @@ export default function FAQ() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            <br />
+            <div>
+              ERC-721기반으로 작성한 이더리움 기반 네트워크 내에서 배포된
+              스마트컨트랙트로 만들어진 NFT입니다.
+            </div>
+            <br />
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -87,8 +102,23 @@ export default function FAQ() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            <br />
+            <div>
+              BEASTAZOO 팀 프로젝트는 뽑기와 조합을 통해 귀여운 자브종종 NFT
+              캐릭터를 얻는 프로젝트입니다.
+            </div>
+            <br />
+            <div>
+              총 9개의 귀여운 동물 친구로 1,2,3티어로 나뉘어 있고 BEASTAZOO의
+              자체 유전 알고리즘을 통해 1티어에서 3티어까지의 자브종을 얻을 수
+              있습니다.
+            </div>
+            <br />
+            <div>
+              같은 동물일지라도 다양한 악세사리와 옷, 배경을 뽑아 자신만의
+              자브종을 만들어 볼 수 있습니다.
+            </div>
+            <br />
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -114,8 +144,11 @@ export default function FAQ() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            <br />
+            <div>
+              JAV는 JAV종을 뽑기 위한 "BEASTAZOO"만의 디지털 화폐 단위입니다.
+            </div>
+            <br />
           </Typography>
         </AccordionDetails>
       </Accordion>

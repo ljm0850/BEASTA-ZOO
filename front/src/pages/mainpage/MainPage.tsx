@@ -51,26 +51,24 @@ const MainPage = () => {
 
         <RecentlyCollections />
         <Marketplace />
-
-        <div className={styles.guide}>
+        <a href="https://subsequent-clementine-6cf.notion.site/BEASTAZOO-7f62e8370f044edfb5b6feb054e1c322" target="_blank" className={styles.guide}>
           <div className={styles.title}>
             <div className={styles.subTitle}>
-              NFT 이용 가이드를 먼저 보고, 손쉽게 서비스를 이용해보세요.
+              JAV 이용 가이드를 먼저 보고, 손쉽게 서비스를 이용해보세요.
             </div>
             <div>
               <div className={styles.subBtn1}>
-                <div>지갑 만들기부터, 마켓플레이스 이용까지, NFT 시작하기 →</div>
+                <div>지갑 만들기부터, 마켓플레이스 이용까지, JAV 시작하기 →</div>
               </div>
               <div className={styles.subBtn2}>
-                <div>NFT 시작하기 →</div>
+                <div>JAV 시작하기 →</div>
               </div>
             </div>
           </div>
           <div>
             <img className={styles.nftLogo} src={NFT_logo} alt="" />
           </div>
-        </div>
-        
+        </a>
         <CollectorRanking />
         <SeasonCarousel />
         <FAQ />

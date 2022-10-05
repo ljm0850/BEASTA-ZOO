@@ -389,7 +389,7 @@ const Profile = () => {
       <div style={{ marginTop: "80px", marginLeft: "50px", marginRight: "50px" }}>
         <div className={styles.myProfile} style={{  }}>
           <div>{!user.nickname ? "unknown Javjong" : user.nickname}</div>
-          <div className={styles.optionLogo} onClick={() => {setModalOpen(true)}}><ManageAccountsIcon/></div>
+          {loginedAccount == sessionStorage.getItem("account") && <div className={styles.optionLogo} onClick={() => {setModalOpen(true)}}><ManageAccountsIcon/></div>}
         </div>
 
         <BootstrapTooltip title={<div>{copy}</div>}>

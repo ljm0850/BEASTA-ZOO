@@ -57,7 +57,7 @@ const MyJavs = ({ account }: Props) => {
   const [saleJavImg, setSaleJavImg] = useState("");
   const [saleNftId, setSaleNftId] = useState<number>(0);
   const [saleTokenId, setSaleTokenId] = useState<number>(0);
-  const [saleJavCode, setSaleJavCode] = useState<string|number|null>();
+  const [saleJavCode, setSaleJavCode] = useState<string | number | null>();
 
   // 정렬 변경
   const sortHandleChange = (event: SelectChangeEvent) => {
@@ -210,7 +210,7 @@ const MyJavs = ({ account }: Props) => {
           )}
         </div>
       ) : (
-        <div>no item</div>
+        <div className={styles.noItem}>가지고 있는 자브종이 없습니다.</div>
       )}
       <div ref={obsRef}></div>
       {/* modal */}

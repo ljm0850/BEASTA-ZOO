@@ -123,7 +123,7 @@ const DashboardNavbar = () => {
             ) : (
               <AccountCircleIcon sx={{ fontSize: 35, color: "black" }} />
             )}
-            <div>{nickname}</div>
+            {nickname ? <div>{nickname}</div> : <div>My wallet</div>}
           </div>
           <div>
             {account ? (
