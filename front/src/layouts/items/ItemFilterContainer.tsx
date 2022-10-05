@@ -89,6 +89,7 @@ import {
   Grid,
   Radio,
   RadioGroup,
+  Stack,
 } from "@mui/material";
 import { useState } from "react";
 
@@ -119,7 +120,7 @@ interface Props {
   search: string;
   haveCompleted: number;
   sort: number;
-  searchParams: URLSearchParams;
+  page: number;
   setSearchParams: Function;
 }
 
@@ -127,7 +128,7 @@ const ItemFilterContainer = ({
   search,
   haveCompleted,
   sort,
-  searchParams,
+  page,
   setSearchParams,
 }: Props) => {
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -226,15 +227,16 @@ const ItemFilterContainer = ({
   const selectFilter = (index: number, choice: number) => {
     if (parseInt(search[index], 16) !== choice) {
       setSearchParams({
+        search: search.changeIndex(index, choice.toString(16)),
         completed: haveCompleted,
         sort: sort,
-        search: search.changeIndex(index, choice.toString(16)),
       });
     } else {
       setSearchParams({
         search: search.changeIndex(index, "0"),
         completed: haveCompleted,
         sort: sort,
+        page: page,
       });
     }
   };
@@ -245,7 +247,7 @@ const ItemFilterContainer = ({
       search: "0000000",
       completed: haveCompleted,
       sort: sort,
-      page: searchParams.get("page"),
+      page: page,
     });
   };
 
@@ -255,7 +257,7 @@ const ItemFilterContainer = ({
       search: search,
       completed: 1 - haveCompleted,
       sort: sort,
-      page: searchParams.get("page"),
+      page: page,
     });
   };
 
@@ -265,7 +267,7 @@ const ItemFilterContainer = ({
       search: search,
       completed: haveCompleted,
       sort: choice,
-      page: searchParams.get("page"),
+      page: page,
     });
   };
 
@@ -275,7 +277,7 @@ const ItemFilterContainer = ({
     };
 
   return (
-    <div>
+    <div style={{ marginTop: "55px" }}>
       {filters.map((filter: Parts, index: number) => {
         return (
           <Accordion
@@ -309,7 +311,10 @@ const ItemFilterContainer = ({
                         {...(parseInt(search[index], 16) === imgNum + 1
                           ? { variant: "outlined" }
                           : "")}
-                        onClick={() => selectFilter(index, imgNum + 1)}
+                        onClick={() => {
+                          selectFilter(index, imgNum + 1);
+                          setExpanded(false);
+                        }}
                       >
                         <img
                           style={{ maxWidth: "100%", height: "auto" }}
@@ -325,23 +330,29 @@ const ItemFilterContainer = ({
           </Accordion>
         );
       })}
-      <Button
-        onClick={() => clearFilter()}
-        size="large"
-        variant="contained"
-        color="warning"
-      >
-        파츠 초기화
-      </Button>
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Checkbox onClick={completedToggle} checked={!!haveCompleted} />
-          }
-          label="판매완료NFT"
-        />
-      </FormGroup>
-      <FormControl>
+      <Grid container sx={{ mt: 2 }}>
+        <Grid item xs={12} lg={6}>
+          <Button
+            onClick={() => clearFilter()}
+            size="large"
+            variant="contained"
+            color="warning"
+          >
+            파츠 초기화
+          </Button>
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox onClick={completedToggle} checked={!!haveCompleted} />
+              }
+              label="판매완료NFT"
+            />
+          </FormGroup>
+        </Grid>
+      </Grid>
+      <FormControl sx={{ mt: 2 }}>
         <FormLabel id="demo-radio-buttons-group-label">정렬</FormLabel>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
