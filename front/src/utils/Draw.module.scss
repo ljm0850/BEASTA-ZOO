@@ -1,4 +1,3 @@
-
 .bttn {
   display: flex;
   justify-content: center;
@@ -10,7 +9,7 @@
   font-family: "pretendard variable";
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
   border: solid 1px #2570cc;
-  transition: transform .3s ease;
+  transition: transform 0.3s ease;
   .bttnTxt {
     position: relative;
     color: #2570cc;
@@ -22,7 +21,7 @@
   transform: scale3d(1.1, 1.1, 1.1);
 }
 
-@import url('https://fonts.googleapis.com/css?family=Ropa+Sans');
+@import url("https://fonts.googleapis.com/css?family=Ropa+Sans");
 
 $digits: 4;
 
@@ -37,23 +36,8 @@ $Place7: -25%;
 $Place8: -35%;
 $Place9: -45%;
 
-$yIndexArr: -30%
-  30%
-  40%
-  20% -20%
-  $Place0
-  30% -30% -40% -20%
-  20%
-  $Place5 -20% -30%
-  45%
-  30%
-  25%
-  $Place7
-  30%
-  38%
-  49% -25%
-  15%
-  $Place1;
+$yIndexArr: -30% 30% 40% 20% -20% $Place0 30% -30% -40% -20% 20% $Place5 -20% -30%
+  45% 30% 25% $Place7 30% 38% 49% -25% 15% $Place1;
 
 $blue-light: #55b3f2;
 $green-light: #47b3a8;
@@ -81,7 +65,7 @@ $red-light: #e65c5c;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Ropa Sans', sans-serif;
+    font-family: "Ropa Sans", sans-serif;
     font-size: 50px;
     font-weight: bold;
     line-height: 1.5;
@@ -157,36 +141,11 @@ $red-light: #e65c5c;
 // }
 
 .spin0 {
-  animation: digitsSpin-0 5s Both;
-  @keyframes digitsSpin-0 {
-    10% {
-      transform: translateY(-30%);
-    }
-
-    20% {
-      transform: translateY(40%);
-    }
-
-    30% {
-      transform: translateY(20%);
-    }
-
-    45% {
-      transform: translateY(-35%);
-    }
-
-    75% {
-      transform: translateY(45%);
-    }
-
-    100% {
-      transform: translateY($Place0);
-    }
-  }
+  transform: translateY($Place0);
 }
 
 .spin1 {
-  animation: digitsSpin-1 5s Both;
+  animation: digitsSpin-1 3s Both;
   @keyframes digitsSpin-1 {
     10% {
       transform: translateY(-25%);
@@ -215,7 +174,7 @@ $red-light: #e65c5c;
 }
 
 .spin2 {
-  animation: digitsSpin-2 5s Both;
+  animation: digitsSpin-2 3s Both;
   @keyframes digitsSpin-2 {
     10% {
       transform: translateY(30%);
@@ -244,7 +203,7 @@ $red-light: #e65c5c;
 }
 
 .spin3 {
-  animation: digitsSpin-3 5s Both;
+  animation: digitsSpin-3 3s Both;
   @keyframes digitsSpin-3 {
     10% {
       transform: translateY(0%);
@@ -273,7 +232,7 @@ $red-light: #e65c5c;
 }
 
 .spin4 {
-  animation: digitsSpin-4 5s Both;
+  animation: digitsSpin-4 3s Both;
   @keyframes digitsSpin-4 {
     10% {
       transform: translateY(-40%);
@@ -302,7 +261,7 @@ $red-light: #e65c5c;
 }
 
 .spin5 {
-  animation: digitsSpin-5 5s Both;
+  animation: digitsSpin-5 3s Both;
   @keyframes digitsSpin-5 {
     10% {
       transform: translateY(-25%);
@@ -331,7 +290,7 @@ $red-light: #e65c5c;
 }
 
 .spin6 {
-  animation: digitsSpin-6 5s Both;
+  animation: digitsSpin-6 3s Both;
   @keyframes digitsSpin-6 {
     10% {
       transform: translateY(-15%);
@@ -360,7 +319,7 @@ $red-light: #e65c5c;
 }
 
 .spin7 {
-  animation: digitsSpin-7 5s Both;
+  animation: digitsSpin-7 3s Both;
   @keyframes digitsSpin-7 {
     10% {
       transform: translateY(-30%);
@@ -389,7 +348,7 @@ $red-light: #e65c5c;
 }
 
 .spin8 {
-  animation: digitsSpin-8 5s Both;
+  animation: digitsSpin-8 3s Both;
   @keyframes digitsSpin-8 {
     10% {
       transform: translateY(-40%);
@@ -418,7 +377,7 @@ $red-light: #e65c5c;
 }
 
 .spin9 {
-  animation: digitsSpin-9 5s Both;
+  animation: digitsSpin-9 3s Both;
   @keyframes digitsSpin-9 {
     10% {
       transform: translateY(30%);
