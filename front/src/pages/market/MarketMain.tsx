@@ -47,7 +47,7 @@ const MarketMain = () => {
   };
 
   return (
-    <Box sx={{ mx: 5 }}>
+    <Box sx={{ mx: 5, mb: 3 }}>
       <Grid container spacing={6}>
         <Grid item xs={12} sm={4} md={3}>
           <ItemFilterContainer
