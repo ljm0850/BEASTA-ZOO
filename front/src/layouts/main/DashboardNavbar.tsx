@@ -29,6 +29,7 @@ import NavHamburger from "./NavHamburger";
 import { getWalletAddress } from "../../common/ABI";
 import { myJavToken, receiveJavToken } from "../../api/solidity";
 import convertToAccountingFormat from "../../utils/NumberFormatter";
+import { LoadingButton } from "@mui/lab";
 
 const actions = [{ icon: <Logout />, name: "Logout" }];
 
@@ -38,7 +39,7 @@ const DashboardNavbar = () => {
   const [account, setAccount] = useState("");
   const [balance, setBalance] = useState("");
   const [copy, setCopy] = useState("copy");
-
+  const [loading, setLoading] = useState(false);
   const isLogined = sessionStorage.getItem("isLogined");
   const nickname = sessionStorage.getItem("nickname");
   const profileImgPath = sessionStorage.getItem("profileImgPath");
@@ -58,17 +59,22 @@ const DashboardNavbar = () => {
       ) {
         return;
       }
+      myJavToken().then((money) => {
+        setBalance(money);
+      });
       setDrawerState(open);
     };
 
-  const drawerHandler = () => {
+  const drawerHandler = async () => {
     setDrawerState(false);
   };
 
   const receiveToken = async () => {
+    setLoading(true);
     await receiveJavToken();
     const money = await myJavToken();
     setBalance(money);
+    setLoading(false);
   };
 
   // 계정 정보 및 잔액 받아오기
@@ -117,7 +123,7 @@ const DashboardNavbar = () => {
             ) : (
               <AccountCircleIcon sx={{ fontSize: 35, color: "black" }} />
             )}
-            <div>My wallet</div>
+            <div>{nickname}</div>
           </div>
           <div>
             {account ? (
@@ -169,9 +175,16 @@ const DashboardNavbar = () => {
                   </div>
                 </div>
               </div>
-              <div className={styles.charge} onClick={receiveToken}>
-                충전하기
-              </div>
+              {loading ? (
+                <div className={styles.charging}>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;충전 중
+                  <LoadingButton loading loadingPosition="center" disabled />
+                </div>
+              ) : (
+                <div className={styles.charge} onClick={receiveToken}>
+                  충전하기
+                </div>
+              )}
             </div>
           </div>
         </div>

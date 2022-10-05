@@ -8,7 +8,7 @@ const MarketMain = () => {
   const [search, setSearch] = useState<string>("0000000");
   const [haveCompleted, setHaveCompleted] = useState(0);
   const [sort, setSort] = useState(0);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const size = 8;
@@ -49,16 +49,16 @@ const MarketMain = () => {
   return (
     <Box sx={{ mx: 5 }}>
       <Grid container spacing={6}>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={4} md={3}>
           <ItemFilterContainer
-            searchParams={searchParams}
             setSearchParams={setSearchParams}
             search={search}
             haveCompleted={haveCompleted}
             sort={sort}
+            page={page}
           />
         </Grid>
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12} sm={8} md={9}>
           <Items
             page={page}
             size={size}
