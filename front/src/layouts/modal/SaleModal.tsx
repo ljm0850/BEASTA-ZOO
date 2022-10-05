@@ -12,6 +12,7 @@ import { saleRegister } from "../../api/market";
 import SaleRecord from "../graph/SaleRecord";
 import Grid from "@mui/material/Unstable_Grid2";
 import PartsInfo from "../items/PartsInfo";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   tokenId: number;
@@ -58,18 +59,22 @@ const SaleModal = ({
     },
   });
   const { errors, touched, handleSubmit, handleReset, getFieldProps } = formik;
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // 판매 등록
   const registerHandler = async (price: number) => {
+    setLoading(true);
     const data = await createSale(tokenId, price);
     setPrice(price);
-    const x = await saleRegister({
+    const saleData = await saleRegister({
       contract_address: data.saleAddress,
       nft_id: nftId,
       price: price,
       seller_wallet: data.myAddress,
     });
-    console.log(x);
+    navigate(`/market/buy/${saleData.sale_id}`);
+    setLoading(false);
   };
 
   return (
@@ -146,14 +151,26 @@ const SaleModal = ({
                           {symbol}
                         </Typography>
                       </Stack>
-                      <Button
-                        sx={{ ml: 5, width: "50%", fontSize: 15 }}
-                        size="large"
-                        type="submit"
-                        variant="contained"
-                      >
-                        판매
-                      </Button>
+                      {!loading ? (
+                        <Button
+                          sx={{ ml: 5, width: "50%", fontSize: 15 }}
+                          size="large"
+                          type="submit"
+                          variant="contained"
+                        >
+                          판매
+                        </Button>
+                      ) : (
+                        <Button
+                          sx={{ ml: 5, width: "50%", fontSize: 15 }}
+                          size="large"
+                          type="submit"
+                          variant="contained"
+                          disabled
+                        >
+                          판매중
+                        </Button>
+                      )}
                     </Stack>
                     <ErrorMessage name="price">
                       {(msg) => <div style={{ color: "red" }}>{msg}</div>}
