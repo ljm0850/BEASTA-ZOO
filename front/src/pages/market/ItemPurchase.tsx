@@ -55,6 +55,7 @@ const ItemPurchase = () => {
   const [myWallet, setMyWallet] = useState("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   // 구매 alert
   const [openAlert, setOpenAlert] = useState(false);
@@ -235,7 +236,6 @@ const ItemPurchase = () => {
                               size="large"
                               variant="contained"
                               sx={{ mb: 3, fontSize: 18 }}
-                              onClick={handleClickOpenAlert}
                               disabled
                             >
                               판매 취소
@@ -251,22 +251,35 @@ const ItemPurchase = () => {
                       ) : (
                         <Box sx={{ mt: 5 }}>
                           {!loading ? (
-                            <Button
-                              fullWidth
-                              size="large"
-                              variant="contained"
-                              sx={{ mb: 3, fontSize: 18 }}
-                              onClick={handleClickOpenAlert}
-                            >
-                              {item.price} {symbol} 에 구매하기
-                            </Button>
+                            <div>
+                              {balance >= item.price ? (
+                                <Button
+                                  fullWidth
+                                  size="large"
+                                  variant="contained"
+                                  sx={{ mb: 3, fontSize: 18 }}
+                                  onClick={handleClickOpenAlert}
+                                >
+                                  {item.price} {symbol} 에 구매하기
+                                </Button>
+                              ) : (
+                                <Button
+                                  fullWidth
+                                  size="large"
+                                  variant="contained"
+                                  sx={{ mb: 3, fontSize: 18 }}
+                                  disabled
+                                >
+                                  잔액이 부족합니다.
+                                </Button>
+                              )}
+                            </div>
                           ) : (
                             <Button
                               fullWidth
                               size="large"
                               variant="contained"
                               sx={{ mb: 3, fontSize: 18 }}
-                              onClick={handleClickOpenAlert}
                               disabled
                             >
                               {item.price} {symbol} 에 구매하기
