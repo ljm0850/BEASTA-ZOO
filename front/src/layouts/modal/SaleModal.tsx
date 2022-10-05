@@ -12,6 +12,8 @@ import { saleRegister } from "../../api/market";
 import SaleRecord from "../graph/SaleRecord";
 import Grid from "@mui/material/Unstable_Grid2";
 import PartsInfo from "../items/PartsInfo";
+import { fetchItemDetail } from "../../api/market";
+import { Product } from "../items/ItemsCard";
 
 interface Props {
   tokenId: number;
