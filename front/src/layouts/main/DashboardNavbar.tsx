@@ -361,7 +361,7 @@ const DashboardNavbar = () => {
                     ? profileImgPath
                     : "https://picsum.photos/200"
                 }
-                alt="왜 안나와"
+                alt=""
               />
             }
             direction="down"
