@@ -36,7 +36,7 @@
 
       .skeletonContainer {
         width: 100%;
-        height: 2rem;
+        height: 12vw;
 
         $base-color: #ddd;
         $shine-color: #e8e8e8;
@@ -48,7 +48,7 @@
           width: 100%;
           height: 100%;
           background-color: #ccc;
-          border: 4px solid #7eff2e;
+          // border: 4px solid #7eff2e;
           border-radius: 12px;
   
           background-image: linear-gradient(90deg, $base-color 0px, $shine-color 40px, $base-color 80px);
@@ -64,6 +64,10 @@
             background-position: 140px + $skeleton-offset;
           }
         }
+      }
+
+      .loadJAV {
+        display: none;
       }
 
       .JAVContainer {
@@ -131,13 +135,14 @@
       display: grid;
       // grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(auto-fit, 1fr);
+      grid-template-rows: repeat(6, 1fr);
       position: relative;
       // justify-items: start;
       grid-gap: 2%;
       width: auto;
+      height: 100%;
       margin-top: 3%;
-      margin-bottom: 21%;
+      margin-bottom: 6%;
       
       .collCard {
         position: relative;
@@ -147,58 +152,99 @@
           transition: 0.2s;
           cursor: pointer;
         }
-        
-        .JAVImg {
+  
+        .skeletonContainer {
           width: 100%;
-          max-width: 181px;
-          border-radius: 12px;
-          position: relative;
-          // filter: blur(2px);
-          // opacity: 80%;
-        }
-
-        .FD {
-          border-color: #FFC42E;
-          border-width: 1rem;
-        }
-        
-        .lockCard {
-          position: relative;
-          
-          .JAVImgFalse {
+          height: 22vw;
+  
+          $base-color: #ddd;
+          $shine-color: #e8e8e8;
+          $animation-duration: 2s;
+          $skeleton-offset: 52 + 16;
+            
+          .skeleton {
+            position: relative;
             width: 100%;
+            height: 100%;
+            background-color: #ccc;
+            // border: 4px solid #7eff2e;
+            border-radius: 12px;
+    
+            background-image: linear-gradient(90deg, $base-color 0px, $shine-color 40px, $base-color 80px);
+            background-size: 600px;
+            animation: shine-skeleton $animation-duration infinite linear;
+          }
+    
+          @keyframes shine-skeleton{
+            0% {
+              background-position: -100px + $skeleton-offset;
+            }
+            40%, 100%{
+              background-position: 140px + $skeleton-offset;
+            }
+          }
+        }
+  
+        .loadJAV {
+          display: none;
+        }
+  
+        .JAVContainer {
+          position: relative;
+          width: 100%;
+          // height: 8.5rem;
+          
+          .JAVImg {
+            width: 100%;
+            max-width: 181px;
             border-radius: 12px;
             position: relative;
-            filter: blur(2px);
-            opacity: 70%;
+            // filter: blur(2px);
+            // opacity: 80%;
           }
           
-          .lockImg {
-            position: absolute;
-            z-index: 1;
-            width: 80%;
-            top: 25%;
-            left: 10%;
+          .FD {
+            border: 4px solid #7eff2e;
             border-radius: 12px;
           }
-        }
-  
-  
-        .javId {
-          display: block;
-          padding: 0 0.3rem 0 0.3rem;
-          position: absolute;
-          text-align: center;
-          top: 0%;
-          right: 10%;
-          margin-top: 0%;
-          width: auto;
-          min-width: 16%;
-          color: #FFFFFF;
-          background-color: #FFC42E;
-          border-radius: 0 0 6px 6px;
-          z-index: 2;
-          font-size: 1rem;
+    
+          .lockCard {
+            position: relative;
+            
+            .JAVImgFalse {
+              width: 100%;
+              border-radius: 12px;
+              position: relative;
+              filter: blur(2px);
+              opacity: 70%;
+            }
+            
+            .lockImg {
+              position: absolute;
+              z-index: 1;
+              width: 80%;
+              top: 25%;
+              left: 10%;
+              border-radius: 12px;
+            }
+          }
+    
+          .javId {
+            display: block;
+            padding: 0 0.3rem 0 0.3rem;
+            position: absolute;
+            text-align: center;
+            top: 0%;
+            right: 10%;
+            margin-top: 0%;
+            width: auto;
+            min-width: 16%;
+            color: #FFFFFF;
+            background-color: #FFC42E;
+            border-radius: 0 0 6px 6px;
+            z-index: 2;
+            font-size: 1rem;
+          }
         }
       }
     }
@@ -209,13 +255,14 @@
       display: grid;
       // grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(auto-fit, 1fr);
+      grid-template-rows: repeat(12, 1fr);
       position: relative;
       // justify-items: start;
       grid-gap: 2%;
       width: auto;
+      height: 100%;
       margin-top: 3%;
-      margin-bottom: 155%;
+      margin-bottom: 6%;
       
       .collCard {
         position: relative;
@@ -225,58 +272,99 @@
           transition: 0.2s;
           cursor: pointer;
         }
-        
-        .JAVImg {
+  
+        .skeletonContainer {
           width: 100%;
-          max-width: 181px;
-          border-radius: 12px;
-          position: relative;
-          // filter: blur(2px);
-          // opacity: 80%;
-        }
-
-        .FD {
-          border-color: #FFC42E;
-          border-width: 1rem;
-        }
-        
-        .lockCard {
-          position: relative;
-          
-          .JAVImgFalse {
+          height: 40vw;
+  
+          $base-color: #ddd;
+          $shine-color: #e8e8e8;
+          $animation-duration: 2s;
+          $skeleton-offset: 52 + 16;
+            
+          .skeleton {
+            position: relative;
             width: 100%;
+            height: 100%;
+            background-color: #ccc;
+            // border: 4px solid #7eff2e;
+            border-radius: 12px;
+    
+            background-image: linear-gradient(90deg, $base-color 0px, $shine-color 40px, $base-color 80px);
+            background-size: 600px;
+            animation: shine-skeleton $animation-duration infinite linear;
+          }
+    
+          @keyframes shine-skeleton{
+            0% {
+              background-position: -100px + $skeleton-offset;
+            }
+            40%, 100%{
+              background-position: 140px + $skeleton-offset;
+            }
+          }
+        }
+  
+        .loadJAV {
+          display: none;
+        }
+  
+        .JAVContainer {
+          position: relative;
+          width: 100%;
+          // height: 8.5rem;
+          
+          .JAVImg {
+            width: 100%;
+            max-width: 181px;
             border-radius: 12px;
             position: relative;
-            filter: blur(2px);
-            opacity: 70%;
+            // filter: blur(2px);
+            // opacity: 80%;
           }
           
-          .lockImg {
-            position: absolute;
-            z-index: 1;
-            width: 80%;
-            top: 25%;
-            left: 10%;
+          .FD {
+            border: 4px solid #7eff2e;
             border-radius: 12px;
           }
-        }
-  
-  
-        .javId {
-          display: block;
-          padding: 0 0.3rem 0 0.3rem;
-          position: absolute;
-          text-align: center;
-          top: 0%;
-          right: 10%;
-          margin-top: 0%;
-          width: auto;
-          min-width: 16%;
-          color: #FFFFFF;
-          background-color: #FFC42E;
-          border-radius: 0 0 6px 6px;
-          z-index: 2;
-          font-size: 1rem;
+    
+          .lockCard {
+            position: relative;
+            
+            .JAVImgFalse {
+              width: 100%;
+              border-radius: 12px;
+              position: relative;
+              filter: blur(2px);
+              opacity: 70%;
+            }
+            
+            .lockImg {
+              position: absolute;
+              z-index: 1;
+              width: 80%;
+              top: 25%;
+              left: 10%;
+              border-radius: 12px;
+            }
+          }
+    
+          .javId {
+            display: block;
+            padding: 0 0.3rem 0 0.3rem;
+            position: absolute;
+            text-align: center;
+            top: 0%;
+            right: 10%;
+            margin-top: 0%;
+            width: auto;
+            min-width: 16%;
+            color: #FFFFFF;
+            background-color: #FFC42E;
+            border-radius: 0 0 6px 6px;
+            z-index: 2;
+            font-size: 1rem;
+          }
         }
       }
     }
