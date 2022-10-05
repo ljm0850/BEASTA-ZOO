@@ -141,7 +141,7 @@ const ItemPurchase = () => {
                 <Divider />
               </Card>
             </Grid>
-            <Grid lg={0.5}></Grid>
+            <Grid item lg={0.5}></Grid>
             <Grid item xs={12} lg={6.5}>
               <div className={styles.boxShadow}>
                 <Card>
