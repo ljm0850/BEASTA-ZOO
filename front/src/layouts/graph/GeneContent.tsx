@@ -29,7 +29,9 @@ const GeneContent = ({ tokenId }: Props) => {
     NFT_Content = [];
     Content_Name = [];
     const javs = await javsGeneContent(tokenId);
-    for (let i = 0; i < 7; i++) {
+    await console.log(javs);
+    for (let i = 0; i < 9; i++) {
+      console.log(i);
       if (javs[i] !== 0) {
         NFT_Content.push(javs[i]);
         Content_Name.push(totalName[i]);
