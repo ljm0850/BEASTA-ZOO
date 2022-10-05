@@ -143,7 +143,7 @@ const Collections = () => {
                     {item.owner ? (
                       <img
                         key={item.discover_time}
-                        className={`${styles.JAVImg} ${styles.FD}`}
+                        className={item.nickname === sessionStorage.getItem('nickname') ? `${styles.JAVImg} ${styles.FD}` : styles.JAVImg}
                         onLoad={() => {
                           if (idx === collList.length - 1) {
                             setIsLodding(false)
