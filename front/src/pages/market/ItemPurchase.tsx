@@ -126,6 +126,7 @@ const ItemPurchase = () => {
     } catch (e) {
       console.error(e);
     }
+    setLoading(false);
   };
 
   return (
@@ -141,7 +142,7 @@ const ItemPurchase = () => {
                 <Divider />
               </Card>
             </Grid>
-            <Grid lg={0.5}></Grid>
+            <Grid item lg={0.5}></Grid>
             <Grid item xs={12} lg={6.5}>
               <div className={styles.boxShadow}>
                 <Card>
@@ -217,17 +218,29 @@ const ItemPurchase = () => {
                     {item.state === 0 ? (
                       item.sellerWallet === myWallet ? (
                         <Box sx={{ mt: 5 }}>
-                          <Button
-                            fullWidth
-                            size="large"
-                            variant="contained"
-                            sx={{ mb: 3, fontSize: 18 }}
-                            onClick={handleClickOpenAlert}
-                            color="error"
-                          >
-                            판매 취소
-                          </Button>
-
+                          {!loading ? (
+                            <Button
+                              fullWidth
+                              size="large"
+                              variant="contained"
+                              sx={{ mb: 3, fontSize: 18 }}
+                              onClick={handleClickOpenAlert}
+                              color="error"
+                            >
+                              판매 취소
+                            </Button>
+                          ) : (
+                            <Button
+                              fullWidth
+                              size="large"
+                              variant="contained"
+                              sx={{ mb: 3, fontSize: 18 }}
+                              onClick={handleClickOpenAlert}
+                              disabled
+                            >
+                              판매 취소
+                            </Button>
+                          )}
                           <AlertDialog
                             open={openAlert}
                             onClose={handleCloseAlert}
@@ -237,15 +250,28 @@ const ItemPurchase = () => {
                         </Box>
                       ) : (
                         <Box sx={{ mt: 5 }}>
-                          <Button
-                            fullWidth
-                            size="large"
-                            variant="contained"
-                            sx={{ mb: 3, fontSize: 18 }}
-                            onClick={handleClickOpenAlert}
-                          >
-                            {item.price} {symbol} 에 구매하기
-                          </Button>
+                          {!loading ? (
+                            <Button
+                              fullWidth
+                              size="large"
+                              variant="contained"
+                              sx={{ mb: 3, fontSize: 18 }}
+                              onClick={handleClickOpenAlert}
+                            >
+                              {item.price} {symbol} 에 구매하기
+                            </Button>
+                          ) : (
+                            <Button
+                              fullWidth
+                              size="large"
+                              variant="contained"
+                              sx={{ mb: 3, fontSize: 18 }}
+                              onClick={handleClickOpenAlert}
+                              disabled
+                            >
+                              {item.price} {symbol} 에 구매하기
+                            </Button>
+                          )}
 
                           <AlertDialog
                             open={openAlert}
