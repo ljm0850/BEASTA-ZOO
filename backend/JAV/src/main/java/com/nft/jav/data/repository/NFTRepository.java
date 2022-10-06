@@ -15,18 +15,18 @@ import java.util.List;
 @Repository
 public interface NFTRepository extends JpaRepository<NFT, Long> {
 
-    @Query("select N from NFT N where N.user=:user")
+    @Query("select N from NFT N where N.user=:user and N.isDeleted=false")
     List<NFT> findAllByUserId(@Param("user") User user);
 
-    @Query("select count(N) from NFT N where N.user=:user")
+    @Query("select count(N) from NFT N where N.user=:user and N.isDeleted=false")
     Long countNFTByUser(@Param("user") User user);
 
-    @Query("select N from NFT N where N.user=:user order by N.modified_date desc")
+    @Query("select N from NFT N where N.user=:user and N.isDeleted=false order by N.modified_date desc")
     Page<NFT> findAllByUserSortLatest(@Param("user") User user, PageRequest pageRequest);
 
-    @Query("select N from NFT N where N.user=:user order by N.modified_date")
+    @Query("select N from NFT N where N.user=:user and N.isDeleted=false order by N.modified_date")
     Page<NFT> findAllByUserSortOldest(@Param("user") User user, PageRequest pageRequest);
 
-    @Query("select N from NFT N where N.user=:user order by N.serviceCollection.tier desc")
+    @Query("select N from NFT N where N.user=:user and N.isDeleted=false order by N.serviceCollection.tier desc")
     Page<NFT> findAllByUserSortTier(@Param("user") User user, PageRequest pageRequest);
 }
