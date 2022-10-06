@@ -211,7 +211,7 @@ const MyJavs = ({ account }: Props) => {
                     >
                       <div
                         className={styles.sale}
-                        style={{ background: "#F96666" }}
+                        style={{ background: "#47B5FF" }}
                       >
                         판매 페이지로
                       </div>
