@@ -16,11 +16,10 @@ interface Props {
   account: string;
 }
 
-export default function NavHamburger({walletDrawer, account}: Props) {
+export default function NavHamburger({ walletDrawer, account }: Props) {
   const navigate = useNavigate();
   const [state, setState] = React.useState(false);
   const isLogined = sessionStorage.getItem("isLogined");
-
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -36,7 +35,7 @@ export default function NavHamburger({walletDrawer, account}: Props) {
 
   const list = () => (
     <Box
-      sx={{ display: "flex", justifyContent: "center", width: "100%"}}
+      sx={{ display: "flex", justifyContent: "center", width: "100%" }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
@@ -45,7 +44,7 @@ export default function NavHamburger({walletDrawer, account}: Props) {
         <ListItem
           disablePadding
           onClick={() => {
-            navigate(`/market/draw`)
+            navigate(`/market/draw`);
           }}
         >
           <ListItemButton sx={{ display: "flex", justifyContent: "center" }}>
@@ -55,7 +54,7 @@ export default function NavHamburger({walletDrawer, account}: Props) {
         <ListItem
           disablePadding
           onClick={() => {
-            navigate(`/market/combine`)
+            navigate(`/market/combine`);
           }}
         >
           <ListItemButton sx={{ display: "flex", justifyContent: "center" }}>
@@ -75,7 +74,7 @@ export default function NavHamburger({walletDrawer, account}: Props) {
         <ListItem
           disablePadding
           onClick={() => {
-            navigate(`/market/collections`);
+            navigate(`/collections`);
           }}
         >
           <ListItemButton sx={{ display: "flex", justifyContent: "center" }}>
@@ -84,9 +83,22 @@ export default function NavHamburger({walletDrawer, account}: Props) {
         </ListItem>
         <div>
           {/* 로그인 시 */}
-          { isLogined && <div className={styles.connectWallet} onClick={() => {navigate(`/user/${account}`)}}>My Profile</div>}
+          {isLogined && (
+            <div
+              className={styles.connectWallet}
+              onClick={() => {
+                navigate(`/user/${account}`);
+              }}
+            >
+              My Profile
+            </div>
+          )}
           {/* 로그인 x */}
-          { !isLogined && <div className={styles.connectWallet} onClick={walletDrawer}>Connect Wallet</div>}
+          {!isLogined && (
+            <div className={styles.connectWallet} onClick={walletDrawer}>
+              Connect Wallet
+            </div>
+          )}
         </div>
       </List>
     </Box>
@@ -95,8 +107,8 @@ export default function NavHamburger({walletDrawer, account}: Props) {
   return (
     <div className={styles.hamburger}>
       <React.Fragment>
-        <Button sx={{color: "black"}} onClick={toggleDrawer(true)}>
-          <MenuIcon style={{fontSize: "30px"}} />
+        <Button sx={{ color: "black" }} onClick={toggleDrawer(true)}>
+          <MenuIcon style={{ fontSize: "30px" }} />
         </Button>
         <Drawer anchor={"top"} open={state} onClose={toggleDrawer(false)}>
           {list()}
