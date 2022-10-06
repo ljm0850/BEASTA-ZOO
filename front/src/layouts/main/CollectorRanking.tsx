@@ -40,9 +40,9 @@ const Marketplace = () => {
                   underline="none"
                   to={`/user/${item.wallet_address}`}
                   component={RouterLink}
+                  key={item.user_id}
                 >
                   <div
-                    key={index}
                     className={`${
                       styles["ranking_table_row_leader_" + [index + 1]]
                     }`}
@@ -79,8 +79,9 @@ const Marketplace = () => {
                     underline="none"
                     to={`/user/${item.wallet_address}`}
                     component={RouterLink}
+                    key={item.user_id}
                   >
-                    <div key={index} className={styles.ranking_table_row}>
+                    <div className={styles.ranking_table_row}>
                       <div
                         className={`${styles.ranking_table_data} ${styles.rankingIndex}`}
                       >
