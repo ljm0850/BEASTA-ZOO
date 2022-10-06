@@ -21,7 +21,7 @@ public interface SalesRepository extends JpaRepository<Sales, Long>, JpaSpecific
     @Query("select S from Sales S where S.user=:user")
     List<Sales> findAllByUserId(@Param("user") User user);
 
-    @Query("select S.nft from Sales S where S.user=:user and S.nft.isDeleted = false")
+    @Query("select S.nft from Sales S where S.user=:user and S.nft.isDeleted = false and S.state=0")
     List<NFT> findNFTByUser(@Param("user") User user);
 
     @Query("select S from Sales S where S.buyer_wallet=:user_wallet_address and S.state=1")
@@ -45,5 +45,5 @@ public interface SalesRepository extends JpaRepository<Sales, Long>, JpaSpecific
     Sales findByContractAddress(@Param("contract_address") String contract_address);
 
     @Query(value = "select S from Sales S where S.user =:user and S.nft =:nft")
-    Sales findByWalletAndJav(@Param("user") User user, @Param("nft") NFT nft);
+    List<Sales> findByWalletAndJav(@Param("user") User user, @Param("nft") NFT nft);
 }
