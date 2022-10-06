@@ -209,7 +209,12 @@ const MyJavs = ({ account }: Props) => {
                       underline="none"
                       component={RouterLink}
                     >
-                      <div className={styles.sale}>판매 페이지로</div>
+                      <div
+                        className={styles.sale}
+                        style={{ background: "#F96666" }}
+                      >
+                        판매 페이지로
+                      </div>
                     </Link>
                   )}
                 </div>
