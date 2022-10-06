@@ -26,11 +26,6 @@ import { draw } from "./market";
 import { storage } from "../utils/fbase";
 import { number } from "yup";
 
-// export const myAddress = async() =>{
-//   const myWallet:string = await getWalletAddress()
-//   return myWallet
-// }
-
 /* 
 Jav Tokken 관련 함수
 - 자브토큰 발행(getJavToken)
@@ -154,13 +149,13 @@ export const pickup = async () => {
 // 조합
 export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   const address = await getWalletAddress();
-  console.log(NFT_ID1, NFT_ID2)
+  console.log(NFT_ID1, NFT_ID2);
   const genes = await getFusionGene(NFT_ID1, NFT_ID2);
   // console.log("genes", genes)
   const acces = await randomAcce();
   const myGenes: number[] = await changeGene(genes);
   const myAcces: number[] = await changeAcces(acces);
-  console.log("myGenes", myGenes)
+  console.log("myGenes", myGenes);
   const url: string = await createNFT(myGenes, myAcces);
   const tokenId = await FusionJavs(
     address,
@@ -264,12 +259,12 @@ export const cancelSaleNFT = async (saleAddress: string) => {
 };
 
 export const saleRecord = async (tokenId: number) => {
-  const numRecords:number[] = []
-  const strRecords:string[] = await GetSaleData(tokenId)
-  strRecords.forEach((record)=>{
-    numRecords.push(Number(record)/1000)
-  })
-  return numRecords
+  const numRecords: number[] = [];
+  const strRecords: string[] = await GetSaleData(tokenId);
+  strRecords.forEach((record) => {
+    numRecords.push(Number(record) / 1000);
+  });
+  return numRecords;
 };
 
 /*

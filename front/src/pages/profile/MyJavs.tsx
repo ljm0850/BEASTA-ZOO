@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { getMyNFTs } from "../../api/connect";
 import JavModal from "../../layouts/modal/JavModal";
 import SaleModal from "../../layouts/modal/SaleModal";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -10,6 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 import styles from "./MyJavs.module.scss";
 import { Link } from "@mui/material";
+import { getWalletAddress } from "../../common/ABI";
 
 interface Props {
   account: string | undefined;
@@ -31,7 +32,7 @@ interface NFTs extends Array<NFT> {}
 
 const MyJavs = ({ account }: Props) => {
   const [sortOption, setSortOption] = useState("0");
-
+  const [myWalletAddress, SetMyWalletAddress] = useState("");
   // infinity scroll
   const obsRef = useRef(null); //observer Element
   const [list, setList] = useState<NFTs>([]); //Post List
@@ -74,10 +75,8 @@ const MyJavs = ({ account }: Props) => {
     // 마운트 될 땐 실행되지 않도록 설정
     // if (mounted.current) {
     // MyNFTs()
-    console.log(account, page, size, Number(sortOption));
     getMyNFTs(account, page, size, Number(sortOption))
       .then((res) => {
-        console.log(res);
         setItemCount(res[0].count);
         setList((prev) => [...prev, ...res]); //리스트 추가
         preventRef.current = true;
@@ -92,6 +91,9 @@ const MyJavs = ({ account }: Props) => {
         endRef.current = true;
       });
     endRef.current = false;
+    getWalletAddress().then((res) => {
+      SetMyWalletAddress(res);
+    });
   }, [sortOption, page, account]);
 
   // 옵저버가 바뀔 때마다 실행되니 콜백함수로 선언 반복을 줄인다.
@@ -119,7 +121,7 @@ const MyJavs = ({ account }: Props) => {
   }, [obsHandler]);
 
   return (
-    <div>
+    <div style={{ minHeight: "50vh" }}>
       <div className={styles.sort}>
         <div className={styles.sortContainer}>
           <Select
@@ -188,10 +190,9 @@ const MyJavs = ({ account }: Props) => {
                     }}
                     alt=""
                   />
-
                   {!contact.sale ? (
                     <div
-                      className={styles.sale}
+                      className={account === myWalletAddress ? styles.sale : ""}
                       onClick={() => {
                         saleModalOpenHandler();
                         setSaleJavImg(contact.img_address);
