@@ -2,12 +2,10 @@
 import Chart from "react-apexcharts";
 import { javsGeneContent } from "../../api/solidity";
 import { useState, useEffect } from "react";
-import _ from "lodash";
 interface Props {
   tokenId: number | 0;
 }
 
-// let flag = false
 const GeneContent = ({ tokenId }: Props) => {
   const [genes, setGenes] = useState([0]);
   const [javName, setJavName] = useState([""]);
@@ -29,7 +27,7 @@ const GeneContent = ({ tokenId }: Props) => {
     NFT_Content = [];
     Content_Name = [];
     const javs = await javsGeneContent(tokenId);
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 9; i++) {
       if (javs[i] !== 0) {
         NFT_Content.push(javs[i]);
         Content_Name.push(totalName[i]);
