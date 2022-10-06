@@ -24,7 +24,6 @@ const Items = ({
   setTotalPage,
 }: Props) => {
   const [item, setItem] = useState<Product[]>([]);
-  const [isCollection, setIsCollection] = useState(false);
   const [loading, setLoading] = useState(false);
   /**
    * 프로젝트 구현
@@ -39,31 +38,37 @@ const Items = ({
     setLoading(true);
 
     fetchItems(page - 1, size, search, haveCompleted, sort).then((res) => {
-      const resultList = [] as Product[];
-      if (setTotalPage) {
-        setTotalPage(res[0].total_page);
+      if (res.length !== 0) {
+        const resultList = [] as Product[];
+        if (setTotalPage) {
+          setTotalPage(res[0].total_page);
+        }
+        res.map((item: any) =>
+          resultList.push({
+            saleId: item.sale_id,
+            url: item.img_address,
+            nftId: item.nft_id,
+            javCode: item.jav_code,
+            sellerWallet: item.seller_wallet,
+            sellerNickname: item.seller_nickname,
+            buyerWallet: item.buyer_wallet,
+            buyerNickname: item.buyer_nickname,
+            price: item.price,
+            saleStartDate: item.sale_start_date,
+            saleCompletedDate: item.sale_completed_date,
+            contractAddress: item.contract_address,
+            state: item.state,
+          })
+        );
+        setItem(resultList);
+      } else {
+        if (setTotalPage) {
+          setTotalPage(0);
+        }
+        setItem([]);
       }
-      res.map((item: any) =>
-        resultList.push({
-          saleId: item.sale_id,
-          url: item.img_address,
-          nftId: item.nft_id,
-          javCode: item.jav_code,
-          sellerWallet: item.seller_wallet,
-          sellerNickname: item.seller_nickname,
-          buyerWallet: item.buyer_wallet,
-          buyerNickname: item.buyer_nickname,
-          price: item.price,
-          saleStartDate: item.sale_start_date,
-          saleCompletedDate: item.sale_completed_date,
-          contractAddress: item.contract_address,
-          state: item.state,
-        })
-      );
-      setItem(resultList);
 
       setLoading(false);
-      setIsCollection(true);
     });
   };
 
@@ -75,7 +80,7 @@ const Items = ({
     <div>
       {loading === false ? (
         <>
-          {isCollection === true ? (
+          {item.length !== 0 ? (
             <Container maxWidth="xl">
               <ItemsList sx={{ mt: 1 }} products={item} />
             </Container>
@@ -114,11 +119,6 @@ const Items = ({
             <Typography sx={{ color: "text.secondary" }}>
               판매되고 있는 아이템을 검색하고 있습니다.
             </Typography>
-            <Box
-              component="img"
-              src="/static/illustrations/illustration_register.png"
-              sx={{ height: 260, mx: "auto", my: { xs: 5, sm: 10 } }}
-            />
           </Box>
         </Container>
       )}
