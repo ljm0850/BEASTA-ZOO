@@ -24,7 +24,6 @@ import {
 } from "../common/ABI";
 import { draw } from "./market";
 import { storage } from "../utils/fbase";
-import { number } from "yup";
 
 /* 
 Jav Tokken 관련 함수
@@ -149,13 +148,10 @@ export const pickup = async () => {
 // 조합
 export const fusion = async (NFT_ID1: number, NFT_ID2: number) => {
   const address = await getWalletAddress();
-  console.log(NFT_ID1, NFT_ID2);
   const genes = await getFusionGene(NFT_ID1, NFT_ID2);
-  // console.log("genes", genes)
   const acces = await randomAcce();
-  const myGenes: number[] = await changeGene(genes);
-  const myAcces: number[] = await changeAcces(acces);
-  console.log("myGenes", myGenes);
+  const myGenes: number[] = changeGene(genes);
+  const myAcces: number[] = changeAcces(acces);
   const url: string = await createNFT(myGenes, myAcces);
   const tokenId = await FusionJavs(
     address,

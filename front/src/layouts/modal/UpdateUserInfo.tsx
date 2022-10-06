@@ -25,12 +25,18 @@ interface Props {
   modalHandleClose: () => void;
   drawerClose: () => void;
   customValue?: UserInfo;
-  customFuntion? : Dispatch<SetStateAction<UserInfo>>;
+  customFuntion?: Dispatch<SetStateAction<UserInfo>>;
 }
 
 const UpdateUserInfo = (props: Props) => {
   const navigate = useNavigate();
-  const { openModal, modalHandleClose, drawerClose, customFuntion, customValue } = props;
+  const {
+    openModal,
+    modalHandleClose,
+    drawerClose,
+    customFuntion,
+    customValue,
+  } = props;
 
   const [myNickname, setMyNickname] = useState<string>("");
   const [myDescription, setMyDescription] = useState<string>("");
@@ -51,16 +57,16 @@ const UpdateUserInfo = (props: Props) => {
       ...userData!,
       nickname: myNickname,
       profile_description: myDescription,
-    }
-    await updateUserInfo(sessionStorage.getItem("account")!, option)
-    drawerClose()
+    };
+    await updateUserInfo(sessionStorage.getItem("account")!, option);
+    drawerClose();
     customFuntion!({
       ...customValue!,
       nickname: myNickname,
       profile_description: myDescription,
-    })
-    modalHandleClose()
-    navigate(`/user/${sessionStorage.getItem("account")}`)
+    });
+    modalHandleClose();
+    navigate(`/user/${sessionStorage.getItem("account")}`);
   };
 
   return (
@@ -99,13 +105,11 @@ const UpdateUserInfo = (props: Props) => {
               </label>
               <textarea
                 id="description"
-                // cols={30}
-                // rows={10}
                 onChange={(e) => {
                   setMyDescription(e.target.value);
                 }}
-                value={myDescription}>
-              </textarea>
+                defaultValue={myDescription}
+              ></textarea>
             </div>
             <div className={styles.updateBtn}>
               <button onClick={updatesubmit}>저장하기</button>
