@@ -9,11 +9,12 @@ import styles from "./ItemCombine.module.scss";
 import HOS from "../../image/HOS.svg";
 import { ableCombineNFTs } from "../../api/connect";
 import { NFT } from "../profile/MyJavs";
-import { Divider } from "@mui/material";
+import { Card, Divider, Grid } from "@mui/material";
 import { fusion } from "../../api/solidity";
 import { fusionNFT } from "../../api/market";
 import JavModal from "../../layouts/modal/JavModal";
 import { useNavigate } from "react-router-dom";
+import PartsTier from "../../layouts/items/PartsTier";
 
 interface NFTs extends Array<NFT> {}
 
@@ -295,29 +296,35 @@ const ItemCombine = () => {
           <div>
             <div className={styles.javsHeader}>나의 자브종</div>
             <div className={styles.javList}>
-              {myJAVList.map((contact, index) => (
-                <label
-                  className={styles.javLabel}
-                  key={index}
-                  htmlFor={contact.img_address}
-                >
-                  <img src={contact.img_address} alt="" />
-                  <input
-                    onChange={(e) => {
-                      check(
-                        e,
-                        contact.img_address,
-                        Number(contact.token_id),
-                        Number(contact.nft_id)
-                      );
-                    }}
-                    className={styles.jav}
-                    id={contact.img_address}
-                    type="checkbox"
-                  />
-                  <div></div>
-                </label>
-              ))}
+              <Grid container spacing={1}>
+                {myJAVList.map((contact, index) => (
+                  <Grid item xs={6} key={index}>
+                    <Card variant="outlined">
+                      <label
+                        className={styles.javLabel}
+                        htmlFor={contact.img_address}
+                      >
+                        <img src={contact.img_address} alt="" />
+                        <input
+                          onChange={(e) => {
+                            check(
+                              e,
+                              contact.img_address,
+                              Number(contact.token_id),
+                              Number(contact.nft_id)
+                            );
+                          }}
+                          className={styles.jav}
+                          id={contact.img_address}
+                          type="checkbox"
+                        />
+                        <div></div>
+                      </label>
+                      <PartsTier javCode={String(contact.jav_code)} />
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
               <div ref={obsRef} style={{ height: "10px" }}></div>
               {myJAVList.length === 0 && (
                 <div
