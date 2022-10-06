@@ -71,13 +71,8 @@ const MyJavs = ({ account }: Props) => {
 
   // 정렬이 바뀌면 첫페이지로
   useEffect(() => {
-    // 마운트 될 땐 실행되지 않도록 설정
-    // if (mounted.current) {
-    // MyNFTs()
-    console.log(account, page, size, Number(sortOption));
     getMyNFTs(account, page, size, Number(sortOption))
       .then((res) => {
-        console.log(res);
         setItemCount(res[0].count);
         setList((prev) => [...prev, ...res]); //리스트 추가
         preventRef.current = true;

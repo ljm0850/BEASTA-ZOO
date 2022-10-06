@@ -9,7 +9,6 @@ interface Props {
 
 // let flag = false
 const SaleRecord = ({ tokenId }: Props) => {
-  console.log(tokenId);
   const [records, setRecords] = useState<number[]>([]);
   const [recordsIdx, setRecordsIdx] = useState([""]);
   const getSaleRecord = async () => {
