@@ -15,11 +15,11 @@ public class Comment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long comment_id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "community_id")
     private Community community;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -32,6 +32,10 @@ public class Comment extends BaseTimeEntity {
         this.comment_id = comment_id;
         this.community = community;
         this.user = user;
+        this.content = content;
+    }
+
+    public void updateContent(String content){
         this.content = content;
     }
 }

@@ -1,16 +1,22 @@
 package com.nft.jav.service;
 
 
-import com.nft.jav.data.dto.CommunityDto;
+import com.nft.jav.data.dto.*;
 
 import java.util.List;
 
 public interface CommunityService {
-    List<CommunityDto> communityList();
+    List<CommunityResDto> communityList();
 
-    List<CommunityDto> noticeList();
+    List<CommunityResDto> noticeList();
 
-    CommunityDto detailCommunity(long communityId);
+    CommunityResDto detailCommunity(long communityId);
 
-    boolean saveCommunity(CommunityDto communityDto);
+    boolean saveCommunity(CommunityReqDto communityReqDto);
+
+    boolean updateCommunity(CommunityModiReqDto communityModiReqDto);
+
+    boolean deleteCommunity(long communityId);
+
+    List<RankResDto> rankUser();
 }

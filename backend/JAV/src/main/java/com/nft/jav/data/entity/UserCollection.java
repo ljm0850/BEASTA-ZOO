@@ -1,5 +1,6 @@
 package com.nft.jav.data.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,14 +16,17 @@ public class UserCollection extends BaseTimeEntity {
     private long user_collection_id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nft_id")
-    private NFT nft_id;
-
-    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "jav_id")
     private ServiceCollection jav;
+
+    @Builder
+    public UserCollection(long user_collection_id, User user, ServiceCollection jav) {
+        this.user_collection_id = user_collection_id;
+        this.user = user;
+        this.jav = jav;
+    }
 }

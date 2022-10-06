@@ -15,7 +15,6 @@ public class ServiceCollection extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long jav_id;
 
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
@@ -24,21 +23,30 @@ public class ServiceCollection extends BaseTimeEntity{
     private String jav_code;
 
     @Column
-    private int level;
+    private int tier;
 
     @Column
-    private String jav_ing_path;
+    private String jav_img_path;
 
     @Column
     private int discover_user_count;
 
     @Builder
-    public ServiceCollection(long jav_id, User user, String jav_code, int level, String jav_ing_path, int discover_user_count) {
+    public ServiceCollection(long jav_id, User user, String jav_code, int tier, String jav_img_path, int discover_user_count) {
         this.jav_id = jav_id;
         this.user = user;
         this.jav_code = jav_code;
-        this.level = level;
-        this.jav_ing_path = jav_ing_path;
+        this.tier = tier;
+        this.jav_img_path = jav_img_path;
         this.discover_user_count = discover_user_count;
     }
+
+    public void updateDiscoverUserCount(int discover_user_count) {
+        this.discover_user_count = discover_user_count;
+    }
+
+    public void updateUser(User user) {
+        this.user = user;
+    }
+
 }

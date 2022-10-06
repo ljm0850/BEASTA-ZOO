@@ -17,6 +17,10 @@ public class Sales {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long sale_id;
 
+    @OneToOne
+    @JoinColumn(name = "nft_id")
+    private NFT nft;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -46,8 +50,10 @@ public class Sales {
     private List<Liked> like_list;
 
     @Builder
-    public Sales(long sale_id, User user, int state, double price, String contract_address, String seller_wallet, String buyer_wallet, LocalDateTime sale_start_date, LocalDateTime sale_completed_date) {
+    public Sales(long sale_id, NFT nft, User user, int state, double price, String contract_address, String seller_wallet,
+                 String buyer_wallet, LocalDateTime sale_start_date, LocalDateTime sale_completed_date, List<Liked> like_list) {
         this.sale_id = sale_id;
+        this.nft = nft;
         this.user = user;
         this.state = state;
         this.price = price;
@@ -56,5 +62,20 @@ public class Sales {
         this.buyer_wallet = buyer_wallet;
         this.sale_start_date = sale_start_date;
         this.sale_completed_date = sale_completed_date;
+        this.like_list = like_list;
     }
+
+    public void updateState() {
+        if(this.state == 0) this.state = 1;
+        else this.state = 0;
+    }
+
+    public void updateCompletedDate() {
+        this.sale_completed_date = LocalDateTime.now();
+    }
+
+    public void updateBuyerWallet(String buyer_wallet) {
+        this.buyer_wallet = buyer_wallet;
+    }
+
 }

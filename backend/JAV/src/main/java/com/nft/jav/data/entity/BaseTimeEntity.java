@@ -20,5 +20,8 @@ public abstract class BaseTimeEntity {
     @LastModifiedDate
     private LocalDateTime modified_date;
 
+    public void updateDiscoverTime(LocalDateTime time){
+        this.create_date = time;
+    }
 
 }
