@@ -8,6 +8,7 @@ import Profile from "./pages/profile/Profile";
 import ItemPurchase from "./pages/market/ItemPurchase";
 import MarketMain from "./pages/market/MarketMain";
 import Collections from "./pages/collections/Collections";
+import Known404 from "./layouts/Known404";
 
 export default function Router() {
   return useRoutes([
@@ -39,6 +40,10 @@ export default function Router() {
       path: "/collections",
       element: <MainLayout />,
       children: [{ path: "", element: <Collections /> }],
+    },
+    {
+      path: "/*",
+      element: <Known404 />,
     },
   ]);
 }
