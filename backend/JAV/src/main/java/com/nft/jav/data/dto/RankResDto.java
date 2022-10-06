@@ -11,13 +11,15 @@ import lombok.ToString;
 public class RankResDto {
 
     long user_id;
+    String wallet_address;
     String nickname;
     long grade;
     long countNFT;
 
     @Builder
-    public RankResDto(long user_id, String nickname, long grade, long countNFT) {
+    public RankResDto(long user_id, String wallet_address, String nickname, long grade, long countNFT) {
         this.user_id = user_id;
+        this.wallet_address = wallet_address;
         this.nickname = nickname;
         this.grade = grade;
         this.countNFT = countNFT;

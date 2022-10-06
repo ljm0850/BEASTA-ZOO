@@ -151,6 +151,7 @@ public class CommunityServiceImpl implements CommunityService{
             RankResDto rankResDto = RankResDto.builder()
                     .nickname(rankRes.getUser().getNickname())
                     .user_id(rankRes.getUser().getUser_id())
+                    .wallet_address(rankRes.getUser().getWallet_address())
                     .grade(rankRes.getCount())
                     .countNFT(nftRepository.countNFTByUser(rankRes.getUser()))
                     .build();
