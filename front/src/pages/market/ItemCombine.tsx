@@ -13,6 +13,7 @@ import { Divider } from "@mui/material";
 import { fusion } from "../../api/solidity";
 import { fusionNFT } from "../../api/market";
 import JavModal from "../../layouts/modal/JavModal";
+import { useNavigate } from "react-router-dom";
 
 interface NFTs extends Array<NFT> {}
 
@@ -24,6 +25,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 const ItemCombine = () => {
+  const navigate = useNavigate();
   /**
     프로젝트 구현    
      * 1. 조합 승인 모달창에 개인키를 입력하면 getAddressFrom() 함수를 이용해 공개키를 반환 받습니다.
@@ -172,6 +174,13 @@ const ItemCombine = () => {
       await getPost();
     }
   };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("isLogined") !== "true" ) {
+      alert("로그인 후 이용 가능합니다..")
+      navigate('/')
+    }
+  }, [])
 
   // 체크박스
 
