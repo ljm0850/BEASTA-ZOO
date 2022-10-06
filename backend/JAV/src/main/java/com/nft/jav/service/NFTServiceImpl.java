@@ -54,11 +54,11 @@ public class NFTServiceImpl implements NFTService {
                     .img_address(targetNFT.getImg_address())
                     .build();
 
-            Sales sale = salesRepository.findByWalletAndJav(targetUser, targetNFT);
+            List<Sales> salesList = salesRepository.findByWalletAndJav(targetUser, targetNFT);
 
-            if(sale != null) {
-                if(sale.getState()==0) {
-                    nftResDto.setSale_id(sale.getSale_id());
+            if(salesList.size() != 0) {
+                if(salesList.get(salesList.size()-1).getState()==0) {
+                    nftResDto.setSale_id(salesList.get(salesList.size()-1).getSale_id());
                     nftResDto.setSale(true);
                 }
             }
