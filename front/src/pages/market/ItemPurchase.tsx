@@ -35,7 +35,7 @@ const ImgStyle = styled("img")({
   top: 0,
   width: "100%",
   height: "100%",
-  // objectFit: "contain",
+  objectFit: "contain",
   position: "absolute",
   // maxHeight: "536.25px",
   // maxWidth: "536.25px",
@@ -133,11 +133,18 @@ const ItemPurchase = () => {
   return (
     <div>
       {item !== null ? (
-        <div style={{ margin: "5vw 10vw 5vw 10vw" }}>
+        <div style={{ margin: "5vw 5vw 5vw 5vw" }}>
           <Grid container sx={{ mt: 4 }}>
             <Grid item xs={12} lg={5}>
-              <Card>
-                <Box sx={{ pt: "100%", position: "relative" }}>
+              <Card className={styles.cardSize}>
+                {/* <Box sx={{ pt: "100%", position: "relative" }}> */}
+                <Box
+                  className={styles.cardSize}
+                  sx={{
+                    pt: "100%",
+                    position: "relative",
+                  }}
+                >
                   <ImgStyle src={item.url ? item.url : undefined} />
                 </Box>
                 <Divider />
