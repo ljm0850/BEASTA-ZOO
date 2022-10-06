@@ -6,7 +6,7 @@ import { ReactComponent as Jav } from "../../image/JAV.svg";
 
 import drawImg from "../../image/draw.svg";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import JavModal from "../../layouts/modal/JavModal";
 import AlertDialog from "../../layouts/dialog/AlertDialog";
 
@@ -15,8 +15,10 @@ import Draw from "../../utils/Draw";
 import { NFT } from "../profile/MyJavs";
 import AlertModal from "../../layouts/modal/AlertModal";
 import styles from "./ItemDraw.module.scss";
+import { useNavigate } from "react-router-dom";
 
 const ItemDraw = () => {
+  const navigate = useNavigate();
   const [nftData, setNftData] = useState<NFT>();
   const [genes, setGenes] = useState("");
 
@@ -48,6 +50,13 @@ const ItemDraw = () => {
     setNftData(data.nftData);
     setGenes(data.genes);
   };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("isLogined") !== "true") {
+      alert("로그인 후 이용 가능합니다..");
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
     <div

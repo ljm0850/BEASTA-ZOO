@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { getMyNFTs } from "../../api/connect";
 import JavModal from "../../layouts/modal/JavModal";
 import SaleModal from "../../layouts/modal/SaleModal";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -10,7 +10,6 @@ import MenuItem from "@mui/material/MenuItem";
 
 import styles from "./MyJavs.module.scss";
 import { Link } from "@mui/material";
-import { getWalletAddress } from "../../common/ABI";
 
 interface Props {
   account: string | undefined;
@@ -91,9 +90,10 @@ const MyJavs = ({ account }: Props) => {
         endRef.current = true;
       });
     endRef.current = false;
-    getWalletAddress().then((res) => {
-      SetMyWalletAddress(res);
-    });
+    const myAccount = sessionStorage.getItem("account");
+    if (myAccount) {
+      SetMyWalletAddress(myAccount);
+    }
   }, [sortOption, page, account]);
 
   // 옵저버가 바뀔 때마다 실행되니 콜백함수로 선언 반복을 줄인다.

@@ -73,7 +73,7 @@ const Marketplace = () => {
             })}
 
             <div className={styles.ranking_table_body}>
-              {rankList.slice(0, 7).map((item, index) => {
+              {rankList.slice(3, 10).map((item, index) => {
                 return (
                   <Link
                     underline="none"

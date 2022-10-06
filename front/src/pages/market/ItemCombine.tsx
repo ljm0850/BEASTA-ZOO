@@ -13,6 +13,7 @@ import { Divider } from "@mui/material";
 import { fusion } from "../../api/solidity";
 import { fusionNFT } from "../../api/market";
 import JavModal from "../../layouts/modal/JavModal";
+import { useNavigate } from "react-router-dom";
 
 interface NFTs extends Array<NFT> {}
 
@@ -24,6 +25,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 const ItemCombine = () => {
+  const navigate = useNavigate();
   /**
     프로젝트 구현    
      * 1. 조합 승인 모달창에 개인키를 입력하면 getAddressFrom() 함수를 이용해 공개키를 반환 받습니다.
@@ -89,7 +91,7 @@ const ItemCombine = () => {
     //   });
 
     const NFTLIST = await ableCombineNFTs(sessionStorage.getItem("account")!);
-    setMyJAVList(NFTLIST)
+    setMyJAVList(NFTLIST);
   }, []);
 
   useEffect(() => {
@@ -141,7 +143,7 @@ const ItemCombine = () => {
       setNotice("자브종이 충분히 선택되지 않았습니다.");
       handleClick();
     } else {
-      setCombineLoad(true)
+      setCombineLoad(true);
       const fusionData = await fusion(material1ID, material2ID);
       const option = {
         ...fusionData,
@@ -150,28 +152,35 @@ const ItemCombine = () => {
       };
       // // 백엔드 통신
       await fusionNFT(option);
-      await setImg(fusionData.img_address);
-      await setGenes(fusionData.jav_code);
-      setTokenID(Number(fusionData.token_id))
-      setNFTAddr(fusionData.nft_address)
+      setImg(fusionData.img_address);
+      setGenes(fusionData.jav_code);
+      setTokenID(Number(fusionData.token_id));
+      setNFTAddr(fusionData.nft_address);
       setOpenItem(true);
-      setCombineLoad(false)
+      setCombineLoad(false);
 
       // 소유 JAV 초기화 후 다시 로딩
-      await setMyJAVList([]);
+      setMyJAVList([]);
       // await setPage(-1);
-      await setMaterial1Img("");
-      await setMaterial2Img("");
-      await setMaterial1ID(0);
-      await setMaterial2ID(0);
-      await setMaterial1NFTID(0);
-      await setMaterial2NFTID(0);
-      await setCheckedImgInputs([""]);
-      await setCheckedIDInputs([]);
-      await setCheckedNFTIDInputs([]);
-      await getPost();
+      setMaterial1Img("");
+      setMaterial2Img("");
+      setMaterial1ID(0);
+      setMaterial2ID(0);
+      setMaterial1NFTID(0);
+      setMaterial2NFTID(0);
+      setCheckedImgInputs([""]);
+      setCheckedIDInputs([]);
+      setCheckedNFTIDInputs([]);
+      getPost();
     }
   };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("isLogined") !== "true") {
+      alert("로그인 후 이용 가능합니다..");
+      navigate("/");
+    }
+  }, [navigate]);
 
   // 체크박스
 
@@ -217,7 +226,13 @@ const ItemCombine = () => {
         <div className={styles.space}>
           <div>
             <div className={styles.combineLogo}>
-              <img src={HOS} alt="" className={`${!combineLoad && styles.hos} ${combineLoad && styles.spin}`} />
+              <img
+                src={HOS}
+                alt=""
+                className={`${!combineLoad && styles.hos} ${
+                  combineLoad && styles.spin
+                }`}
+              />
               <div>조합</div>
             </div>
 
@@ -329,7 +344,7 @@ const ItemCombine = () => {
                       style={{
                         display: "flex",
                         justifyContent: "center",
-                        alignItems: "center"
+                        alignItems: "center",
                       }}
                       className={styles.refresh}
                       onClick={() => {
@@ -345,16 +360,6 @@ const ItemCombine = () => {
               )}
             </div>
           </div>
-        </div>
-        <div className={styles.xsSubmitBtn}>
-          <Button
-            variant="contained"
-            color="success"
-            size="large"
-            onClick={Combine}
-          >
-            조합하기
-          </Button>
         </div>
       </div>
       <div className={styles.cautionContainer}>
