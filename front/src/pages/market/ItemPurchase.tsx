@@ -37,6 +37,7 @@ const ImgStyle = styled("img")({
   height: "100%",
   objectFit: "contain",
   position: "absolute",
+  borderRadius: "10px",
   // maxHeight: "536.25px",
   // maxWidth: "536.25px",
 });
@@ -135,8 +136,8 @@ const ItemPurchase = () => {
       {item !== null ? (
         <div style={{ margin: "5vw 5vw 5vw 5vw" }}>
           <Grid container sx={{ mt: 4 }}>
-            <Grid item xs={12} lg={5}>
-              <Card className={styles.cardSize}>
+            <Grid item xs={12} lg={4}>
+              <Card className={styles.cardSize} sx={{ boxShadow: "none" }}>
                 {/* <Box sx={{ pt: "100%", position: "relative" }}> */}
                 <Box
                   className={styles.cardSize}
@@ -151,7 +152,7 @@ const ItemPurchase = () => {
               </Card>
             </Grid>
             <Grid item lg={0.5}></Grid>
-            <Grid item xs={12} lg={6.5}>
+            <Grid item xs={12} lg={7.5}>
               <div className={styles.boxShadow}>
                 <Card>
                   <CardHeader sx={{ ml: 1 }} title="자브종 정보" />
@@ -161,10 +162,10 @@ const ItemPurchase = () => {
                       파츠 정보
                     </Typography>
                     <Grid container sx={{ mt: 4 }}>
-                      <Grid item xs={12} md={8}>
+                      <Grid item xs={12} lg={8}>
                         <PartsInfo javCode={item.javCode} />
                       </Grid>
-                      <Grid item xs={12} md={4}>
+                      <Grid item xs={12} lg={4}>
                         <GeneContent tokenId={item.tokenId!} />
                       </Grid>
                     </Grid>
