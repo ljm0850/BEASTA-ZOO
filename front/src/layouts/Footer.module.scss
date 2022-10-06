@@ -1,12 +1,74 @@
 .footerName {
   display: flex;
+  align-items: center;
   
   div:first-child {
     color: #FFC42E;
+    font-size: 1.2rem;
     font-weight: 700;
+    margin-right: 1rem;
   }
 
   div:last-child {
-    color: gray;
+    font-size: 0.8rem;
+    color: rgb(187, 187, 187);
   }
+}
+
+.footerDetail {
+  // display: flex;
+  // height: 12rem;
+  // justify-content: space-around;
+  margin-left: 10vw;
+  align-items: center;
+
+  .title {
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: rgb(202, 202, 202);
+  }
+
+  .sub1 {
+    display: inline-block;
+    margin: 0 10rem 3rem 0;
+    
+    .list {
+      color: rgb(180, 180, 180);
+      font-size: 0.8rem;
+      div {
+        margin: 0.3rem 0 0 0;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+  }
+
+  .sub2 {
+    display: inline-block;
+    vertical-align: top;
+    
+    .container {
+      // display: flex;
+      a {
+        display: block;
+        text-decoration: none;
+        color: rgb(180, 180, 180);
+        font-size: 0.8rem;
+        margin: 0.3rem 0 0 0;
+
+        &:hover {
+          text-decoration: underline;
+        }
+        
+        svg {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+  
 }

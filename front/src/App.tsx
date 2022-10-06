@@ -4,13 +4,15 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Footer from './layouts/Footer';
 
+import styles from "./App.module.scss"
+
 function App() {
 
   return (
-    <div className="App">
+    <div style={{height: "100%"}}>
       <DashboardNavbar/>
-      <Router />
-      {/* <Footer /> */}
+      <div className={styles.wrap}><Router /></div>
+      <Footer />
     </div>
   );
 }
