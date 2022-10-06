@@ -52,7 +52,7 @@ const Collections = () => {
     setPage(value);
   };
   const handleLodding = () => {
-    setIsLodding(!isLodding)
+    setIsLodding(!isLodding);
   };
 
   const handleChangeSortMethod = (
@@ -133,39 +133,50 @@ const Collections = () => {
                   }
                 }}
               >
-                {isLodding && 
+                {isLodding && (
                   <div className={styles.skeletonContainer}>
                     <div className={styles.skeleton}></div>
-                  </div>}
-                  <div className={isLodding ? styles.loadJAV : styles.JAVContainer}>
-                    {item.owner ? (
+                  </div>
+                )}
+                <div
+                  className={isLodding ? styles.loadJAV : styles.JAVContainer}
+                >
+                  {item.owner ? (
+                    <img
+                      key={item.discover_time}
+                      className={
+                        item.nickname === sessionStorage.getItem("nickname")
+                          ? `${styles.JAVImg} ${styles.FD}`
+                          : styles.JAVImg
+                      }
+                      onLoad={() => {
+                        if (idx === collList.length - 1) {
+                          setIsLodding(false);
+                        }
+                      }}
+                      src={item.jav_img_path}
+                      alt=""
+                    />
+                  ) : (
+                    <div
+                      className={isLodding ? styles.loadJAV : styles.lockCard}
+                    >
                       <img
                         key={item.discover_time}
-                        className={item.nickname === sessionStorage.getItem('nickname') ? `${styles.JAVImg} ${styles.FD}` : styles.JAVImg}
+                        className={styles.JAVImgFalse}
                         onLoad={() => {
                           if (idx === collList.length - 1) {
-                            setIsLodding(false)
-                          }}}
-                          src={item.jav_img_path}
-                          alt=""
-                          />
-                    ) : (
-                      <div className={isLodding ? styles.loadJAV : styles.lockCard}>
-                        <img
-                          key={item.discover_time}
-                          className={styles.JAVImgFalse}
-                          onLoad={() => {
-                            if (idx === collList.length - 1) {
-                              setIsLodding(false)
-                            }}}
-                          src={item.jav_img_path}
-                          alt=""
-                          />
-                        <img className={styles.lockImg} src={locked} alt="" />
-                      </div>
-                    )}
+                            setIsLodding(false);
+                          }
+                        }}
+                        src={item.jav_img_path}
+                        alt=""
+                      />
+                      <img className={styles.lockImg} src={locked} alt="" />
+                    </div>
+                  )}
                   <p className={styles.javId}>{item.jav_id}</p>
-                  </div>
+                </div>
               </div>
             );
           })}
