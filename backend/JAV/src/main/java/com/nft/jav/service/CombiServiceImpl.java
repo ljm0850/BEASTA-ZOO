@@ -62,16 +62,17 @@ public class CombiServiceImpl implements CombiService{
                 .jav_code(combiReqDto.getJav_code())
                 .serviceCollection(serviceTarget)
                 .img_address(combiReqDto.getImg_address())
+                .isDeleted(false)
                 .build());
 
         // 조합으로 쓰인 NFT 삭제
         NFT targetNft1 = nftRepository.findById(combiReqDto.getNft_id_1())
                 .orElseThrow(IllegalArgumentException::new);
-        nftRepository.delete(targetNft1);
+        targetNft1.updateState(true);
 
         NFT targetNft2 = nftRepository.findById(combiReqDto.getNft_id_2())
                 .orElseThrow(IllegalArgumentException::new);
-        nftRepository.delete(targetNft2);
+        targetNft2.updateState(true);
 
         // 전체 도감 발견자 수 추가
         int serviceCount = serviceTarget.getDiscover_user_count();

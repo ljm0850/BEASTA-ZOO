@@ -60,6 +60,7 @@ public class DrawServiceImpl implements DrawService{
                 .jav_code(drawReqDto.getJav_code())
                 .serviceCollection(serviceTarget)
                 .img_address(drawReqDto.getImg_address())
+                .isDeleted(false)
                 .build());
 
         // 전체 도감 발견자 수 추가
