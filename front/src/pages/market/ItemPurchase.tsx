@@ -56,7 +56,6 @@ const ItemPurchase = () => {
   const [myWallet, setMyWallet] = useState("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
 
   // 구매 alert
   const [openAlert, setOpenAlert] = useState(false);
@@ -201,7 +200,7 @@ const ItemPurchase = () => {
                             구매자 :
                             <Link
                               underline="none"
-                              to={`/user/${item.sellerWallet}`}
+                              to={`/user/${item.buyerWallet}`}
                               component={RouterLink}
                             >
                               &nbsp;{item.buyerNickname}

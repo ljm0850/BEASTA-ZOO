@@ -52,11 +52,11 @@ const ItemDraw = () => {
   };
 
   useEffect(() => {
-    if (sessionStorage.getItem("isLogined") !== "true" ) {
-      alert("로그인 후 이용 가능합니다..")
-      navigate('/')
+    if (sessionStorage.getItem("isLogined") !== "true") {
+      alert("로그인 후 이용 가능합니다..");
+      navigate("/");
     }
-  }, [])
+  }, [navigate]);
 
   return (
     <div
