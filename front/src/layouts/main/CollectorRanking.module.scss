@@ -47,6 +47,10 @@
   background-color: #fff;
 }
 
+.ranking_table_row:hover {
+  box-shadow: 0 0 0.75em 0 rgba(46, 60, 73, 0.12);
+}
+
 .page_leaderboard .ranking .ranking_table_row:nth-child(even) {
   background-color: #fafbfc;
 }
@@ -169,11 +173,9 @@
   font-size: 1em;
 }
 
-
 .rankingIndex {
   font-weight: 700;
   font-family: "Pretendard Variable";
-
 }
 
 .ranking {
