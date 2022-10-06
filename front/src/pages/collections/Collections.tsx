@@ -77,9 +77,7 @@ const Collections = () => {
   };
 
   useEffect(() => {
-    setIsLodding(true)
-    console.log(1)
-    // setTimeout(() => setIsLodding(!isLodding), 10000)
+    // setIsLodding(true)
     if (sessionStorage.getItem("isLogined") === "true") {
       getAccount();
     }
