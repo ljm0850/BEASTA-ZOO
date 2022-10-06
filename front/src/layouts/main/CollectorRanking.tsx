@@ -34,7 +34,7 @@ const Marketplace = () => {
               <div className={styles.ranking_table_header_data}>도감</div>
               <div className={styles.ranking_table_header_data}>소유 JAV</div>
             </div>
-            {rankList.splice(0, 3).map((item, index) => {
+            {rankList.slice(0, 3).map((item, index) => {
               return (
                 <Link
                   underline="none"
@@ -73,7 +73,7 @@ const Marketplace = () => {
             })}
 
             <div className={styles.ranking_table_body}>
-              {rankList.splice(0, 7).map((item, index) => {
+              {rankList.slice(0, 7).map((item, index) => {
                 return (
                   <Link
                     underline="none"
