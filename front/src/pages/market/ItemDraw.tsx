@@ -76,28 +76,37 @@ const ItemDraw = () => {
           noValidate
           autoComplete="off"
         >
-          <Card sx={{ minWidth: 275 }}>
-            <CardActions style={{ display: "flex", justifyContent: "center" }}>
-              <Button
-                sx={{ fontWeight: "bold" }}
-                variant="contained"
-                size="small"
-                color="primary"
-                onClick={handleClickOpenAlert}
-              >
-                뽑기
-                <Jav
-                  style={{
-                    width: "1.2rem",
-                    height: "auto",
-                    marginRight: "0.3rem",
-                    marginLeft: "0.8rem",
-                  }}
-                />
-                100 JAV
-              </Button>
-            </CardActions>
-          </Card>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "30px",
+            }}
+          >
+            <Button
+              sx={{
+                fontWeight: "bold",
+                width: "250px",
+                height: "70px",
+                fontSize: "x-large",
+              }}
+              variant="contained"
+              size="large"
+              color="primary"
+              onClick={handleClickOpenAlert}
+            >
+              뽑기
+              <Jav
+                style={{
+                  width: "1.5rem",
+                  height: "auto",
+                  marginRight: "0.3rem",
+                  marginLeft: "0.8rem",
+                }}
+              />
+              100 JAV
+            </Button>
+          </div>
         </Box>
       </div>
       <div className={styles.cautionContainer}>

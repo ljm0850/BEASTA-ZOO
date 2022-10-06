@@ -13,6 +13,7 @@ import SaleRecord from "../graph/SaleRecord";
 import Grid from "@mui/material/Unstable_Grid2";
 import PartsInfo from "../items/PartsInfo";
 import { useNavigate } from "react-router-dom";
+import GeneContent from "../../layouts/graph/GeneContent";
 
 interface Props {
   tokenId: number;
@@ -103,11 +104,11 @@ const SaleModal = ({
                   <img src={imgAddr} alt="" className={styles.cardImg} />
                 </div>
               </Grid>
-              <Grid lg={2}>
+              <Grid lg={1}>
                 <div></div>
               </Grid>
-              <Grid xs={12} lg={5}>
-                <div>파츠</div>
+              <Grid xs={12} lg={6}>
+                <div className={styles.fontStyle}>파츠</div>
                 <div
                   className={styles.tokenInfo}
                   style={{
@@ -121,63 +122,72 @@ const SaleModal = ({
                     <PartsInfo javCode={String(jav_code)} />
                   </div>
                 </div>
+                <br></br>
+                <div className={styles.tokenInfo}>
+                  <div className={styles.fontStyle}>유전자 비율</div>
+                  <div>
+                    <GeneContent tokenId={tokenId} />
+                  </div>
+                </div>
+                <br></br>
+                {/* <GeneContent tokenId={tokenId} /> */}
                 <Stack sx={{ mt: 2 }} />
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div style={{ display: "flex", justifyContent: "start" }}>
                   <SaleRecord tokenId={tokenId} />
                 </div>
                 {/* 테스트중 */}
                 {/* <Stack sx={{ mt: 2 }} /> */}
-                <FormikProvider value={formik}>
-                  <Form
-                    autoComplete="off"
-                    noValidate
-                    onSubmit={handleSubmit}
-                    onReset={handleReset}
-                  >
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="space-around"
-                    >
-                      <Stack direction="row" alignItems="center">
-                        <TextField
-                          sx={{ width: "50%" }}
-                          type="number"
-                          label="판매가격"
-                          {...getFieldProps("price")}
-                          error={Boolean(touched.price && errors.price)}
-                        />
-                        <Typography variant="inherit" sx={{ pl: 2 }}>
-                          {symbol}
-                        </Typography>
-                      </Stack>
-                      {!loading ? (
-                        <Button
-                          sx={{ ml: 5, width: "50%", fontSize: 15 }}
-                          size="large"
-                          type="submit"
-                          variant="contained"
-                        >
-                          판매
-                        </Button>
-                      ) : (
-                        <Button
-                          sx={{ ml: 5, width: "50%", fontSize: 15 }}
-                          size="large"
-                          type="submit"
-                          variant="contained"
-                          disabled
-                        >
-                          판매중
-                        </Button>
-                      )}
-                    </Stack>
-                    <ErrorMessage name="price">
-                      {(msg) => <div style={{ color: "red" }}>{msg}</div>}
-                    </ErrorMessage>
-                  </Form>
-                </FormikProvider>
               </Grid>
+              <FormikProvider value={formik}>
+                <Form
+                  autoComplete="off"
+                  noValidate
+                  onSubmit={handleSubmit}
+                  onReset={handleReset}
+                >
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-around"
+                  >
+                    <Stack direction="row" alignItems="center">
+                      <TextField
+                        sx={{ width: "50%" }}
+                        type="number"
+                        label="판매가격"
+                        {...getFieldProps("price")}
+                        error={Boolean(touched.price && errors.price)}
+                      />
+                      <Typography variant="inherit" sx={{ pl: 2 }}>
+                        {symbol}
+                      </Typography>
+                    </Stack>
+                    {!loading ? (
+                      <Button
+                        sx={{ ml: 5, width: "50%", fontSize: 15 }}
+                        size="large"
+                        type="submit"
+                        variant="contained"
+                      >
+                        판매
+                      </Button>
+                    ) : (
+                      <Button
+                        sx={{ ml: 5, width: "50%", fontSize: 15 }}
+                        size="large"
+                        type="submit"
+                        variant="contained"
+                        disabled
+                      >
+                        판매중
+                      </Button>
+                    )}
+                  </Stack>
+                  <ErrorMessage name="price">
+                    {(msg) => <div style={{ color: "red" }}>{msg}</div>}
+                  </ErrorMessage>
+                </Form>
+              </FormikProvider>
               <Grid lg={1}>
                 <div></div>
               </Grid>

@@ -54,7 +54,7 @@ const SaleRecord = ({ tokenId }: Props) => {
         {/* {records.length === 0 ? (
           <div>판매 기록이 없습니다.</div>
         ) : ( */}
-        <Chart type="line" width={300} series={series} options={options} />
+        <Chart type="line" width={250} series={series} options={options} />
         {/* )} */}
       </div>
     </div>

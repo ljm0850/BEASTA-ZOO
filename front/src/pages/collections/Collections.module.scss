@@ -11,7 +11,7 @@
       font-weight: 700;
     }
   }
-  
+
   .JAVS {
     display: grid;
     // grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -23,8 +23,8 @@
     width: auto;
     height: 100%;
     margin-top: 3%;
-    margin-bottom: 6%;
-    
+    margin-bottom: 10%;
+
     .collCard {
       position: relative;
       max-width: 181px;
@@ -42,7 +42,7 @@
         $shine-color: #e8e8e8;
         $animation-duration: 2s;
         $skeleton-offset: 52 + 16;
-          
+
         .skeleton {
           position: relative;
           width: 100%;
@@ -50,17 +50,23 @@
           background-color: #ccc;
           // border: 4px solid #7eff2e;
           border-radius: 12px;
-  
-          background-image: linear-gradient(90deg, $base-color 0px, $shine-color 40px, $base-color 80px);
+
+          background-image: linear-gradient(
+            90deg,
+            $base-color 0px,
+            $shine-color 40px,
+            $base-color 80px
+          );
           background-size: 600px;
           animation: shine-skeleton $animation-duration infinite linear;
         }
-  
-        @keyframes shine-skeleton{
+
+        @keyframes shine-skeleton {
           0% {
             background-position: -100px + $skeleton-offset;
           }
-          40%, 100%{
+          40%,
+          100% {
             background-position: 140px + $skeleton-offset;
           }
         }
@@ -74,7 +80,7 @@
         position: relative;
         width: 100%;
         // height: 8.5rem;
-        
+
         .JAVImg {
           width: 100%;
           max-width: 181px;
@@ -83,15 +89,15 @@
           // filter: blur(2px);
           // opacity: 80%;
         }
-        
+
         .FD {
           border: 4px solid #7eff2e;
           border-radius: 12px;
         }
-  
+
         .lockCard {
           position: relative;
-          
+
           .JAVImgFalse {
             width: 100%;
             border-radius: 12px;
@@ -99,7 +105,7 @@
             filter: blur(2px);
             opacity: 70%;
           }
-          
+
           .lockImg {
             position: absolute;
             z-index: 1;
@@ -109,7 +115,7 @@
             border-radius: 12px;
           }
         }
-  
+
         .javId {
           display: block;
           padding: 0 0.3rem 0 0.3rem;
@@ -120,8 +126,8 @@
           margin-top: 0%;
           width: auto;
           min-width: 16%;
-          color: #FFFFFF;
-          background-color: #FFC42E;
+          color: #ffffff;
+          background-color: #ffc42e;
           border-radius: 0 0 6px 6px;
           z-index: 2;
           font-size: 1rem;
@@ -142,8 +148,8 @@
       width: auto;
       height: 100%;
       margin-top: 3%;
-      margin-bottom: 6%;
-      
+      margin-bottom: 26%;
+
       .collCard {
         position: relative;
         max-width: 181px;
@@ -152,16 +158,16 @@
           transition: 0.2s;
           cursor: pointer;
         }
-  
+
         .skeletonContainer {
           width: 100%;
           height: 22vw;
-  
+
           $base-color: #ddd;
           $shine-color: #e8e8e8;
           $animation-duration: 2s;
           $skeleton-offset: 52 + 16;
-            
+
           .skeleton {
             position: relative;
             width: 100%;
@@ -169,31 +175,37 @@
             background-color: #ccc;
             // border: 4px solid #7eff2e;
             border-radius: 12px;
-    
-            background-image: linear-gradient(90deg, $base-color 0px, $shine-color 40px, $base-color 80px);
+
+            background-image: linear-gradient(
+              90deg,
+              $base-color 0px,
+              $shine-color 40px,
+              $base-color 80px
+            );
             background-size: 600px;
             animation: shine-skeleton $animation-duration infinite linear;
           }
-    
-          @keyframes shine-skeleton{
+
+          @keyframes shine-skeleton {
             0% {
               background-position: -100px + $skeleton-offset;
             }
-            40%, 100%{
+            40%,
+            100% {
               background-position: 140px + $skeleton-offset;
             }
           }
         }
-  
+
         .loadJAV {
           display: none;
         }
-  
+
         .JAVContainer {
           position: relative;
           width: 100%;
           // height: 8.5rem;
-          
+
           .JAVImg {
             width: 100%;
             max-width: 181px;
@@ -202,15 +214,15 @@
             // filter: blur(2px);
             // opacity: 80%;
           }
-          
+
           .FD {
             border: 4px solid #7eff2e;
             border-radius: 12px;
           }
-    
+
           .lockCard {
             position: relative;
-            
+
             .JAVImgFalse {
               width: 100%;
               border-radius: 12px;
@@ -218,7 +230,7 @@
               filter: blur(2px);
               opacity: 70%;
             }
-            
+
             .lockImg {
               position: absolute;
               z-index: 1;
@@ -228,7 +240,7 @@
               border-radius: 12px;
             }
           }
-    
+
           .javId {
             display: block;
             padding: 0 0.3rem 0 0.3rem;
@@ -239,8 +251,8 @@
             margin-top: 0%;
             width: auto;
             min-width: 16%;
-            color: #FFFFFF;
-            background-color: #FFC42E;
+            color: #ffffff;
+            background-color: #ffc42e;
             border-radius: 0 0 6px 6px;
             z-index: 2;
             font-size: 1rem;
@@ -262,8 +274,8 @@
       width: auto;
       height: 100%;
       margin-top: 3%;
-      margin-bottom: 6%;
-      
+      margin-bottom: 180%;
+
       .collCard {
         position: relative;
         max-width: 181px;
@@ -272,16 +284,16 @@
           transition: 0.2s;
           cursor: pointer;
         }
-  
+
         .skeletonContainer {
           width: 100%;
           height: 40vw;
-  
+
           $base-color: #ddd;
           $shine-color: #e8e8e8;
           $animation-duration: 2s;
           $skeleton-offset: 52 + 16;
-            
+
           .skeleton {
             position: relative;
             width: 100%;
@@ -289,31 +301,37 @@
             background-color: #ccc;
             // border: 4px solid #7eff2e;
             border-radius: 12px;
-    
-            background-image: linear-gradient(90deg, $base-color 0px, $shine-color 40px, $base-color 80px);
+
+            background-image: linear-gradient(
+              90deg,
+              $base-color 0px,
+              $shine-color 40px,
+              $base-color 80px
+            );
             background-size: 600px;
             animation: shine-skeleton $animation-duration infinite linear;
           }
-    
-          @keyframes shine-skeleton{
+
+          @keyframes shine-skeleton {
             0% {
               background-position: -100px + $skeleton-offset;
             }
-            40%, 100%{
+            40%,
+            100% {
               background-position: 140px + $skeleton-offset;
             }
           }
         }
-  
+
         .loadJAV {
           display: none;
         }
-  
+
         .JAVContainer {
           position: relative;
           width: 100%;
           // height: 8.5rem;
-          
+
           .JAVImg {
             width: 100%;
             max-width: 181px;
@@ -322,15 +340,15 @@
             // filter: blur(2px);
             // opacity: 80%;
           }
-          
+
           .FD {
             border: 4px solid #7eff2e;
             border-radius: 12px;
           }
-    
+
           .lockCard {
             position: relative;
-            
+
             .JAVImgFalse {
               width: 100%;
               border-radius: 12px;
@@ -338,7 +356,7 @@
               filter: blur(2px);
               opacity: 70%;
             }
-            
+
             .lockImg {
               position: absolute;
               z-index: 1;
@@ -348,7 +366,7 @@
               border-radius: 12px;
             }
           }
-    
+
           .javId {
             display: block;
             padding: 0 0.3rem 0 0.3rem;
@@ -359,8 +377,8 @@
             margin-top: 0%;
             width: auto;
             min-width: 16%;
-            color: #FFFFFF;
-            background-color: #FFC42E;
+            color: #ffffff;
+            background-color: #ffc42e;
             border-radius: 0 0 6px 6px;
             z-index: 2;
             font-size: 1rem;

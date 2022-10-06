@@ -17,7 +17,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 import ethereum_logo from "../../image/ethereum_logo.svg";
 
@@ -93,7 +93,7 @@ const Profile = () => {
     await getUserInfo(account).then((res) => {
       setUser({ ...res });
     });
-  }, [account])
+  }, [account]);
 
   useEffect(() => {
     get_UserInfo();
@@ -121,7 +121,7 @@ const Profile = () => {
         profile_img_path: url,
       };
 
-      sessionStorage.setItem("profileImgPath", url)
+      sessionStorage.setItem("profileImgPath", url);
 
       updateUserInfo(loginedAccount, option)
         .then((res) => {
@@ -192,11 +192,10 @@ const Profile = () => {
     setValue(newValue);
   };
 
-
   // update user modal
   const [openModal, setModalOpen] = useState(false);
   const modalHandleClose = () => {
-    setModalOpen(false)
+    setModalOpen(false);
   };
 
   return (
@@ -386,10 +385,21 @@ const Profile = () => {
         )}
       </div>
 
-      <div style={{ marginTop: "80px", marginLeft: "50px", marginRight: "50px" }}>
-        <div className={styles.myProfile} style={{  }}>
+      <div
+        style={{ marginTop: "80px", marginLeft: "50px", marginRight: "50px" }}
+      >
+        <div className={styles.myProfile} style={{}}>
           <div>{!user.nickname ? "unknown Javjong" : user.nickname}</div>
-          {loginedAccount == sessionStorage.getItem("account") && <div className={styles.optionLogo} onClick={() => {setModalOpen(true)}}><ManageAccountsIcon/></div>}
+          {loginedAccount == sessionStorage.getItem("account") && (
+            <div
+              className={styles.optionLogo}
+              onClick={() => {
+                setModalOpen(true);
+              }}
+            >
+              <ManageAccountsIcon />
+            </div>
+          )}
         </div>
 
         <BootstrapTooltip title={<div>{copy}</div>}>
@@ -424,7 +434,7 @@ const Profile = () => {
               aria-label="lab API tabs example"
             >
               <Tab
-                label="My Javs"
+                label="Javs"
                 style={{
                   textTransform: "none",
                   fontWeight: "600",
@@ -461,7 +471,13 @@ const Profile = () => {
           <TabPanel value="3">Item Three</TabPanel>
         </TabContext>
       </Box>
-      <UpdateUserInfo openModal={openModal} modalHandleClose={modalHandleClose} drawerClose={() => {}} customFuntion={setUser} customValue={user} />
+      <UpdateUserInfo
+        openModal={openModal}
+        modalHandleClose={modalHandleClose}
+        drawerClose={() => {}}
+        customFuntion={setUser}
+        customValue={user}
+      />
     </div>
   );
 };
