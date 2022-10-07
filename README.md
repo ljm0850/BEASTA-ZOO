@@ -239,7 +239,7 @@
 
 ## 7. 기술적 고민
 
-- [SC 문제점](README.assets/SC_Problem.md)
+- [SC 문제점](assets/SC_Problem.md)
 
 <br/>
 
