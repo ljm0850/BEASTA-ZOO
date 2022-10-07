@@ -75,6 +75,11 @@ const Profile = () => {
   const [reduceAccount, setReduceAccount] = useState("");
   const [loginedAccount, setLoginedAccount] = useState("");
 
+  const getAccount = async () => {
+    const accounts = await window.ethereum.request({ method: "eth_accounts" });
+    setLoginedAccount(accounts[0]);
+  };
+
   // 카피 버튼
   const [copy, setCopy] = useState("copy");
 
@@ -96,6 +101,10 @@ const Profile = () => {
 
     // 최상단으로 이동
     window.scrollTo(0, 0);
+
+    if (sessionStorage.getItem("isLogined") === "true") {
+      getAccount();
+    }
 
     if (account !== undefined) {
       setReduceAccount(account.slice(0, 6) + "..." + account.slice(38, 42));
