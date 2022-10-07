@@ -169,10 +169,10 @@
 > - README.asset을 참조해 주세요
 > - 배포
 
-![SC-시연1](.\README.assets\SC-시연8.gif)
+![SC-시연1](README.assets\SC-시연8.gif)
 
 + 토큰 발행
-  + ![SC-시연2](.\README.assets\SC-시연1.gif)`
+  + ![SC-시연2](README.assets\SC-시연1.gif)`
 
 #### 1) 메인페이지
 
@@ -181,16 +181,16 @@
 #### 2) 마켓플레이스
 
 - **뽑기**
-  - ![SC-시연3](.\README.assets\SC-시연4.gif)
+  - ![SC-시연3](README.assets\SC-시연4.gif)
 
 - **조합**
-  - !![SC-시연5](.\README.assets\SC-시연5.gif)
+  - !![SC-시연5](README.assets\SC-시연5.gif)
 
 - **거래**
   - 판매등록
-  - ![SC-시연6](.\README.assets\SC-시연6.gif)
+  - ![SC-시연6](README.assets\SC-시연6.gif)
   - 구매
-  - ![SC-시연7](.\README.assets\SC-시연7.gif)
+  - ![SC-시연7](README.assets\SC-시연7.gif)
 
 
 <br/>
@@ -234,7 +234,7 @@
 
 ## 7. 기술적 고민
 
-- [SC 문제점](./README.assets/SC_Problem)
+- [SC 문제점](/README.assets/SC_Problem)
 
 <br/>
 
