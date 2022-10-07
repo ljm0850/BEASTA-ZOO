@@ -103,7 +103,7 @@
 
 |      Part      |                            Tech ⚙                            |
 | :------------: | :----------------------------------------------------------: |
-|   **Front**    | <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white"><img src="https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=react&logoColor=white"><img src="https://img.shields.io/badge/axios-0088CC?style=for-the-badge&logo=axios&logoColor=white"><img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"><img src="https://img.shields.io/badge/reactrouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white"> <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white"><img src="https://img.shields.io/badge/sass-CC6699?style=for-the-badge&logo=sass&logoColor=white"><img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"><img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white"> |
+|   **Front**    | <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white"><img src="https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=react&logoColor=white"><img src="https://img.shields.io/badge/axios-0088CC?style=for-the-badge&logo=axios&logoColor=white"><img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"><img src="https://img.shields.io/badge/reactrouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white"> <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white"><img src="https://img.shields.io/badge/sass-CC6699?style=for-the-badge&logo=sass&logoColor=white"><img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"><img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white"> |
 |    **Back**    | <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=spring&logoColor=white"><img src="https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white"><img src="https://img.shields.io/badge/MYSQL-003545?style=for-the-badge&logo=MYSQL&logoColor=white"><img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white"> |
 | **BlockChain** | <img src="https://img.shields.io/badge/Solidity-003545?style=for-the-badge&logo=Solidity&logoColor=white"><img src="https://img.shields.io/badge/Truffle-01DFD7?style=for-the-badge&logo=truffle&logoColor=white"> |
 | **Deployment** | <img src="https://img.shields.io/badge/amazon_ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"><img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"><img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white"><img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"> |
@@ -169,10 +169,10 @@
 > - README.asset을 참조해 주세요
 > - 배포
 
-![SC-시연1](README.assets\SC-시연8.gif)
+![SC-시연1](README.assets/SC-시연8.gif)
 
 + 토큰 발행
-  + ![SC-시연2](README.assets\SC-시연1.gif)`
+  + ![SC-시연2](README.assets/SC-시연1.gif)`
 
 #### 1) 메인페이지
 
@@ -181,16 +181,16 @@
 #### 2) 마켓플레이스
 
 - **뽑기**
-  - ![SC-시연3](README.assets\SC-시연4.gif)
+  - ![SC-시연3](README.assets/SC-시연4.gif)
 
 - **조합**
-  - !![SC-시연5](README.assets\SC-시연5.gif)
+  - !![SC-시연5](README.assets/SC-시연5.gif)
 
 - **거래**
   - 판매등록
-  - ![SC-시연6](README.assets\SC-시연6.gif)
+  - ![SC-시연6](README.assets/SC-시연6.gif)
   - 구매
-  - ![SC-시연7](README.assets\SC-시연7.gif)
+  - ![SC-시연7](README.assets/SC-시연7.gif)
 
 
 <br/>
@@ -223,10 +223,10 @@
 
 #### 3) BlockChain
 
-| 최인호 | 이재민 |
-| :----: | :----: |
-| 김세진 |        |
 |        |        |
+| :----: | :----: |
+| 최인호 | 이재민 |
+| 김세진 |        |
 
 ---
 
