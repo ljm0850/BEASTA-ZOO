@@ -87,7 +87,7 @@
 
 #### 1) 아키텍처
 
-![image-20220919094156129](README.assets/image-20220919094156129.png)
+![image-20220919094156129](assets/image-20220919094156129.png)
 
 
 
@@ -95,7 +95,7 @@
 
 #### 2) 프로젝트 소스 구조 (추후 변경 예정)
 
-![image-20220919100755056](README.assets/image-20220919100755056.png)
+![image-20220919100755056](assets/image-20220919100755056.png)
 
 <br/>
 
@@ -103,7 +103,7 @@
 
 |      Part      |                            Tech ⚙                            |
 | :------------: | :----------------------------------------------------------: |
-|   **Front**    | <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white"><img src="https://img.shields.io/badge/axios-0088CC?style=for-the-badge&logo=axios&logoColor=white"><img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"><img src="https://img.shields.io/badge/reactrouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white"> <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white"><img src="https://img.shields.io/badge/sass-CC6699?style=for-the-badge&logo=sass&logoColor=white"><img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"><img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white"> |
+|   **Front**    | <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white"><img src="https://img.shields.io/badge/axios-0088CC?style=for-the-badge&logo=axios&logoColor=white"><img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"><img src="https://img.shields.io/badge/reactrouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white"><img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white"><img src="https://img.shields.io/badge/sass-CC6699?style=for-the-badge&logo=sass&logoColor=white"><img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"><img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white"> |
 |    **Back**    | <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=spring&logoColor=white"><img src="https://img.shields.io/badge/MYSQL-003545?style=for-the-badge&logo=MYSQL&logoColor=white"><img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white"> |
 | **BlockChain** | <img src="https://img.shields.io/badge/Solidity-003545?style=for-the-badge&logo=Solidity&logoColor=white"><img src="https://img.shields.io/badge/Truffle-01DFD7?style=for-the-badge&logo=truffle&logoColor=white"> |
 | **Deployment** | <img src="https://img.shields.io/badge/amazon_ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"><img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"><img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white"><img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"> |
@@ -156,7 +156,7 @@
 
 ## 4. ERD 다이어그램
 
-![image-20220919095028445](README.assets/image-20220919095028445.png)
+![image-20220919095028445](assets/image-20220919095028445.png)
 
 ---
 
@@ -167,12 +167,12 @@
 > - README.asset을 참조해 주세요
 > - 배포
 
-![SC-시연1](README.assets/SC-시연8.gif)
+![SC-시연1](assets/SC-시연8.gif)
 
 + 토큰 발행
   
 
-![SC-시연2](README.assets/SC-시연1.gif)
+![SC-시연2](assets/SC-시연1.gif)
 
 #### 1) 메인페이지
 
@@ -182,20 +182,20 @@
 
 - **뽑기**
   
-  ![SC-시연3](README.assets/SC-시연4.gif)
+  ![SC-시연3](assets/SC-시연4.gif)
   
 - **조합**
   
-  ![SC-시연5](README.assets/SC-시연5.gif)
+  ![SC-시연5](assets/SC-시연5.gif)
   
 - **거래**
   - 판매등록
   
-    ![SC-시연6](README.assets/SC-시연6.gif)
+    ![SC-시연6](assets/SC-시연6.gif)
   
   - 구매
   
-    ![SC-시연7](README.assets/SC-시연7.gif)
+    ![SC-시연7](assets/SC-시연7.gif)
 
 
 <br/>
@@ -249,4 +249,6 @@
 
 #### 2). [와이어 프레임](https://www.figma.com/file/gUwK2fcAqNFBysEASba2al/%EC%8B%A0%EB%8F%99%EC%82%AC-%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?node-id=0%3A1)
 
-#### 3). [포팅 메뉴얼](https://organized-cat-565.notion.site/_-PJT-JAV-5bdb566b0a5a4e02b61fb06ca3e2557c)
+#### 3). [포팅 메뉴얼](exec/포팅메뉴얼_특화PJT_(JAV).pdf)
+
+#### 4). [시연 시나리오(PDF)](exec/BEASTAZOO_시연시나리오.pdf)
