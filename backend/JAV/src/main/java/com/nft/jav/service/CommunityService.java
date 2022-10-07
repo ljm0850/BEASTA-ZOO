@@ -1,10 +1,7 @@
 package com.nft.jav.service;
 
 
-import com.nft.jav.data.dto.CommunityModiReqDto;
-import com.nft.jav.data.dto.CommunityReqDto;
-import com.nft.jav.data.dto.CommunityResDto;
-import com.nft.jav.data.dto.UserResDto;
+import com.nft.jav.data.dto.*;
 
 import java.util.List;
 
@@ -21,5 +18,5 @@ public interface CommunityService {
 
     boolean deleteCommunity(long communityId);
 
-    List<UserResDto> rankUser();
+    List<RankResDto> rankUser();
 }

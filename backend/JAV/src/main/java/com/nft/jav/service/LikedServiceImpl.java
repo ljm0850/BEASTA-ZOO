@@ -23,9 +23,8 @@ public class LikedServiceImpl implements LikedService{
     private final LikedRepository likedRepository;
     private final SalesRepository salesRepository;
     @Override
-    public List<LikedResDto> getUserLikedList(long user_id) {
-        User targetUser = userRepository.findById(user_id)
-                .orElseThrow(IllegalArgumentException::new);
+    public List<LikedResDto> getUserLikedList(String wallet_address) {
+        User targetUser = userRepository.findByWalletAddress(wallet_address);
 
         System.out.println("here!! " + targetUser.getUser_id());
 

@@ -22,10 +22,39 @@ public class NFT extends BaseTimeEntity {
     @Column
     private String nft_address;
 
+    @Column
+    private String token_id;
+
+    @Column
+    private String img_address;
+
+    @Column
+    private String jav_code;
+
+    @Column
+    private boolean isDeleted;
+
+    @ManyToOne
+    @JoinColumn(name = "jav_id")
+    private ServiceCollection serviceCollection;
+
     @Builder
-    public NFT(long nft_id, User user, String nft_address) {
+    public NFT(long nft_id, User user, boolean isDeleted, ServiceCollection serviceCollection, String nft_address, String token_id, String img_address, String jav_code) {
         this.nft_id = nft_id;
+        this.serviceCollection = serviceCollection;
         this.user = user;
+        this.isDeleted = isDeleted;
         this.nft_address = nft_address;
+        this.token_id = token_id;
+        this.img_address = img_address;
+        this.jav_code = jav_code;
+    }
+
+    public void updateUser(User user) {
+        this.user = user;
+    }
+
+    public void updateState(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

@@ -1,16 +1,15 @@
 package com.nft.jav.controller;
 
-import com.nft.jav.data.dto.serviceCollectionResDto;
+import com.nft.jav.data.dto.SalesResDto;
+import com.nft.jav.data.dto.ServiceCollectionResDto;
 import com.nft.jav.service.ServiceCollectionService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,14 +22,41 @@ public class ServiceCollectionController {
     private final ServiceCollectionService serviceCollectionService;
 
     @GetMapping("")
-    public ResponseEntity<List<serviceCollectionResDto>> serviceCollectionList(){
+    @ApiOperation(value = "전체도감리스트", notes = "type이 0: 전체도감, 1: 유저가진 도감먼저\n" +
+            "sort 0: 먼저 발견된순, 1: 티어순")
+    public ResponseEntity<List<ServiceCollectionResDto>> serviceCollectionList(
+            @RequestParam int page, @RequestParam int size, @RequestParam int sort, @RequestParam int type,
+            @RequestParam(required = false) String wallet_address){
         logger.info("serviceCollectionList - 호출");
-        return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(), HttpStatus.OK);
+        if(type==0 || wallet_address == null) return new ResponseEntity<>(serviceCollectionService.serviceCollectionList(page, size, sort, wallet_address), HttpStatus.OK);
+        else return new ResponseEntity<>(serviceCollectionService.firstUserCollectionList(page, size, sort, wallet_address), HttpStatus.OK);
+    }
+
+    @GetMapping("/latest")
+    @ApiOperation(value = "최근 발견한 자브종")
+    public ResponseEntity<List<ServiceCollectionResDto>> latestJavList(@RequestParam int size){
+        logger.info("latestJavList - 호출");
+        return new ResponseEntity<>(serviceCollectionService.latestJav(size), HttpStatus.OK);
+    }
+
+    @GetMapping("/sale/{jav_code}")
+    @ApiOperation(value = "같은 자브종 코드 중에 판매중인 자브종")
+    public ResponseEntity<List<SalesResDto>> saleListByJavCode(@RequestParam String jav_code){
+        logger.info("saleListByJavCode - 호출");
+        return new ResponseEntity<>(serviceCollectionService.getSaleByJavCode(jav_code), HttpStatus.OK);
     }
 
     @GetMapping("/{jav_id}")
-    public ResponseEntity<serviceCollectionResDto> detailJav(@PathVariable long jav_id){
+    @ApiOperation(value = "자브종 상세 정보")
+    public ResponseEntity<ServiceCollectionResDto> detailJav(@PathVariable long jav_id){
         logger.info("detailJav - 호출");
         return new ResponseEntity<>(serviceCollectionService.detailJav(jav_id), HttpStatus.OK);
+    }
+
+    @GetMapping("/totalCount")
+    @ApiOperation(value = "총 자브종 개수")
+    public ResponseEntity<Long> totalCount(){
+        logger.info("totalCount - 호출");
+        return new ResponseEntity<>(serviceCollectionService.countJav(), HttpStatus.OK);
     }
 }

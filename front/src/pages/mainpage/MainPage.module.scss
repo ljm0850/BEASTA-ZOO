@@ -1,0 +1,183 @@
+.mainBody {
+  // display: flex;
+  // justify-content: center;
+  // text-align: center;
+  width: auto;
+
+  .welcome {
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  @keyframes shake{
+    0%, 50%{
+      transform: rotate(0deg);
+    }
+    5%, 15%, 25%, 35%, 45% {
+      transform: rotate(1deg);
+    }
+    10%, 20%, 30%, 40% {
+      transform: rotate(-1deg);
+    }
+  }
+
+
+  .mainBanner {
+    display: flex;
+    justify-content: space-between;
+    padding: 1vw 3vw 1vw 3vw;
+    // margin: 2vw;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #EDEDED 0%, #5FD9CE 50%, #32A5D0 92.12%, #30ACE4 100%);
+    cursor: pointer;
+    margin: 45px 0 90px 0;
+
+    .banner {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1rem 0 1rem 0;
+
+      .title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        line-height: 120%;
+        letter-spacing: -0.050em;
+      }
+
+      .subTitle {
+        div:nth-child(1) {
+          font-size: 2rem;
+          font-weight: 700;
+          color: #fff;
+        }
+        div:nth-child(2) {
+          font-size: 0.8rem;
+          line-height: 150%;
+          font-weight: 700;
+          color: #fff;
+        }
+        .draw {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 73px;
+          height: 40px;
+          background: linear-gradient(90deg, #FFC700 0%, #FF8E0A 100%);
+          border-radius: 8px;
+          margin: 1rem 0 0 0;
+          cursor: pointer;
+          div {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #fff;
+            transition: all 0.2s;
+          }
+          &:hover {
+            div{
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+    }
+
+    img {
+      width: 400px;
+      &:hover {
+        animation: shake 3s infinite ease-in-out;
+      }
+    }
+    @media screen and (max-width: 1200px) {
+      img {
+        visibility: hidden;
+        width: 1px;
+        height: 367px;
+      }
+    }
+  }
+  
+  .guide {
+    display: flex;
+    justify-content: space-between;
+    text-decoration: none;
+    background: black;
+    margin: 90px 0 90px 0;
+    padding: 1vw 4vw 1vw 4vw;
+    border-radius: 20px;
+    cursor: pointer;
+
+    .title {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      margin: 2.5rem 0 2.5rem 0;
+
+      .subTitle {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #fff;
+      }
+      
+      @media screen and (max-width: 1050px) {
+        .subTitle {
+          font-size: 1.2rem;
+        }
+      }
+
+      .subBtn1 {
+        display: inline-block;
+        // align-items: center;
+        padding: 0.3rem 1rem 0.3rem 1rem;
+        border: 1px solid #fff;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #fff;
+      }
+
+      .subBtn2 {
+        display: none;
+      }
+
+
+      @media screen and (max-width: 580px) {
+        .subBtn1 {
+          display: none;
+        }
+
+        .subBtn2 {
+          display: inline-block;
+          padding: 0.3rem 1rem 0.3rem 1rem;
+          border: 1px solid #fff;
+          border-radius: 10px;
+          font-weight: 700;
+          font-size: 0.9rem;
+          color: #fff;
+        }
+      }
+
+    }
+
+
+
+
+    .nftLogo {
+      width: 200px;
+      transition: transform linear 25s;
+      &:hover {
+        transform: rotateY(6000deg)
+      }
+    }
+    @media screen and (max-width: 1410px) {
+      .nftLogo {
+        visibility: hidden;
+        width: 1px;
+        height: 200px;
+      }
+    }
+  }
+  
+
+}

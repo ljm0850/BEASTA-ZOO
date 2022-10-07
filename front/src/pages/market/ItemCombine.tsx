@@ -1,5 +1,32 @@
+import { useState, useCallback, useEffect, useRef } from "react";
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import RefreshIcon from "@mui/icons-material/Refresh";
+
+import styles from "./ItemCombine.module.scss";
+import HOS from "../../image/HOS.svg";
+import { ableCombineNFTs } from "../../api/connect";
+import { NFT } from "../profile/MyJavs";
+import { Card, Divider, Grid } from "@mui/material";
+import { fusion } from "../../api/solidity";
+import { fusionNFT } from "../../api/market";
+import JavModal from "../../layouts/modal/JavModal";
+import { useNavigate } from "react-router-dom";
+import PartsTier from "../../layouts/items/PartsTier";
+
+interface NFTs extends Array<NFT> {}
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const ItemCombine = () => {
-  
+  const navigate = useNavigate();
   /**
     프로젝트 구현    
      * 1. 조합 승인 모달창에 개인키를 입력하면 getAddressFrom() 함수를 이용해 공개키를 반환 받습니다.
@@ -15,7 +42,367 @@ const ItemCombine = () => {
      * 11. 백엔드에 token Id와 owner_address를 포함한 정보를 등록 요청합니다.  
     */
 
-  return <div></div>;
+  const [myJAVList, setMyJAVList] = useState<NFTs>([]);
+  // const [load, setLoad] = useState(false);
+  const [combineLoad, setCombineLoad] = useState(false);
+  // const [page, setPage] = useState(-1);
+  const obsRef = useRef(null); //observer Element
+  // const preventRef = useRef(true); //옵저버 중복 실행 방지
+  // const endRef = useRef(false); //모든 글 로드 확인
+
+  // 내 소유 자브종 가져오기 + 무한 스크롤
+
+  // useEffect(() => {
+  //   //옵저버 생성
+  //   const observer = new IntersectionObserver(obsHandler, { threshold: 0.5 });
+  //   if (obsRef.current) observer.observe(obsRef.current);
+  //   return () => {
+  //     observer.disconnect();
+  //   };
+  // }, []);
+
+  // const obsHandler = (entries: any) => {
+  //   //옵저버 콜백함수
+  //   const target = entries[0];
+  //   if (!endRef.current && target.isIntersecting && preventRef.current) {
+  //     //옵저버 중복 실행 방지
+  //     preventRef.current = false; //옵저버 중복 실행 방지
+  //     setPage((prev) => prev + 1); //페이지 값 증가
+  //   }
+  // };
+
+  const getPost = useCallback(async () => {
+    //글 불러오기
+
+    // setLoad(true); //로딩 시작
+    // getMyNFTs(sessionStorage.getItem("account"), page, 10, 0)
+    //   .then((res) => {
+    //     setMyJAVList((prev) => [...prev, ...res]); //리스트 추가
+    //     preventRef.current = true;
+    //     setLoad(false);
+    //     if (page === res[0].total_page) {
+    //       endRef.current = true;
+    //       setLoad(false);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setLoad(false);
+    //     endRef.current = true;
+    //   });
+
+    const NFTLIST = await ableCombineNFTs(sessionStorage.getItem("account")!);
+    setMyJAVList(NFTLIST);
+  }, []);
+
+  useEffect(() => {
+    getPost();
+  }, [getPost]);
+
+  // 백엔드, solidity에서 요구하는게 달라서 쓰는게 많아졌음.
+  const [material1Img, setMaterial1Img] = useState("");
+  const [material2Img, setMaterial2Img] = useState("");
+  const [material1ID, setMaterial1ID] = useState(0);
+  const [material2ID, setMaterial2ID] = useState(0);
+  const [material1NFTID, setMaterial1NFTID] = useState(0);
+  const [material2NFTID, setMaterial2NFTID] = useState(0);
+
+  ////////////////////////////////////////////////////////////////////////
+  // NFT 미선택, 자브종 2종 이상 선택 시 경고창
+  const [open, setOpen] = useState(false);
+  const [notice, setNotice] = useState("");
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  ////////////////////////////////////////////////////////////////////////
+
+  // 뽑기 모달
+  const [openItem, setOpenItem] = useState(false);
+  const handleCloseItem = () => setOpenItem(false);
+
+  ///
+  const [img, setImg] = useState("");
+  const [genes, setGenes] = useState("");
+  const [tokenID, setTokenID] = useState(0);
+  const [NFTAddr, setNFTAddr] = useState("");
+
+  const Combine = async () => {
+    if (!!material1Img === false || !!material2Img === false) {
+      setNotice("자브종이 충분히 선택되지 않았습니다.");
+      handleClick();
+    } else {
+      setCombineLoad(true);
+      const fusionData = await fusion(material1ID, material2ID);
+      const option = {
+        ...fusionData,
+        nft_id_1: material1NFTID,
+        nft_id_2: material2NFTID,
+      };
+      // // 백엔드 통신
+      await fusionNFT(option);
+      setImg(fusionData.img_address);
+      setGenes(fusionData.jav_code);
+      setTokenID(Number(fusionData.token_id));
+      setNFTAddr(fusionData.nft_address);
+      setOpenItem(true);
+      setCombineLoad(false);
+
+      // 소유 JAV 초기화 후 다시 로딩
+      setMyJAVList([]);
+      // await setPage(-1);
+      setMaterial1Img("");
+      setMaterial2Img("");
+      setMaterial1ID(0);
+      setMaterial2ID(0);
+      setMaterial1NFTID(0);
+      setMaterial2NFTID(0);
+      setCheckedImgInputs([""]);
+      setCheckedIDInputs([]);
+      setCheckedNFTIDInputs([]);
+      getPost();
+    }
+  };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("isLogined") !== "true") {
+      alert("로그인 후 이용 가능합니다..");
+      navigate("/");
+    }
+  }, [navigate]);
+
+  // 체크박스
+
+  const [checkedImgInputs, setCheckedImgInputs] = useState([""]);
+  const [checkedIDInputs, setCheckedIDInputs] = useState<Array<number>>([]);
+  const [checkedNFTIDInputs, setCheckedNFTIDInputs] = useState<Array<number>>(
+    []
+  );
+
+  const check = (event: any, id: any, token_id: number, nft_id: number) => {
+    if (event.currentTarget.checked) {
+      setCheckedImgInputs([...checkedImgInputs, id]);
+      setCheckedIDInputs([...checkedIDInputs, token_id]);
+      setCheckedNFTIDInputs([...checkedNFTIDInputs, nft_id]);
+    } else if (!event.currentTarget.checked) {
+      setCheckedImgInputs(checkedImgInputs.filter((el) => el !== id));
+      setCheckedIDInputs(checkedIDInputs.filter((el) => el !== token_id));
+      setCheckedNFTIDInputs(checkedNFTIDInputs.filter((el) => el !== nft_id));
+      return;
+    }
+    if (checkedImgInputs.length > 2) {
+      setNotice("조합은 2개의 자브종이 사용됩니다.");
+      handleClick();
+      setCheckedImgInputs(checkedImgInputs.filter((el) => el !== id));
+      setCheckedIDInputs(checkedIDInputs.filter((el) => el !== token_id));
+      setCheckedNFTIDInputs(checkedNFTIDInputs.filter((el) => el !== nft_id));
+      event.target.checked = false;
+    }
+  };
+
+  useEffect(() => {
+    setMaterial1Img(checkedImgInputs[1]);
+    setMaterial2Img(checkedImgInputs[2]);
+    setMaterial1ID(checkedIDInputs[0]);
+    setMaterial2ID(checkedIDInputs[1]);
+    setMaterial1NFTID(checkedNFTIDInputs[0]);
+    setMaterial2NFTID(checkedNFTIDInputs[1]);
+  }, [checkedImgInputs, checkedIDInputs, checkedNFTIDInputs]);
+
+  return (
+    <div>
+      <div className={styles.mainContainer}>
+        <div className={styles.space}>
+          <div>
+            <div className={styles.combineLogo}>
+              <img
+                src={HOS}
+                alt=""
+                className={`${!combineLoad && styles.hos} ${
+                  combineLoad && styles.spin
+                }`}
+              />
+              <div>조합</div>
+            </div>
+
+            <div className={styles.material}>
+              <div className={styles.container}>
+                {material1Img ? (
+                  <img
+                    style={{ objectFit: "cover" }}
+                    src={material1Img}
+                    alt=""
+                  />
+                ) : (
+                  <div className={styles.container}>
+                    <div className={styles.centerPosition}>
+                      <div>자브종이</div>
+                      <div>선택되지 않았습니다.</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className={styles.container}>
+                {material2Img ? (
+                  <img
+                    style={{ objectFit: "cover" }}
+                    src={material2Img}
+                    alt=""
+                  />
+                ) : (
+                  <div className={styles.container}>
+                    <div className={styles.centerPosition}>
+                      <div>자브종이</div>
+                      <div>선택되지 않았습니다.</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className={styles.mdSubmitBtn}>
+              <Button
+                variant="contained"
+                color="success"
+                size="large"
+                onClick={Combine}
+              >
+                조합하기
+              </Button>
+            </div>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+              <Alert
+                onClose={handleClose}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+                {notice}
+              </Alert>
+            </Snackbar>
+          </div>
+        </div>
+        <div className={styles.space}>
+          <div>
+            <div className={styles.javsHeader}>나의 자브종</div>
+            <div className={styles.javList}>
+              <Grid container spacing={1}>
+                {myJAVList.map((contact, index) => (
+                  <Grid item xs={6} key={index}>
+                    <Card variant="outlined">
+                      <label
+                        className={styles.javLabel}
+                        htmlFor={contact.img_address}
+                      >
+                        <img src={contact.img_address} alt="" />
+                        <input
+                          onChange={(e) => {
+                            check(
+                              e,
+                              contact.img_address,
+                              Number(contact.token_id),
+                              Number(contact.nft_id)
+                            );
+                          }}
+                          className={styles.jav}
+                          id={contact.img_address}
+                          type="checkbox"
+                        />
+                        <div></div>
+                      </label>
+                      <PartsTier javCode={String(contact.jav_code)} />
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+              <div ref={obsRef} style={{ height: "10px" }}></div>
+              {myJAVList.length === 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "430px",
+                    height: "750px",
+                    fontWeight: "700",
+                    color: "#DCDCDC",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>소유한 자브종이 없습니다.</div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      className={styles.refresh}
+                      onClick={() => {
+                        // setPage(0);
+                        getPost();
+                      }}
+                    >
+                      <RefreshIcon style={{ fontSize: "1.3rem" }} />
+                      새로고침
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={styles.cautionContainer}>
+        <Divider />
+        <div className={styles.caution}>
+          <div>주의 사항!</div>
+          <ul>
+            <li>
+              자브종은 BEASTAZOO에서 뽑기, 조합을 통해 얻을 수 있는 모든
+              캐릭터를 의미합니다.
+            </li>
+            <li>조합에 사용되는 2개의 자브종은 조합 이후 소멸합니다.</li>
+            <li>
+              중간에 홈페이지를 끄꺼나 이탈할 경우 자브종은 인벤토리로 들어가지
+              않으며, 이때 소모된 JAV, 자브종은 환불되지 않습니다.{" "}
+            </li>
+            <li>조합의 결과는 BEASTAZOO의 유전 알고리즘으로 이루어집니다.</li>
+            <li>
+              BEASTAZOO는 시즌제로 운영됩니다. 현재 시즌은 OOZ Project이며 이번
+              시즌이 지나면 해당 자브종은 얻을 수 없습니다.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <JavModal
+        open={openItem}
+        onClose={handleCloseItem}
+        data={{
+          nft_address: NFTAddr,
+          img_address: img,
+          jav_code: genes,
+          token_id: tokenID,
+        }}
+      />
+    </div>
+  );
 };
 
 export default ItemCombine;

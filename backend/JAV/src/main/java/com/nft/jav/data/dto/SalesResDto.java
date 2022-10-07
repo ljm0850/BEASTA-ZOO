@@ -17,19 +17,20 @@ import java.util.List;
 public class SalesResDto {
 
     private long sale_id;
-
-    private long user_id;
-
     private long nft_id;
     private int state;
-
+    private String img_address;
+    private String jav_code;
+    private String token_id;
     private double price;
 
     private String contract_address;
 
     private String seller_wallet;
+    private String seller_nickname;
 
     private String buyer_wallet;
+    private String buyer_nickname;
 
     private LocalDateTime sale_start_date;
 
@@ -37,16 +38,20 @@ public class SalesResDto {
 
     @Builder
 
-    public SalesResDto(long sale_id, long user_id, long nft_id, int state, double price, String contract_address,
-                       String seller_wallet, String buyer_wallet, LocalDateTime sale_start_date, LocalDateTime sale_completed_date) {
+    public SalesResDto(long sale_id, long nft_id, String img_address, String jav_code, String token_id, int state, double price, String contract_address,
+                       String seller_wallet, String buyer_wallet, String seller_nickname, String buyer_nickname, LocalDateTime sale_start_date, LocalDateTime sale_completed_date) {
         this.sale_id = sale_id;
-        this.user_id = user_id;
         this.nft_id = nft_id;
+        this.img_address = img_address;
+        this.jav_code = jav_code;
+        this.token_id = token_id;
         this.state = state;
         this.price = price;
         this.contract_address = contract_address;
         this.seller_wallet = seller_wallet;
+        this.seller_nickname = seller_nickname;
         this.buyer_wallet = buyer_wallet;
+        this.buyer_nickname = buyer_nickname;
         this.sale_start_date = sale_start_date;
         this.sale_completed_date = sale_completed_date;
     }
