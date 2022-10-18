@@ -4,9 +4,7 @@
 
 [TOC]
 
-#### notion
 
-- https://subsequent-clementine-6cf.notion.site/C108-4ea7abc743e3497fbac38eb1d59d1b18
 
 ---
 
