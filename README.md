@@ -186,9 +186,24 @@
 
 <br/>
 
-## 6. 기술적 고민
+## 6. 고민
 
 - [SC 문제점](assets/SC_Problem.md)
+- 자체 토큰(JAV) 획득 방법을 어떻게 할 것인가?
+
+```html
+<details>
+<summary>접기/펼치기 버튼</summary>
+<div markdown="1">
+
+|제목|내용|
+|--|--|
+|1|1|
+|2|10|
+
+</div>
+</details>
+```
 
 <br/>
 
