@@ -218,7 +218,7 @@
 
 ## 6. 고민
 
-- [SC 문제점](assets/SC_Problem.md)
+- [SC 작성하면서 발생한 문제점](assets/SC_Problem.md)
 
 <details>
     <summary>자체 토큰(JAV) 획득 방법을 어떻게 할 것인가?</summary>
