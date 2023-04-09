@@ -43,6 +43,9 @@
 <br/>
 
 - UCC : https://youtu.be/4ZNU3LeL8Ec
+- 프로젝트 과정 : https://subsequent-clementine-6cf.notion.site/C108-4ea7abc743e3497fbac38eb1d59d1b18
+  - 아이디어, 회의록, 요구사항 정의서, 기능명세서, 와이어 프레임 
+
 
 ---
 
