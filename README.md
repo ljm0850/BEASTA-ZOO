@@ -2,6 +2,8 @@
 
 ## 목차
 
+[0.요약](#0-요약)
+
 [1. 소개](#1-소개)
 
 [2. 주요기능](#2-주요-기능)
@@ -24,6 +26,48 @@
 
 <br/>
 
+## 0. 요약
+
+### 문서
+
+- UCC : https://youtu.be/4ZNU3LeL8Ec
+- Notion : https://subsequent-clementine-6cf.notion.site/C108-4ea7abc743e3497fbac38eb1d59d1b18
+
+### 역할
+
+#### Blockchain
+
+- ERC-20, ERC-721 분석
+- SmartContract 로직 설계(NFT 발행, NFT거래 ...)
+- NFT 발행 및 거래
+- 유전 알고리즘 최적화
+
+#### Frontend
+
+- web3.js를 이용하여 smartcontract 연동
+- 자브종(NFT) 상세 페이지(modal) 및 판매 페이지
+- 해당 NFT의 유전 비율, 판매 기록 그래프
+
+### 기술 스택
+
+- Solidity, Truffle, web3.js
+- React, SCSS, TypeScript
+- GirLab, Jira, Figma
+
+### 후기
+
+- Blockchain의 탈중앙화에 대한 개념과 왜 사용하는지 배울 수 있었다.
+- Solidity및 블록체인이 가진 문제점에 대해 알 수 있었다.
+  - 자료구조, 랜덤, 연산 능력(확장성), 접근성, 에너지 효율
+- 기능(성능)과 편의성의 비중에 대해 많은 고민을 할 수 있었다.
+  - DApp - backend
+  - IPFS - firebase
+  - 자산을 중앙에서 관리 - 개인이 관리 (개인 지갑)
+- Vue 대비 React의 장점(component 재사용성 등)에 대해 배울 수 있었다.
+- 추가적인 후기 : https://ljm0850.tistory.com/123
+
+
+
 ## 1. 소개
 
 - **BEASTZOO**는 **NFT** 기반의 수집형 컨텐츠 플랫폼입니다.
@@ -38,13 +82,9 @@
 ### 수상
 
 - 삼성 청년 SW 아카데미 프로젝트 우수상
-- 특화프로젝트 광주1반 1등
+- 특화프로젝트 반 1등
 
-<br/>
-
-- UCC : https://youtu.be/4ZNU3LeL8Ec
-- 프로젝트 과정 : https://subsequent-clementine-6cf.notion.site/C108-4ea7abc743e3497fbac38eb1d59d1b18
-  - 아이디어, 회의록, 요구사항 정의서, 기능명세서, 와이어 프레임 
+<br/> 
 
 
 ---
@@ -301,7 +341,7 @@
 
 
 
-◎ 프로젝트를 진행하며 개인적으로 느낀점은 [개인 블로그](https://ljm0850.tistory.com/123)에 있습니다.
+◎ 프로젝트를 진행하며 추가적으로 느낀점은 [개인 블로그](https://ljm0850.tistory.com/123)에 있습니다.
 
 ## 8. 기타 자료
 
